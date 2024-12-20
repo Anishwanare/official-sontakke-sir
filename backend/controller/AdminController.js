@@ -18,6 +18,7 @@ export const AdminRegister = async (req, res, next) => {
         message: "Email already exists",
       });
     }
+
     // create new user
     const newAdmin = await Admin.create({
       name,
@@ -25,10 +26,16 @@ export const AdminRegister = async (req, res, next) => {
       password,
       role: "Admin",
     });
+
+    const token = jwt.sign({ id: newAdmin }, process.env.JWT_SECRET_KEY, {
+      expiresIn: process.env.JWT_EXPIRES
+    })
+
     return res.status(200).json({
       status: true,
       message: "Admin registered successfully",
       newAdmin,
+      token
     });
   } catch (error) {
     return res.status(500).json({
