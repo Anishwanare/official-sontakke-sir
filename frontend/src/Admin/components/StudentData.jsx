@@ -26,7 +26,7 @@ const StudentData = () => {
     };
 
     fetchStudents();
-  }, [API_BASE_URL]);
+  }, []);
 
   const handleDelete = async (id) => {
     if (!window.confirm("Are you sure you want to delete this student?")) return;
