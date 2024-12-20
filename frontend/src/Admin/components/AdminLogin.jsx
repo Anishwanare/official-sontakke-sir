@@ -20,7 +20,7 @@ const AdminLogin = () => {
         {
           email,
           password,
-        }
+        }, { withCredentials: true, headers: { "Content-Type": "application/json" } }
       );
       if (response?.data?.token) {
         console.log(response.data.token);
@@ -34,7 +34,7 @@ const AdminLogin = () => {
         setSuccess("");
       }
     } catch (error) {
-      setError(error.response?.data?.message);
+      setError(error.response.data?.message);
       setSuccess("");
       navigateTo("/admin-login");
     } finally {

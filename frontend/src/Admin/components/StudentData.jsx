@@ -6,12 +6,11 @@ const StudentData = () => {
   const [studentData, setStudentData] = useState([]);
   const [schools, setSchools] = useState([]);
   const [selectedSchool, setSelectedSchool] = useState("");
-  const API_BASE_URL = import.meta.env.VITE_APP_API_BASE_URL;
 
   useEffect(() => {
     const fetchStudents = async () => {
       try {
-        const { data } = await axios.get(`${API_BASE_URL}/api/v3/student/get-students`, {
+        const { data } = await axios.get(`${import.meta.env.VITE_APP_API_BASE_URL}/api/v3/student/get-students`, {
           headers: { "Content-Type": "application/json" },
         });
 
@@ -33,7 +32,7 @@ const StudentData = () => {
     if (!window.confirm("Are you sure you want to delete this student?")) return;
 
     try {
-      await axios.delete(`${API_BASE_URL}/api/v3/student/delete/student/${id}`, {
+      await axios.delete(`${import.meta.env.VITE_APP_API_BASE_URL}/api/v3/student/delete/student/${id}`, {
         headers: { "Content-Type": "application/json" },
       });
 

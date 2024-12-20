@@ -33,7 +33,7 @@ const AdminDashboard = () => {
     const fetchAdminInfo = async () => {
       try {
         const response = await axios.get(
-          "http://localhost:2050/api/v5/admin/fetch",
+          `${import.meta.env.VITE_APP_API_BASE_URL}/api/v5/admin/fetch`,
           { withCredentials: true }
         );
         if (response?.data?.status) {
