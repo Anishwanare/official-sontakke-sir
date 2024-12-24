@@ -23,18 +23,18 @@ const AdminLogin = () => {
         }, { withCredentials: true, headers: { "Content-Type": "application/json" } }
       );
       if (response?.data?.token) {
-        console.log(response.data.token);
-        localStorage.setItem("AdminToken", JSON.stringify(response.data.token));
-        setSuccess(response.data.message);
+        console.log(response?.data?.token);
+        localStorage.setItem("AdminToken", JSON.stringify(response?.data?.token));
+        setSuccess(response?.data?.message);
         setError("");
         navigateTo("/admin-dashboard");
         // Redirect to the admin dashboard or handle login success
       } else {
-        setError(response.data.message);
+        setError(response?.data?.message);
         setSuccess("");
       }
     } catch (error) {
-      setError(error.response.data?.message);
+      setError(error.response?.data?.message);
       setSuccess("");
       navigateTo("/admin-login");
     } finally {
