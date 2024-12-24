@@ -14,6 +14,8 @@ export const app = express();
 config({ path: ".env" });
 
 //middleware
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 app.use(
   cors({
     origin: ['http://dnyanankur.in'], // Allow your frontend domain
@@ -24,9 +26,8 @@ app.use(
   })
 );
 
-// Ensure OPTIONS requests are handled
-app.options("*", cors()); // This will handle all preflight requests
 
+app.options("*", cors());
 
 //middleware
 app.use("/api/v1/message", MessageRouter);
