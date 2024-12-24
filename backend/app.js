@@ -25,6 +25,8 @@ app.use(
   })
 );
 
+app.options("*", cors());
+
 //middleware
 app.use("/api/v1/message", MessageRouter);
 app.use("/api/v2/school", SchoolRouter);
