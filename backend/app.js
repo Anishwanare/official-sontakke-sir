@@ -18,7 +18,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(
   cors({
-    origin: ['http://dnyanankur.in'], // Allow your frontend domain
+    origin: ['http://dnyanankur.in' || process.env.FRONTEND_URL], // Allow your frontend domain
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'], // Allow these methods
     allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With'], // Add any custom headers
     credentials: true,  // Allow credentials (cookies, etc.)
