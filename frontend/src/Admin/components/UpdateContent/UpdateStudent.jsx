@@ -40,6 +40,7 @@ const UpdateStudent = () => {
 
     // Fetch Student Details
     useEffect(() => {
+        if (!id) return; // Guard clause in case ID is not yet available
         const fetchStudent = async () => {
             setFetching(true);
             try {
@@ -82,7 +83,7 @@ const UpdateStudent = () => {
                 }
             );
             toast.success("Student updated successfully!");
-            navigate("/admin-dashboard");
+            navigate("/admin-dashboard"); // Navigate to dashboard after update
         } catch (error) {
             console.error("Error updating student:", error);
             toast.error("Failed to update student.");
@@ -104,80 +105,44 @@ const UpdateStudent = () => {
         <div className="p-6 max-w-xl mx-auto">
             <h2 className="text-2xl font-semibold mb-4">Update Student</h2>
             <form onSubmit={handleUpdate} className="space-y-4">
-                <div>
-                    <label htmlFor="firstName" className="block font-medium mb-1">
-                        First Name
-                    </label>
-                    <input
-                        type="text"
-                        id="firstName"
-                        name="firstName"
-                        value={student.firstName}
-                        onChange={handleChange}
-                        className="w-full p-2 border border-gray-300 rounded"
-                        required
-                    />
-                </div>
+                {/* Name Fields */}
+                {["firstName", "middleName", "lastName"].map((field, idx) => (
+                    <div key={idx}>
+                        <label htmlFor={field} className="block font-medium mb-1 capitalize">
+                            {field.replace(/([A-Z])/g, ' $1').toUpperCase()}
+                        </label>
+                        <input
+                            type="text"
+                            id={field}
+                            name={field}
+                            value={student[field]}
+                            onChange={handleChange}
+                            className="w-full p-2 border border-gray-300 rounded"
+                            required={field !== "middleName"} // Middle Name is optional
+                        />
+                    </div>
+                ))}
 
-                <div>
-                    <label htmlFor="middleName" className="block font-medium mb-1">
-                        Middle Name
-                    </label>
-                    <input
-                        type="text"
-                        id="middleName"
-                        name="middleName"
-                        value={student.middleName}
-                        onChange={handleChange}
-                        className="w-full p-2 border border-gray-300 rounded"
-                    />
-                </div>
+                {/* Other Fields */}
+                {["phone", "school", "className", "talukka", "district"].map((field, idx) => (
+                    <div key={idx}>
+                        <label htmlFor={field} className="block font-medium mb-1 capitalize">
+                            {field.replace(/([A-Z])/g, ' $1').toUpperCase()}
+                        </label>
+                        <input
+                            type="text"
+                            id={field}
+                            name={field}
+                            value={student[field]}
+                            onChange={handleChange}
+                            className="w-full p-2 border border-gray-300 rounded"
+                            disabled={field === "school"} // Disable school field
+                            required={field !== "school"} // Only className, talukka, district are optional
+                        />
+                    </div>
+                ))}
 
-                <div>
-                    <label htmlFor="lastName" className="block font-medium mb-1">
-                        Last Name
-                    </label>
-                    <input
-                        type="text"
-                        id="lastName"
-                        name="lastName"
-                        value={student.lastName}
-                        onChange={handleChange}
-                        className="w-full p-2 border border-gray-300 rounded"
-                        required
-                    />
-                </div>
-
-                <div>
-                    <label htmlFor="phone" className="block font-medium mb-1">
-                        Phone
-                    </label>
-                    <input
-                        type="text"
-                        id="phone"
-                        name="phone"
-                        value={student.phone}
-                        onChange={handleChange}
-                        className="w-full p-2 border border-gray-300 rounded"
-                        required
-                    />
-                </div>
-
-                <div>
-                    <label htmlFor="school" className="block font-medium mb-1">
-                        School
-                    </label>
-                    <input
-                        type="text"
-                        id="school"
-                        name="school"
-                        value={student.school}
-                        onChange={handleChange}
-                        className="w-full p-2 border border-gray-300 rounded"
-                        required
-                    />
-                </div>
-
+                {/* Coordinator Field */}
                 <div>
                     <label htmlFor="coordinator" className="block font-medium mb-1">
                         Coordinator
@@ -190,57 +155,13 @@ const UpdateStudent = () => {
                         className="w-full p-2 border border-gray-300 rounded"
                         required
                     >
-                        <option value="" disabled>
-                            Select your Coordinator
-                        </option>
-                        {coordinators.map((coordinator, index) => (
-                            <option key={index} value={coordinator.id}>
+                        <option value="" disabled>Select your Coordinator</option>
+                        {coordinators.map((coordinator) => (
+                            <option key={coordinator.id} value={coordinator.id}>
                                 {coordinator.firstName} {coordinator.lastName}
                             </option>
                         ))}
                     </select>
-                </div>
-
-                <div>
-                    <label htmlFor="className" className="block font-medium mb-1">
-                        Class
-                    </label>
-                    <input
-                        type="text"
-                        id="className"
-                        name="className"
-                        value={student.className}
-                        onChange={handleChange}
-                        className="w-full p-2 border border-gray-300 rounded"
-                    />
-                </div>
-
-                <div>
-                    <label htmlFor="talukka" className="block font-medium mb-1">
-                        Talukka
-                    </label>
-                    <input
-                        type="text"
-                        id="talukka"
-                        name="talukka"
-                        value={student.talukka}
-                        onChange={handleChange}
-                        className="w-full p-2 border border-gray-300 rounded"
-                    />
-                </div>
-
-                <div>
-                    <label htmlFor="district" className="block font-medium mb-1">
-                        District
-                    </label>
-                    <input
-                        type="text"
-                        id="district"
-                        name="district"
-                        value={student.district}
-                        onChange={handleChange}
-                        className="w-full p-2 border border-gray-300 rounded"
-                    />
                 </div>
 
                 <button
