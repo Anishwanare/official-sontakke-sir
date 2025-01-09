@@ -6,7 +6,10 @@ export default defineConfig({
   plugins: [react()],
   build: {
     rollupOptions: {
-      external: ['xlsx'],  // Add xlsx to external to prevent bundling
+      external: ['xlsx'],  // Exclude xlsx from the bundle
     },
+  },
+  optimizeDeps: {
+    include: ['xlsx'],  // Ensure xlsx is included in dependencies optimization
   },
 });
