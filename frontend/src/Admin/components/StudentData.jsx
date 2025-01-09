@@ -1,7 +1,9 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { Link } from "react-router-dom";
-import * as XLSX from "xlsx"; // Import xlsx library
+import * as XLSX from 'xlsx';
+
+
 
 const StudentData = () => {
   const [studentData, setStudentData] = useState([]);
