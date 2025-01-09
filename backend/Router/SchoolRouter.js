@@ -9,6 +9,8 @@ import {
 
 const router = express.Router();
 
+// crud in school
+
 router.post("/register", schoolRegistration);
 router.get("/get-schools", getAllSchools);
 router.put("/edit-school/:id", editSchool); // Edit school route
