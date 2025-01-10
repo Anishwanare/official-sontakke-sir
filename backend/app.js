@@ -14,7 +14,7 @@ export const app = express();
 config({ path: ".env" });
 
 //middleware
-app.use(express.json());
+app.use(express.json()); 
 app.use(express.urlencoded({ extended: true }));
 app.use(
   cors({
@@ -27,7 +27,7 @@ app.use(
 );
 
 
-app.options("*", cors());
+// app.options("*", cors());
 
 //middleware
 app.use("/api/v1/message", MessageRouter);
