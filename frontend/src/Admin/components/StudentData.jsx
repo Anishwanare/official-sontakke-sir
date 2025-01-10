@@ -1,9 +1,7 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { Link } from "react-router-dom";
-import * as XLSX from 'xlsx';
-
-
+import * as XLSX from "xlsx";
 
 const StudentData = () => {
   const [studentData, setStudentData] = useState([]);
@@ -13,7 +11,7 @@ const StudentData = () => {
   const [selectedSchool, setSelectedSchool] = useState("");
   const [selectedClass, setSelectedClass] = useState("");
   const [selectedCoordinator, setSelectedCoordinator] = useState("");
-  const [searchTerm, setSearchTerm] = useState(""); // State for search input
+  const [searchTerm, setSearchTerm] = useState("");
 
   useEffect(() => {
     const fetchStudents = async () => {
@@ -28,7 +26,6 @@ const StudentData = () => {
         const students = data?.getStudent || [];
         setStudentData(students);
 
-        // Extract unique schools, classes, and coordinators from student data
         const uniqueSchools = [...new Set(students.map((student) => student.school))];
         const uniqueClasses = [...new Set(students.map((student) => student.className))];
         const uniqueCoordinators = [...new Set(students.map((student) => student.coordinator))];
@@ -47,7 +44,7 @@ const StudentData = () => {
     setSelectedSchool("");
     setSelectedClass("");
     setSelectedCoordinator("");
-    setSearchTerm(""); // Clear the search term
+    setSearchTerm("");
   };
 
   const handleDelete = async (id) => {
@@ -61,18 +58,13 @@ const StudentData = () => {
         }
       );
 
-      const updatedData = studentData.filter((student) => student._id !== id);
-      setStudentData(updatedData);
-
+      setStudentData((prev) => prev.filter((student) => student._id !== id));
       alert("Student deleted successfully");
     } catch (error) {
       console.error("Error deleting student:", error);
       alert("Failed to delete student");
     }
   };
-
-
-
 
   const filteredData = studentData.filter((student) => {
     return (
@@ -86,70 +78,47 @@ const StudentData = () => {
     );
   });
 
-
-  // Download file to excel
-
   const handleExportToExcel = () => {
-    const exportData = filteredData.map((student, index) => ({
-      "Sr No.": index + 1,
-      "Full Name": `${student.firstName} ${student.middleName} ${student.lastName}`,
-      Phone: student.phone,
-      School: student.school,
-      Coordinator: student.coordinator,
-      Class: student.className,
-      Talukka: student.talukka,
-      District: student.district,
-      "Student Enroll Date": new Date(student.createdAt).toLocaleDateString(),
-    }));
+    try {
+      if (filteredData.length === 0) {
+        alert("No data available to export.");
+        return;
+      }
 
-    const worksheet = XLSX.utils.json_to_sheet([]);
+      const exportData = filteredData.map((student, index) => ({
+        "Sr No.": index + 1,
+        "Full Name": `${student.firstName} ${student.middleName} ${student.lastName}`,
+        Phone: student.phone,
+        School: student.school,
+        Coordinator: student.coordinator,
+        Class: student.className,
+        Talukka: student.talukka,
+        District: student.district,
+        "Student Enroll Date": new Date(student.createdAt).toLocaleDateString(),
+      }));
 
-    // Add header with school name on the first row
-    const schoolHeader = selectedSchool || "All Schools";
-    XLSX.utils.sheet_add_aoa(worksheet, [[`School: ${schoolHeader}`]], { origin: "A1" });
+      const worksheet = XLSX.utils.json_to_sheet(exportData);
 
-    // Apply styling for the school name header
-    worksheet["A1"].s = {
-      font: {
-        name: "Arial",
-        sz: 30, // Font size
-        color: { rgb: "078400" }, // Green color
-        bold: true, // Bold text
-      },
-    };
+      const workbook = XLSX.utils.book_new();
+      XLSX.utils.book_append_sheet(workbook, worksheet, "Students");
 
-    // Add data starting from the third row
-    XLSX.utils.sheet_add_aoa(worksheet, [Object.keys(exportData[0])], { origin: "A3" });
-    XLSX.utils.sheet_add_json(worksheet, exportData, { origin: "A4", skipHeader: true });
-
-    // Adjust column widths based on the content
-    const maxWidths = [];
-    exportData.forEach((row) => {
-      Object.values(row).forEach((value, colIndex) => {
-        const cellLength = value ? value.toString().length : 10;
-        maxWidths[colIndex] = Math.max(maxWidths[colIndex] || 10, cellLength);
-      });
-    });
-
-    worksheet["!cols"] = maxWidths.map((width) => ({ wch: width + 2 }));
-
-    const workbook = XLSX.utils.book_new();
-    XLSX.utils.book_append_sheet(workbook, worksheet, "Students");
-
-    XLSX.writeFile(
-      workbook,
-      `${selectedSchool || "All-Schools"}-${selectedClass || "All-Classes"}.xlsx`
-    );
+      XLSX.writeFile(
+        workbook,
+        `${selectedSchool || "All-Schools"}-${selectedClass || "All-Classes"}.xlsx`
+      );
+    } catch (error) {
+      console.error("Error exporting to Excel:", error);
+      alert("Failed to export data to Excel.");
+    }
   };
 
   return (
     <div className="p-4">
-      <p>Total Student {filteredData.length}</p>
+      <p>Total Students: {filteredData.length}</p>
       <div className="p-4 bg-gray-100 rounded-lg shadow-lg">
         <div className="flex flex-wrap gap-4">
-          {/* Search Input */}
           <div className="w-full md:w-1/3">
-            <label htmlFor="searchInput" className="block text-sm font-medium text-gray-700 mb-1">
+            <label htmlFor="searchInput" className="block text-sm font-medium mb-1">
               Search by Name
             </label>
             <input
@@ -157,22 +126,20 @@ const StudentData = () => {
               type="text"
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
-              className="w-full p-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"
+              className="w-full p-2 border rounded-md shadow-sm"
               placeholder="Enter student name"
             />
           </div>
 
-          {/* Other Filters */}
-          {/* School Filter Dropdown */}
           <div className="w-full md:w-1/3">
-            <label htmlFor="schoolSelect" className="block text-sm font-medium text-gray-700 mb-1">
+            <label htmlFor="schoolSelect" className="block text-sm font-medium mb-1">
               Select School
             </label>
             <select
               id="schoolSelect"
               value={selectedSchool}
               onChange={(e) => setSelectedSchool(e.target.value)}
-              className="w-full p-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"
+              className="w-full p-2 border rounded-md shadow-sm"
             >
               <option value="">All Schools</option>
               {schools.map((school, index) => (
@@ -183,16 +150,15 @@ const StudentData = () => {
             </select>
           </div>
 
-          {/* Class Filter Dropdown */}
           <div className="w-full md:w-1/3">
-            <label htmlFor="classSelect" className="block text-sm font-medium text-gray-700 mb-1">
+            <label htmlFor="classSelect" className="block text-sm font-medium mb-1">
               Select Class
             </label>
             <select
               id="classSelect"
               value={selectedClass}
               onChange={(e) => setSelectedClass(e.target.value)}
-              className="w-full p-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"
+              className="w-full p-2 border rounded-md shadow-sm"
             >
               <option value="">All Classes</option>
               {classes.map((className, index) => (
@@ -202,87 +168,51 @@ const StudentData = () => {
               ))}
             </select>
           </div>
-
-          {/* Coordinator Filter Dropdown */}
-          <div className="w-full md:w-1/3">
-            <label htmlFor="coordinatorSelect" className="block text-sm font-medium text-gray-700 mb-1">
-              Select Coordinator
-            </label>
-            <select
-              id="coordinatorSelect"
-              value={selectedCoordinator}
-              onChange={(e) => setSelectedCoordinator(e.target.value)}
-              className="w-full p-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"
-            >
-              <option value="">All Coordinators</option>
-              {coordinators.map((coordinator, index) => (
-                <option key={index} value={coordinator}>
-                  {coordinator}
-                </option>
-              ))}
-            </select>
-          </div>
         </div>
-        <div className="flex flex-wrap space-x-5">
+
+        <div className="mt-4">
           <button
             onClick={handleExportToExcel}
-            className="mt-4 bg-green-500 text-white py-2 px-4 rounded shadow hover:bg-green-600"
+            className="mr-4 bg-green-500 text-white py-2 px-4 rounded"
           >
             Export to Excel
           </button>
           <button
             onClick={handleClearFilter}
-            className="mt-4 bg-red-500 text-white py-2 px-4 rounded shadow hover:bg-red-600"
+            className="bg-red-500 text-white py-2 px-4 rounded"
           >
             Clear Filter
           </button>
         </div>
       </div>
 
-      {/* Student Data Table */}
       {filteredData.length > 0 ? (
-        <div className="overflow-auto mt-4">
-          <table className="min-w-full bg-white border border-gray-200">
+        <div className="mt-4 overflow-auto">
+          <table className="min-w-full border">
             <thead>
               <tr>
-                {[
-                  "Sr No.",
-                  "Full Name",
-                  "Phone",
-                  "School",
-                  "Coordinator",
-                  "Class",
-                  "Talukka",
-                  "District",
-                  "Created At",
-                  "Actions",
-                ].map((header, index) => (
-                  <th key={index} className="py-2 px-4 border-b">
-                    {header}
-                  </th>
-                ))}
+                {["Sr No.", "Full Name", "Phone", "School", "Coordinator", "Class", "Actions"].map(
+                  (header, index) => (
+                    <th key={index} className="py-2 px-4 border">
+                      {header}
+                    </th>
+                  )
+                )}
               </tr>
             </thead>
             <tbody>
               {filteredData.map((student, index) => (
                 <tr key={student._id} className="hover:bg-gray-100">
-                  <td className="py-2 px-4 border-b">{index + 1}</td>
-                  <td className="py-2 px-4 border-b">
-                    {`${student.firstName} ${student.middleName} ${student.lastName}`}
-                  </td>
-                  <td className="py-2 px-4 border-b">{student.phone}</td>
-                  <td className="py-2 px-4 border-b">{student.school}</td>
-                  <td className="py-2 px-4 border-b">{student.coordinator}</td>
-                  <td className="py-2 px-4 border-b">{student.className}</td>
-                  <td className="py-2 px-4 border-b">{student.talukka}</td>
-                  <td className="py-2 px-4 border-b">{student.district}</td>
-                  <td className="py-2 px-4 border-b">
-                    {new Date(student.createdAt).toLocaleDateString()}
-                  </td>
-                  <td className="py-2 px-4 border-b flex space-x-2">
+                  <td className="py-2 px-4 border">{index + 1}</td>
+                  <td className="py-2 px-4 border">{`${student.firstName} ${student.middleName} ${student.lastName}`}</td>
+                  <td className="py-2 px-4 border">{student.phone}</td>
+                  <td className="py-2 px-4 border">{student.school}</td>
+                  <td className="py-2 px-4 border">{student.coordinator}</td>
+                  <td className="py-2 px-4 border">{student.className}</td>
+                  <td className="py-2 px-4 border">
                     <Link
                       to={`/admin/update-student/${student._id}`}
-                      className="text-blue-500"
+                      className="text-blue-500 mr-2"
                     >
                       Update
                     </Link>
@@ -299,7 +229,7 @@ const StudentData = () => {
           </table>
         </div>
       ) : (
-        <div className="text-center py-4">No students found!</div>
+        <p className="mt-4">No students found!</p>
       )}
     </div>
   );
