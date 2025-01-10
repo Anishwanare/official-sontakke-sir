@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { Link } from "react-router-dom";
-// import * as XLSX from 'xlsx';
+import * as XLSX from 'xlsx';
 
 
 
@@ -71,58 +71,8 @@ const StudentData = () => {
     }
   };
 
-  // const handleExportToExcel = () => {
-  //   const exportData = filteredData.map((student, index) => ({
-  //     "Sr No.": index + 1,
-  //     "Full Name": `${student.firstName} ${student.middleName} ${student.lastName}`,
-  //     Phone: student.phone,
-  //     School: student.school,
-  //     Coordinator: student.coordinator,
-  //     Class: student.className,
-  //     Talukka: student.talukka,
-  //     District: student.district,
-  //     "Created At": new Date(student.createdAt).toLocaleDateString(),
-  //   }));
 
-  //   const worksheet = XLSX.utils.json_to_sheet([]);
 
-  //   // Add header with school name on the first row
-  //   const schoolHeader = selectedSchool || "All Schools";
-  //   XLSX.utils.sheet_add_aoa(worksheet, [[`School: ${schoolHeader}`]], { origin: "A1" });
-
-  //   // Apply styling for the school name header
-  //   worksheet["A1"].s = {
-  //     font: {
-  //       name: "Arial",
-  //       sz: 30, // Font size
-  //       color: { rgb: "078400" }, // Green color
-  //       bold: true, // Bold text
-  //     },
-  //   };
-
-  //   // Add data starting from the third row
-  //   XLSX.utils.sheet_add_aoa(worksheet, [Object.keys(exportData[0])], { origin: "A3" });
-  //   XLSX.utils.sheet_add_json(worksheet, exportData, { origin: "A4", skipHeader: true });
-
-  //   // Adjust column widths based on the content
-  //   const maxWidths = [];
-  //   exportData.forEach((row) => {
-  //     Object.values(row).forEach((value, colIndex) => {
-  //       const cellLength = value ? value.toString().length : 10;
-  //       maxWidths[colIndex] = Math.max(maxWidths[colIndex] || 10, cellLength);
-  //     });
-  //   });
-
-  //   worksheet["!cols"] = maxWidths.map((width) => ({ wch: width + 2 }));
-
-  //   const workbook = XLSX.utils.book_new();
-  //   XLSX.utils.book_append_sheet(workbook, worksheet, "Students");
-
-  //   XLSX.writeFile(
-  //     workbook,
-  //     `${selectedSchool || "All-Schools"}-${selectedClass || "All-Classes"}.xlsx`
-  //   );
-  // };
 
   const filteredData = studentData.filter((student) => {
     return (
@@ -135,6 +85,62 @@ const StudentData = () => {
           .includes(searchTerm.toLowerCase()))
     );
   });
+
+
+  // Download file to excel
+
+  const handleExportToExcel = () => {
+    const exportData = filteredData.map((student, index) => ({
+      "Sr No.": index + 1,
+      "Full Name": `${student.firstName} ${student.middleName} ${student.lastName}`,
+      Phone: student.phone,
+      School: student.school,
+      Coordinator: student.coordinator,
+      Class: student.className,
+      Talukka: student.talukka,
+      District: student.district,
+      "Student Enroll Date": new Date(student.createdAt).toLocaleDateString(),
+    }));
+
+    const worksheet = XLSX.utils.json_to_sheet([]);
+
+    // Add header with school name on the first row
+    const schoolHeader = selectedSchool || "All Schools";
+    XLSX.utils.sheet_add_aoa(worksheet, [[`School: ${schoolHeader}`]], { origin: "A1" });
+
+    // Apply styling for the school name header
+    worksheet["A1"].s = {
+      font: {
+        name: "Arial",
+        sz: 30, // Font size
+        color: { rgb: "078400" }, // Green color
+        bold: true, // Bold text
+      },
+    };
+
+    // Add data starting from the third row
+    XLSX.utils.sheet_add_aoa(worksheet, [Object.keys(exportData[0])], { origin: "A3" });
+    XLSX.utils.sheet_add_json(worksheet, exportData, { origin: "A4", skipHeader: true });
+
+    // Adjust column widths based on the content
+    const maxWidths = [];
+    exportData.forEach((row) => {
+      Object.values(row).forEach((value, colIndex) => {
+        const cellLength = value ? value.toString().length : 10;
+        maxWidths[colIndex] = Math.max(maxWidths[colIndex] || 10, cellLength);
+      });
+    });
+
+    worksheet["!cols"] = maxWidths.map((width) => ({ wch: width + 2 }));
+
+    const workbook = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(workbook, worksheet, "Students");
+
+    XLSX.writeFile(
+      workbook,
+      `${selectedSchool || "All-Schools"}-${selectedClass || "All-Classes"}.xlsx`
+    );
+  };
 
   return (
     <div className="p-4">
@@ -218,12 +224,12 @@ const StudentData = () => {
           </div>
         </div>
         <div className="flex flex-wrap space-x-5">
-          {/* <button
+          <button
             onClick={handleExportToExcel}
             className="mt-4 bg-green-500 text-white py-2 px-4 rounded shadow hover:bg-green-600"
           >
             Export to Excel
-          </button> */}
+          </button>
           <button
             onClick={handleClearFilter}
             className="mt-4 bg-red-500 text-white py-2 px-4 rounded shadow hover:bg-red-600"
