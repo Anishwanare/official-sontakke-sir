@@ -1,10 +1,7 @@
-import React, { useEffect, useState } from "react";
-import SchoolData from "./components/SchoolData";
-import StudentData from "./components/StudentData";
-import MessagesData from "./components/MessagesData";
-import CoordinateData from "./components/CoordinateData";
+import React, { useEffect, useState, Suspense } from "react";
 import axios from "axios";
 import { Link, Navigate } from "react-router-dom";
+import { HashLoader } from "react-spinners"; // Import the loader
 
 const sections = [
   { name: "Schools", icon: "/school.png" },
@@ -12,6 +9,12 @@ const sections = [
   { name: "Messages", icon: "/message.png" },
   { name: "Coordinator", icon: "/coordinator.png" },
 ];
+
+// Dynamically import components with React.lazy
+const SchoolData = React.lazy(() => import("./components/SchoolData"));
+const StudentData = React.lazy(() => import("./components/StudentData"));
+const MessagesData = React.lazy(() => import("./components/MessagesData"));
+const CoordinateData = React.lazy(() => import("./components/CoordinateData"));
 
 const AdminDashboard = () => {
   const [activeSection, setActiveSection] = useState("Schools");
@@ -207,7 +210,15 @@ const AdminDashboard = () => {
                 <div className="loader"></div>
               </div>
             ) : (
-              renderActiveSection()
+              <Suspense
+                fallback={
+                  <div className="flex justify-center items-center h-screen" color="#1276e2">
+                    <HashLoader />
+                  </div>
+                }
+              >
+                {renderActiveSection()}
+              </Suspense>
             )}
           </div>
         </main>
