@@ -168,6 +168,25 @@ const StudentData = () => {
               ))}
             </select>
           </div>
+
+          <div className="w-full md:w-1/3">
+            <label htmlFor="coordinatorSelect" className="block text-sm font-medium mb-1">
+              Select Coordinator
+            </label>
+            <select
+              id="coordinatorSelect"
+              value={selectedCoordinator}
+              onChange={(e) => setSelectedCoordinator(e.target.value)}
+              className="w-full p-2 border rounded-md shadow-sm"
+            >
+              <option value="">All Coordinators</option>
+              {coordinators.map((coordinator, index) => (
+                <option key={index} value={coordinator}>
+                  {coordinator}
+                </option>
+              ))}
+            </select>
+          </div>
         </div>
 
         <div className="mt-4">
@@ -191,7 +210,7 @@ const StudentData = () => {
           <table className="min-w-full border">
             <thead>
               <tr>
-                {["Sr No.", "Full Name", "Phone", "School", "Coordinator", "Class", "Actions"].map(
+                {["Sr No.", "Full Name",'District','Talukka', "Phone", "School", "Coordinator", "Class", "Actions"].map(
                   (header, index) => (
                     <th key={index} className="py-2 px-4 border">
                       {header}
@@ -205,8 +224,10 @@ const StudentData = () => {
                 <tr key={student._id} className="hover:bg-gray-100">
                   <td className="py-2 px-4 border">{index + 1}</td>
                   <td className="py-2 px-4 border">{`${student.firstName} ${student.middleName} ${student.lastName}`}</td>
+                  <td className="py-2 px-4 border">{student.district}</td>
+                  <td className="py-2 px-4 border">{student.talukka}</td>
                   <td className="py-2 px-4 border">{student.phone}</td>
-                  <td className="py-2 px-4 border">{student.school}</td>
+                  <td className="py-2 px-4 border" title={student.school}>{student.school}</td>
                   <td className="py-2 px-4 border">{student.coordinator}</td>
                   <td className="py-2 px-4 border">{student.className}</td>
                   <td className="py-2 px-4 border">
