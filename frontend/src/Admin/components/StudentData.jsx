@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { Link } from "react-router-dom";
 import * as XLSX from "xlsx";
+import { toast } from "react-toastify";
 
 const StudentData = () => {
   const [studentData, setStudentData] = useState([]);
@@ -81,10 +82,10 @@ const StudentData = () => {
   const handleExportToExcel = () => {
     try {
       if (filteredData.length === 0) {
-        alert("No data available to export.");
+        toast.error("No data available to export.");
         return;
       }
-
+  
       const exportData = filteredData.map((student, index) => ({
         "Sr No.": index + 1,
         "Full Name": `${student.firstName} ${student.middleName} ${student.lastName}`,
@@ -96,21 +97,56 @@ const StudentData = () => {
         District: student.district,
         "Student Enroll Date": new Date(student.createdAt).toLocaleDateString(),
       }));
-
-      const worksheet = XLSX.utils.json_to_sheet(exportData);
-
+  
+      const worksheet = XLSX.utils.json_to_sheet([]);
+  
+      // Add a styled header row with the school name
+      const headerRow = [[selectedSchool || "All Schools"]];
+      XLSX.utils.sheet_add_aoa(worksheet, headerRow, { origin: "A1" });
+  
+      // Merge header cells to span across all columns
+      const maxColumns = 9; // Adjust this based on the number of columns in exportData
+      worksheet["!merges"] = [
+        { s: { r: 0, c: 0 }, e: { r: 0, c: maxColumns - 1 } },
+      ];
+  
+      // Apply styles to the header row
+      worksheet["A1"].s = {
+        font: { sz: 25, bold: true },
+        alignment: { horizontal: "center", vertical: "center" },
+        fill: { fgColor: { rgb: "FFFF00" } }, // Yellow background
+      };
+  
+      // Add the student data after the header
+      XLSX.utils.sheet_add_json(worksheet, exportData, { origin: "A3" });
+  
+      // Set column widths
+      worksheet["!cols"] = [
+        { wch: 10 }, // Sr No.
+        { wch: 30 }, // Full Name
+        { wch: 20 }, // Phone
+        { wch: 50 }, // School
+        { wch: 50 }, // Coordinator
+        { wch: 20 }, // Class
+        { wch: 20 }, // Talukka
+        { wch: 20 }, // District
+        { wch: 20 }, // Student Enroll Date
+      ];
+  
       const workbook = XLSX.utils.book_new();
       XLSX.utils.book_append_sheet(workbook, worksheet, "Students");
-
+  
       XLSX.writeFile(
         workbook,
         `${selectedSchool || "All-Schools"}-${selectedClass || "All-Classes"}.xlsx`
       );
     } catch (error) {
       console.error("Error exporting to Excel:", error);
-      alert("Failed to export data to Excel.");
+      toast.error("Failed to export data to Excel.");
     }
   };
+  
+
 
   return (
     <div className="p-4">
@@ -210,7 +246,7 @@ const StudentData = () => {
           <table className="min-w-full border">
             <thead>
               <tr>
-                {["Sr No.", "Full Name",'District','Talukka', "Phone", "School", "Coordinator", "Class", "Actions"].map(
+                {["Sr No.", "Full Name", 'District', 'Talukka', "Phone", "School", "Coordinator", "Class", "Actions"].map(
                   (header, index) => (
                     <th key={index} className="py-2 px-4 border">
                       {header}
