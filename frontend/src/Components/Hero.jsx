@@ -1,19 +1,31 @@
 import React from "react";
 
 import Dropdown from "./Dropdown";
+import { motion } from "motion/react"
 
 const Hero = () => {
   return (
     <>
       <main className="container mx-auto px-4 py-12 text-center flex bg-zinc-100 md:flex-row flex-col-reverse">
-        <div className="flex justify-center mb-8 flex-col flex-1 rounded-xl">
+
+        <motion.div
+          initial={{ opacity: 0.3, y: 100 }}
+          transition={{ duration: 1 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{once:true}}
+          className="flex justify-center mb-8 flex-col flex-1 rounded-xl">
           <img
             src="/logo.jpeg"
             alt="Illustration"
             className="h-96 object-contain bg-transparent rounded-xl"
           />
-        </div>
-        <div className="flex flex-col flex-1 backdrop align-middle justify-center gap-5">
+        </motion.div>
+        <motion.div
+        initial={{ opacity: 0.3, y: 100 }}
+        transition={{ duration: 1 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{once:true}}
+        className="flex flex-col flex-1 backdrop align-middle justify-center gap-5">
           <h2 className="text-zinc-700 dark:text-zinc-600 text-lg">
             {/* Govt. Authorised */}
           </h2>
@@ -26,7 +38,7 @@ const Hero = () => {
           <p className="text-zinc-500 dark:text-zinc-600">
             (Marathi, English, SemiEnglish)
           </p>
-        </div>
+        </motion.div>
       </main>
       {/* <section className="bg-zinc-100 py-20 md:px-[100px] px-0">
         <div className="container mx-auto px-4 text-center space-y-4">

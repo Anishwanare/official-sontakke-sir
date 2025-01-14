@@ -82,7 +82,7 @@ export const AdminLogin = async (req, res, next) => {
     return res.status(200).json({
       status: true,
       message: "Logged in successfully",
-      admin: { id: admin._id, email: admin.email, name: admin.name }, // Send only non-sensitive details
+      admin,
       token,
     });
   } catch (error) {

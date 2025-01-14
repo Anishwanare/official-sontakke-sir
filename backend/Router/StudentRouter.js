@@ -1,6 +1,6 @@
 import express from 'express';
 import { deleteStudent, editStudentData, getStudentById, getStudents, studentRegister } from '../controller/studentController.js';
-import { isAuthenticate, isAuthorized } from '../middleware.js/auth.js';
+// import { isStudentAuthenticated, isStudentAuthorized } from '../middleware.js/auth.js';
 
 const router = express.Router()
 

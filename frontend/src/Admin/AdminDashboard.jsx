@@ -86,9 +86,8 @@ const AdminDashboard = () => {
             {sections.map((section) => (
               <li
                 key={section.name}
-                className={`flex items-center space-x-2 cursor-pointer ${
-                  activeSection === section.name ? "underline" : ""
-                }`}
+                className={`flex items-center space-x-2 cursor-pointer ${activeSection === section.name ? "underline" : ""
+                  }`}
               >
                 <img
                   alt={`${section.name.toLowerCase()}-icon`}
@@ -156,11 +155,10 @@ const AdminDashboard = () => {
                     setActiveSection(section.name);
                     setIsMenuOpen(false); // Close the menu after selection
                   }}
-                  className={`flex items-center space-x-2 p-3 ${
-                    activeSection === section.name
-                      ? "bg-blue-700 rounded-md"
-                      : "hover:bg-blue-700 hover:rounded-md"
-                  }`}
+                  className={`flex items-center space-x-2 p-3 ${activeSection === section.name
+                    ? "bg-blue-700 rounded-md"
+                    : "hover:bg-blue-700 hover:rounded-md"
+                    }`}
                 >
                   <img
                     alt={`${section.name.toLowerCase()}-icon`}
@@ -177,31 +175,29 @@ const AdminDashboard = () => {
 
       {/* Main Content */}
       <div className="flex-1 flex flex-col overflow-auto bg-gray-50">
-        <header className="flex flex-col sm:flex-row items-start sm:items-center justify-between p-4 border-b border-zinc-200 bg-white">
-          {/* Search */}
-          <div className="flex items-center space-x-2 w-full sm:w-auto mb-4 sm:mb-0">
-            <img alt="search-icon" src="https://placehold.co/24x24" />
-            <input
-              type="text"
-              placeholder="Search..."
-              className="bg-zinc-100 p-2 w-full sm:w-auto rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-            />
+        <header className="flex flex-col sm:flex-row items-center justify-between p-4 ">
+          {/* Welcome Section */}
+          <div className="flex items-center space-x-4 mb-4 sm:mb-0">
+            <span className=" text-gray-600 font-medium">Welcome:</span>
+            <span
+              className="text-gray-800 font-semibold hover:underline cursor-pointer transition-colors duration-300"
+            >
+              {isLoading ? "Loading..." : admin?.name || "Admin"}
+            </span>
           </div>
 
-          <div className="flex items-center space-x-4">
-            <div className="flex items-center space-x-2">
-              <span>Welcome:</span>
-              <span>{isLoading ? "Loading..." : admin?.name || "Admin"}</span>
-            </div>
+          {/* Logout Button */}
+          <div>
+            <button
+              type="button"
+              onClick={handleLogoutAdmin}
+              className="w-full sm:w-auto bg-red-600 hover:bg-red-700 px-6 py-2 rounded-lg text-white font-medium shadow-md transition-transform transform hover:-translate-y-1 focus:outline-none focus:ring-2 focus:ring-red-500"
+            >
+              Logout
+            </button>
           </div>
-          <button
-            type="button"
-            onClick={handleLogoutAdmin}
-            className="text-red-600 mt-2 sm:mt-0"
-          >
-            Logout
-          </button>
         </header>
+
 
         <main className="flex-1 p-4">
           <div className="border-2 border-dashed border-zinc-300 rounded-lg h-full p-4 bg-white">

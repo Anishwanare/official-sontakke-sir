@@ -59,7 +59,7 @@ const SchoolData = () => {
       {error && <div className="text-red-500 text-center py-2">{error}</div>}
       {schoolData.length > 0 ? (
         <div className="overflow-x-auto">
-          <table className="min-w-full bg-white border border-gray-200">
+          <table className="min-w-full border ">
             <thead>
               <tr>
                 <th className={tableStyles}>Sr No.</th>

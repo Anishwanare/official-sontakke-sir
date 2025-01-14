@@ -3,13 +3,12 @@ import { catchAsyncError } from "./catchAsyncError.js";
 import ErrorHandler from "./error.js ";
 import jwt from "jsonwebtoken"
 
-export const isAuthenticate = catchAsyncError(async (req, res, next) => {
+export const isStudentAuthenticated = catchAsyncError(async (req, res, next) => {
     const token = req.cookies.Student_Token;
 
     if (!token) {
         return next(new ErrorHandler("Student is not Authenticated", 401))
     }
-
     try {
         const decoded = jwt.verify(token, process.env.JWT_SECRET_KEY)
         req.student = await Student.findById(decoded.id)
@@ -20,7 +19,7 @@ export const isAuthenticate = catchAsyncError(async (req, res, next) => {
 })
 
 
-export const isAuthorized = (...roles) => {
+export const isStudentAuthorized = ([...roles]) => {
     return (req, res, next) => {
         try {
             if (!roles.includes(req.student?.role)) {

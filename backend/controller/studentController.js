@@ -2,6 +2,7 @@ import { Student } from "../Model/StudentModel.js";
 import jwt from "jsonwebtoken"
 import bcrypt from "bcrypt"
 import ErrorHandler from "../middleware.js/error.js";
+import { catchAsyncError } from "../middleware.js/catchAsyncError.js";
 
 export const studentRegister = async (req, res, next) => {
   const {
@@ -183,9 +184,13 @@ export const editStudentData = async (req, res, next) => {
         message: "No student found"
       })
     }
+
+    const genSalt = await bcrypt.genSalt(10)
+    const hashPassword = await bcrypt.hash(password, genSalt)
+
     if (firstName) student.firstName = firstName
     if (lastName) student.lastName = lastName
-    if (password) student.password = password
+    if (password) student.password = hashPassword
     if (phone) student.phone = phone
     if (coordinator) student.coordinator = coordinator
     if (villageName) student.villageName = villageName
@@ -242,3 +247,21 @@ export const getStudentById = async (req, res, next) => {
     getStudent
   })
 }
+
+// fetch me
+export const fetchStudent = catchAsyncError(async (req, res, next) => {
+  try {
+    const fetchMe = await Student.findById(req.student._id)
+
+    if (!fetchMe) {
+      return next(new ErrorHandler('Unauthorized Student', 501))
+    }
+
+    res.status(200).json({
+      message: "fetched successfully",
+    })
+  } catch (error) {
+    console.error("student fetch me error", error)
+    return next(new ErrorHandler(`Something went wrong ${error}`, 500))
+  }
+})

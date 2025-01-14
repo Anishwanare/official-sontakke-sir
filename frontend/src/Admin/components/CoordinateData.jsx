@@ -36,7 +36,7 @@ const CoordinateData = () => {
         <div className="text-center text-red-500 py-4">{error}</div>
       ) : coordinators.length > 0 ? (
         <div className="overflow-x-auto">
-          <table className="min-w-full bg-white border border-gray-200">
+          <table className="min-w-full  border ">
             <thead>
               <tr>
                 <th className={tableStyles}>Sr. no</th>
