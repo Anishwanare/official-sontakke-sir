@@ -5,9 +5,9 @@ const foundersData = [
     {
         id: 1,
         name: "Sir Dnyaneshwar Sontakke",
-        qualifications: "B.A., D.TED., B.ED., M.A., M.ED.",
+        qualifications: "B.A.Ed.",
         description:
-            "With 14 years of experience (2011-2024), dedicated to coaching excellence. Currently serving as a teacher at Pune Municipal Corporation schools via Pavitra Portal.",
+            "With 25 years of experience in education (2004-2024), I have helped over 3,000 students secure scholarships, facilitated scholarships worth 75 lakh, and connected with over 5,000 schools. I have authored 10 educational books and conducted online test series for scholarship exams. Additionally, we offer online classes for grades one to eight to provide quality education and scholarship preparation.",
         image: "/founder1.jpeg",
     },
     {
