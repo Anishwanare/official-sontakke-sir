@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 const Notice = ({notice,desc}) => {
   return (
     <div
-      className="bg-blue-100 border-t-4 border-blue-500 rounded-b text-blue-900 px-4 py-3  top-0 sticky w-full z-50 flex justify-around items-center"
+      className="shadow-md bg-blue-100 border-t-4 border-blue-500 rounded-b text-blue-900 px-4 py-3  top-0 sticky w-full z-50 flex justify-around items-center"
       role="alert"
     >
       <div className="flex">

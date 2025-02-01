@@ -136,7 +136,7 @@ const Registration = () => {
 
   return (
     <div className="flex items-center justify-center min-h-screen bg-gray-200 flex-col">
-      <div className="w-full max-w-sm p-8 bg-white rounded-lg shadow-md dark:bg-gray-100">
+      <div className="w-full max-w-sm p-8 bg-white rounded-lg shadow-md dark:bg-gray-100  my-5">
         <div className="text-center p-2 text-2xl font-bold text-gray-700">
           School Registration
         </div>

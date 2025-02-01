@@ -13,14 +13,12 @@ const Home = () => {
   return (
     <div className="min-h-screen  ">
       
-      <Header />
       <Hero />
       {/* <Guide /> */}
       <About />
       <Founders/>
       <Features />
       <Contact />
-      <Footer />
     </div>
   );
 };

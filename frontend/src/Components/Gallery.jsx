@@ -1,5 +1,6 @@
-import React, { useState } from "react";
-import { galleryData } from "../utils/GalleryData";
+import React, { useState, lazy } from "react";
+const galleryData = lazy(() => "../utils/GalleryData")
+
 import AppLayout from "../AppLayout/AppLayout";
 import { motion } from "framer-motion";
 
@@ -77,4 +78,4 @@ const Gallery = () => {
   );
 };
 
-export default AppLayout(Gallery);
+export default Gallery;

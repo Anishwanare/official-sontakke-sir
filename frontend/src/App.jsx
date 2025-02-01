@@ -21,6 +21,8 @@ import AdminPrivate from "./Admin/AdminPrivate";
 import Gallery from "./Components/Gallery";
 import UpdateStudent from "./Admin/components/UpdateContent/UpdateStudent";
 import UpdateSchool from "./Admin/components/UpdateContent/UpdateSchool";
+import Header from "./Components/Header";
+import Footer from "./Components/Footer";
 
 const Home = lazy(() => import("./Pages/Home"))
 const Login = lazy(() => import("./Student/Login"))
@@ -34,7 +36,7 @@ const App = () => {
   const showNotice = !excludedPaths.includes(location.pathname);
 
   return (
-    <Suspense fallback={<div className="flex justify-center items-center h-screen" color = "#1276e2"><HashLoader /></div>}>
+    <Suspense fallback={<div className="flex justify-center items-center h-screen" color="#1276e2"><HashLoader /></div>}>
       {/* Show notice only on certain paths */}
       {showNotice && (
         <Notice
@@ -42,6 +44,8 @@ const App = () => {
           notice="Notice"
         />
       )}
+
+      <Header />
       <Routes>
         {/* Public Routes */}
         <Route path="/" element={<Home />} />
@@ -73,6 +77,7 @@ const App = () => {
         {/* Catch-All Route */}
         <Route path="*" element={<NotFound />} />
       </Routes>
+      <Footer/>
 
       <ToastContainer position="top-center" />
     </Suspense>

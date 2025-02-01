@@ -23,7 +23,7 @@ const Header = () => {
         <Link to={"/"}>
           <div className="flex items-center gap-2">
             <img src="/logo.jpeg" alt="Logo" className="h-14" />
-            <p className="font-semibold text-lg text-gray-800">ज्ञानांकूर प्रज्ञाशोध परीक्षा 2024-25</p>
+            <p className="font-semibold text-lg text-gray-800">ज्ञानांकूर प्रज्ञाशोध परीक्षा {new Date().getFullYear()} - {(new Date().getFullYear() + 1).toString().slice(-2)}</p>
           </div>
         </Link>
 
