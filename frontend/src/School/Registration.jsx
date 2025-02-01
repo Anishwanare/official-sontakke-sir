@@ -24,7 +24,6 @@ const Registration = () => {
   // array of school IDs
 
   const validSchoolIds = [
-    "E01MH24S4",
     "E0224MHP5",
     "E03MH24Q6",
     "E0424MHR7",
@@ -33,8 +32,6 @@ const Registration = () => {
     "E0724MH10",
     "E08M9HB11",
     "E09H1MC12",
-    "E1M2HP013",
-    "E2H3KT0143",
     "E5U67T0151",
     "E8J88L0165",
     "E9B67G0175",
@@ -44,7 +41,6 @@ const Registration = () => {
     "EK78MH2133",
     "ES99KL0205",
     "EK23OP0218",
-    "E01MH24S57",
     "E0224MHP70",
     "E03MH24108",
     "E0444MHR81",
@@ -52,17 +48,23 @@ const Registration = () => {
     "E06MSA2454",
     "E0726MH154",
     "E08M5HB120",
-    "E09H2MC174",
-    "E1M3HP0145",
     "E2G3KT0197",
     "E5U68T0174",
     "E8J68L0124",
     "E9B67P0173",
-    "E8C65H0175",
     "E9G60F0195",
     "ED56LH2099",
     "EK79MH2155",
     "ES99KD0206",
+    
+    
+    "E01MH24S57",
+    "E1M3HP0145",
+    "E09H2MC174",
+    "E8C65H0175",
+    "E2H3KT0143",
+    "E01MH24S4",
+    "E1M2HP013",
     "EG23OP2156",
   ];
 
