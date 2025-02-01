@@ -28,7 +28,7 @@ const foundersData = [
     },
     {
         id: 4,
-        name: "Ravi Anantrav Bhisekar",
+        name: "Ravi Anantrao Bhisekar",
         qualifications: "M. Com, B.Ed.",
         description:
             "Five years of experience, CTET passed. Since 2019, has been providing scholarship exam classes to rural students, helping many secure scholarships and top district rankings.",
