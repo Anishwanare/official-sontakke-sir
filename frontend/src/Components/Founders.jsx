@@ -45,7 +45,7 @@ const Founders = () => {
                 whileInView={{ opacity: 1 }}
                 transition={{ duration: 0.8, ease: "easeOut" }}
                 viewport={{ once: true }}
-                className="text-4xl font-extrabold text-center mb-12 text-gray-800 uppercase tracking-widest"
+                className="text-3xl font-bold text-center my-5"
             >
                 Meet Our Founders
             </motion.h2>
