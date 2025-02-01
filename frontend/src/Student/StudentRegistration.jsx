@@ -122,15 +122,15 @@ const StudentRegistration = () => {
   }, []);
 
   return (
-    <div className="flex items-center justify-center min-h-screen bg-gray-100">
-      <div className="w-full max-w-md p-8 bg-white rounded-lg shadow-md">
+    <div className="flex items-center justify-center min-h-screen bg-gray-100 ">
+      <div className="w-full max-w-4xl p-8 bg-white rounded-lg shadow-md my-5">
         <div className="text-center p-2 text-2xl font-bold text-gray-700">
           Student Registration
         </div>
         <div className="flex justify-center mb-6">
           <img src="/logo.jpeg" alt="Logo" className="w-24 h-24" />
         </div>
-        <form onSubmit={handleSubmit}>
+        <form onSubmit={handleSubmit} className="grid grid-cols-1 md:grid-cols-2 gap-2">
           <div className="mb-4">
             <label htmlFor="firstName" className="block text-gray-700">
               First Name
@@ -348,16 +348,16 @@ const StudentRegistration = () => {
               required
             />
           </div>
+        </form>
           <div className="mb-6">
             <button
               type="submit"
-              className="w-full bg-blue-500 text-white py-2 rounded-md shadow-md hover:bg-blue-600 focus:ring focus:ring-blue-300 disabled:opacity-50"
+              className="w-full bg-yellow-500 text-white py-2 rounded-md shadow-md hover:bg-yellow-600 focus:ring focus:ring-yellow-300 disabled:opacity-50"
               disabled={loading}
             >
-              {loading ? "Registering..." : "Register"}
+              {loading ? "Registering..." : "Register Student"}
             </button>
           </div>
-        </form>
       </div>
     </div>
   );

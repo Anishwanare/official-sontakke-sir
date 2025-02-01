@@ -59,7 +59,7 @@ const CoordinatorRegistration = () => {
       return;
     } else {
       setLoading(true);
-      
+
       try {
         const response = await axios.post(
           `${import.meta.env.VITE_APP_API_BASE_URL}/api/v4/coordinator/register`,
@@ -92,86 +92,87 @@ const CoordinatorRegistration = () => {
   };
 
   return (
-    <div className="max-w-md mx-auto p-6 bg-white shadow-md rounded-md">
-      <h2 className="text-2xl font-bold mb-6 text-center">
-        Coordinator Registration
-      </h2>
-      <div className="flex justify-center mb-6">
-        <img src="/logo.jpeg" alt="Logo" className="h-24" />
-      </div>
-      <form onSubmit={handleSubmit}>
-        {/* First Name */}
-        <div className="mb-4">
-          <label
-            className="block text-sm font-semibold mb-1"
-            htmlFor="firstName"
-          >
-            First Name
-          </label>
-          <input
-            type="text"
-            id="firstName"
-            name="firstName"
-            value={formData.firstName}
-            onChange={handleChange}
-            className="w-full px-3 py-2 border rounded-md outline-none focus:border-blue-500"
-            required
-          />
+    <div className="flex items-center justify-center min-h-screen bg-gray-200 flex-col">
+      <div className="w-full max-w-4xl p-8 bg-white rounded-lg shadow-md my-5">
+      <div className="text-center p-2 text-2xl font-bold text-gray-700">
+          Coordinator Registration
         </div>
-
-        {/* Last Name */}
-        <div className="mb-4">
-          <label
-            className="block text-sm font-semibold mb-1"
-            htmlFor="lastName"
-          >
-            Last Name
-          </label>
-          <input
-            type="text"
-            id="lastName"
-            name="lastName"
-            value={formData.lastName}
-            onChange={handleChange}
-            className="w-full px-3 py-2 border rounded-md outline-none focus:border-blue-500"
-            required
-          />
+        <div className="flex justify-center mb-6">
+          <img src="/logo.jpeg" alt="Logo" className="h-24" />
         </div>
+        <form onSubmit={handleSubmit} className="grid grid-cols-1 md:grid-cols-2 gap-2">
+          {/* First Name */}
+          <div className="mb-4">
+            <label
+              className="block text-sm font-semibold mb-1"
+              htmlFor="firstName"
+            >
+              First Name
+            </label>
+            <input
+              type="text"
+              id="firstName"
+              name="firstName"
+              value={formData.firstName}
+              onChange={handleChange}
+              className="w-full px-3 py-2 border rounded-md outline-none focus:border-blue-500"
+              required
+            />
+          </div>
 
-        {/* Email */}
-        <div className="mb-4">
-          <label className="block text-sm font-semibold mb-1" htmlFor="email">
-            Email
-          </label>
-          <input
-            type="email"
-            id="email"
-            name="email"
-            value={formData.email}
-            onChange={handleChange}
-            className="w-full px-3 py-2 border rounded-md outline-none focus:border-blue-500"
-            required
-          />
-        </div>
+          {/* Last Name */}
+          <div className="mb-4">
+            <label
+              className="block text-sm font-semibold mb-1"
+              htmlFor="lastName"
+            >
+              Last Name
+            </label>
+            <input
+              type="text"
+              id="lastName"
+              name="lastName"
+              value={formData.lastName}
+              onChange={handleChange}
+              className="w-full px-3 py-2 border rounded-md outline-none focus:border-blue-500"
+              required
+            />
+          </div>
 
-        {/* Phone */}
-        <div className="mb-4">
-          <label className="block text-sm font-semibold mb-1" htmlFor="phone">
-            Phone
-          </label>
-          <input
-            type="text"
-            id="phone"
-            name="phone"
-            value={formData.phone}
-            onChange={handleChange}
-            className="w-full px-3 py-2 border rounded-md outline-none focus:border-blue-500"
-            required
-          />
-        </div>
+          {/* Email */}
+          <div className="mb-4">
+            <label className="block text-sm font-semibold mb-1" htmlFor="email">
+              Email
+            </label>
+            <input
+              type="email"
+              id="email"
+              name="email"
+              value={formData.email}
+              onChange={handleChange}
+              className="w-full px-3 py-2 border rounded-md outline-none focus:border-blue-500"
+              required
+            />
+          </div>
 
-        {/* School */}
-        {/* <div className="mb-4">
+          {/* Phone */}
+          <div className="mb-4">
+            <label className="block text-sm font-semibold mb-1" htmlFor="phone">
+              Phone
+            </label>
+            <input
+              type="text"
+              id="phone"
+              name="phone"
+              value={formData.phone}
+              onChange={handleChange}
+              className="w-full px-3 py-2 border rounded-md outline-none focus:border-blue-500"
+              required
+            />
+          </div>
+
+          {/* School */}
+          {/* <div className="mb-4">
           <label className="block text-sm font-semibold mb-1" htmlFor="school">
             School
           </label>
@@ -198,85 +199,87 @@ const CoordinatorRegistration = () => {
           </select>
         </div> */}
 
-        {/* District */}
-        <div className="mb-4">
-          <label
-            className="block text-sm font-semibold mb-1"
-            htmlFor="district"
-          >
-            District
-          </label>
-          <input
-            type="text"
-            id="district"
-            name="district"
-            value={formData.district}
-            onChange={handleChange}
-            className="w-full px-3 py-2 border rounded-md outline-none focus:border-blue-500"
-            required
-          />
-        </div>
+          {/* District */}
+          <div className="mb-4">
+            <label
+              className="block text-sm font-semibold mb-1"
+              htmlFor="district"
+            >
+              District
+            </label>
+            <input
+              type="text"
+              id="district"
+              name="district"
+              value={formData.district}
+              onChange={handleChange}
+              className="w-full px-3 py-2 border rounded-md outline-none focus:border-blue-500"
+              required
+            />
+          </div>
 
-        {/* Taluka */}
-        <div className="mb-4">
-          <label className="block text-sm font-semibold mb-1" htmlFor="talukka">
-            Taluka
-          </label>
-          <input
-            type="text"
-            id="talukka"
-            name="talukka"
-            value={formData.talukka}
-            onChange={handleChange}
-            className="w-full px-3 py-2 border rounded-md outline-none focus:border-blue-500"
-            required
-          />
-        </div>
+          {/* Taluka */}
+          <div className="mb-4">
+            <label className="block text-sm font-semibold mb-1" htmlFor="talukka">
+              Taluka
+            </label>
+            <input
+              type="text"
+              id="talukka"
+              name="talukka"
+              value={formData.talukka}
+              onChange={handleChange}
+              className="w-full px-3 py-2 border rounded-md outline-none focus:border-blue-500"
+              required
+            />
+          </div>
 
-        {/* Password */}
-        <div className="mb-4">
-          <label
-            className="block text-sm font-semibold mb-1"
-            htmlFor="password"
-          >
-            Password
-          </label>
-          <input
-            type="password"
-            id="password"
-            name="password"
-            value={formData.password}
-            onChange={handleChange}
-            className="w-full px-3 py-2 border rounded-md outline-none focus:border-blue-500"
-            required
-          />
-        </div>
-        <div className="mb-4">
-          <label
-            className="block text-sm font-semibold mb-1"
-            htmlFor="coordinatorID"
-          >
-            Coordinator ID
-          </label>
-          <input
-            type="text"
-            id="coordinatorID"
-            name="coordinatorID"
-            value={formData.coordinatorID}
-            onChange={handleChange}
-            className="w-full px-3 py-2 border rounded-md outline-none focus:border-blue-500"
-            required
-          />
-        </div>
+          {/* Password */}
+          <div className="mb-4">
+            <label
+              className="block text-sm font-semibold mb-1"
+              htmlFor="password"
+            >
+              Password
+            </label>
+            <input
+              type="password"
+              id="password"
+              name="password"
+              value={formData.password}
+              onChange={handleChange}
+              className="w-full px-3 py-2 border rounded-md outline-none focus:border-blue-500"
+              required
+            />
+          </div>
+          <div className="mb-4">
+            <label
+              className="block text-sm font-semibold mb-1"
+              htmlFor="coordinatorID"
+            >
+              Coordinator ID
+            </label>
+            <input
+              type="text"
+              id="coordinatorID"
+              name="coordinatorID"
+              value={formData.coordinatorID}
+              onChange={handleChange}
+              className="w-full px-3 py-2 border rounded-md outline-none focus:border-blue-500"
+              required
+            />
+          </div>
 
-        {/* Submit Button */}
-        <button
-          type="submit"
-          className="bg-blue-500 text-white py-2 px-4 rounded-md font-semibold hover:bg-blue-600 transition duration-200"
-        >
-          {loading ? 'Registering...' : 'Register'}
-        </button>
-      </form>
+          {/* Submit Button */}
+        </form>
+          <button
+            type="submit"
+            className="w-full bg-yellow-500 text-white py-2 rounded-md shadow-md hover:bg-yellow-600 focus:ring focus:ring-yellow-300 disabled:opacity-50"
+            disabled={loading}
+          >
+            {loading ? 'Registering...' : 'Register Co-ordinator'}
+          </button>
+      </div>
     </div>
   );
 };

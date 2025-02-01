@@ -1,6 +1,6 @@
-import React, { useState, lazy } from "react";
-const galleryData = lazy(() => "../utils/GalleryData")
+import React, { useState } from "react";
 
+import { galleryData } from "../utils/GalleryData";
 import AppLayout from "../AppLayout/AppLayout";
 import { motion } from "framer-motion";
 
@@ -22,7 +22,7 @@ const Gallery = () => {
 
   return (
     <div className="gallery h-screen bg-gray-50">
-      <h1 className="text-3xl font-bold text-center my-5 text-gray-800">Gallery</h1>
+      <h1 className="text-3xl font-bold text-center  text-gray-800">Gallery</h1>
 
       {/* Gallery Grid */}
       <div className="grid grid-cols-1 md:grid-cols-4 gap-4 m-5 md:m-10">

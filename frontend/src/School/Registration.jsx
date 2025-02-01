@@ -56,8 +56,8 @@ const Registration = () => {
     "ED56LH2099",
     "EK79MH2155",
     "ES99KD0206",
-    
-    
+
+
     "E01MH24S57",
     "E1M3HP0145",
     "E09H2MC174",
@@ -97,8 +97,8 @@ const Registration = () => {
         // console.log(headMasterName);
         // console.log(headMasterMobile);
         console.log(response?.data);
-        
-        
+
+
 
       } else {
         toast.error(response.data?.message);
@@ -136,14 +136,14 @@ const Registration = () => {
 
   return (
     <div className="flex items-center justify-center min-h-screen bg-gray-200 flex-col">
-      <div className="w-full max-w-sm p-8 bg-white rounded-lg shadow-md dark:bg-gray-100  my-5">
+      <div className="w-full max-w-4xl p-8 bg-white rounded-lg shadow-md my-5">
         <div className="text-center p-2 text-2xl font-bold text-gray-700">
           School Registration
         </div>
         <div className="flex justify-center mb-6">
           <img src="/logo.jpeg" alt="Logo" className="h-24" />
         </div>
-        <form onSubmit={handleSubmit}>
+        <form onSubmit={handleSubmit} className="grid grid-cols-1 md:grid-cols-2 gap-2">
           <div className="mb-4">
             <label htmlFor="name" className="block text-black">
               School Name
@@ -287,15 +287,15 @@ const Registration = () => {
             />
           </div>
           <div className="flex justify-center">
-            <button
-              type="submit"
-              className="px-4 py-2 font-bold text-white bg-green-500 rounded-full hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-opacity-50"
-              disabled={loading}
-            >
-              {loading ? "Loading..." : "Register"}
-            </button>
           </div>
         </form>
+        <button
+          type="submit"
+          className="w-full bg-yellow-500 text-white py-2 rounded-md shadow-md hover:bg-yellow-600 focus:ring focus:ring-yellow-300 disabled:opacity-50"
+          disabled={loading}
+        >
+          {loading ? "Loading..." : "Register School"}
+        </button>
       </div>
     </div>
   );
