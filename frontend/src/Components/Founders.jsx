@@ -38,32 +38,58 @@ const foundersData = [
 
 const Founders = () => {
     return (
-        <div className="container mx-auto px-6 py-16">
-            <h2 className="text-4xl font-extrabold text-center mb-12 text-gray-800 uppercase tracking-widest">
+        <div className="container mx-auto px-6 py-16 bg-zinc-100">
+            {/* Title with motion effect */}
+            <motion.h2
+                initial={{ opacity: 0 }}
+                whileInView={{ opacity: 1 }}
+                transition={{ duration: 0.8, ease: "easeOut" }}
+                viewport={{ once: true }}
+                className="text-4xl font-extrabold text-center mb-12 text-gray-800 uppercase tracking-widest"
+            >
                 Meet Our Founders
-            </h2>
+            </motion.h2>
+
+            {/* Cards Grid */}
             <div className="grid sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
                 {foundersData.map((founder, index) => (
                     <motion.div
                         key={founder.id}
-                        initial={{ opacity: 0, y: 50 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ duration: 0.5, delay: index * 0.2 }}
-                        className="relative flex flex-col bg-white rounded-2xl shadow-lg overflow-hidden hover:shadow-2xl transition-all duration-300"
+                        initial={{ opacity: 0, scale: 0.95 }}
+                        whileInView={{ opacity: 1, scale: 1 }}
+                        transition={{ duration: 0.6, delay: index * 0.2, ease: "easeOut" }}
+                        viewport={{ once: true }}
+                        whileHover={{ scale: 1.05, boxShadow: "0 10px 20px rgba(0, 0, 0, 0.15)" }}
+                        className="relative flex flex-col bg-white rounded-2xl shadow-lg overflow-hidden transition-all duration-300"
                     >
                         <div className="relative flex flex-col items-center text-center p-6">
-                            <img
+                            <motion.img
                                 src={founder.image}
                                 alt={founder.name}
                                 className="w-28 h-28 object-cover rounded-full border-4 border-yellow-500 mb-4"
+                                whileHover={{ scale: 1.1, transition: { duration: 0.3 } }}
                             />
-                            <h3 className="text-xl font-bold text-gray-800 mb-1">{founder.name}</h3>
-                            <p className="text-sm text-gray-500 font-semibold mb-3">{founder.qualifications}</p>
-                            <p className="text-gray-600 text-sm leading-relaxed">{founder.description}</p>
+                            <motion.h3
+                                className="text-xl font-bold text-gray-800 mb-1"
+                                whileHover={{ color: "#fbbf24" }}
+                            >
+                                {founder.name}
+                            </motion.h3>
+                            <p className="text-sm text-gray-500 font-semibold mb-3">
+                                {founder.qualifications}
+                            </p>
+                            <p className="text-gray-600 text-sm leading-relaxed">
+                                {founder.description}
+                            </p>
                         </div>
-                        <div className="absolute top-0 right-0 px-4 py-2 bg-yellow-500 text-white text-xs font-bold rounded-bl-2xl">
+                        <motion.div
+                            className="absolute top-0 right-0 px-4 py-2 bg-yellow-500 text-white text-xs font-bold rounded-bl-2xl"
+                            initial={{ opacity: 0, x: 20 }}
+                            whileInView={{ opacity: 1, x: 0 }}
+                            transition={{ duration: 0.6, delay: index * 0.2 }}
+                        >
                             Founder
-                        </div>
+                        </motion.div>
                     </motion.div>
                 ))}
             </div>

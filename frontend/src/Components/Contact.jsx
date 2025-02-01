@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import axios from "axios";
 import { toast } from "react-toastify";
+import { motion } from "framer-motion"; // Import motion from framer-motion
 
 const Contact = () => {
   const [name, setName] = useState("");
@@ -47,13 +48,26 @@ const Contact = () => {
       setMessage("");
     }
   };
+
   return (
     <>
       <div className="flex flex-col md:flex-row justify-center items-start p-6 bg-gray-100 md:px-[200px] px-0">
-        <div className="w-full md:w-1/2 p-4">
+        {/* Sliding and fading form */}
+        <motion.div
+          className="w-full md:w-1/2 p-4"
+          initial={{ x: -100, opacity: 0 }}
+          whileInView={{ x: 0, opacity: 1 }}
+          transition={{ duration: 0.5 }}
+          viewport={{ once: true }}
+        >
           <h2 className="text-2xl font-semibold mb-4">Get In Touch</h2>
           <form className="space-y-4" onSubmit={handleSubmit}>
-            <div>
+            {/* Staggered form inputs */}
+            <motion.div
+              initial={{ opacity: 0 }}
+              whileInView={{ opacity: 1 }}
+              transition={{ duration: 0.5, delay: 0.2 }}
+            >
               <label htmlFor="name" className="sr-only">
                 Name
               </label>
@@ -66,8 +80,13 @@ const Contact = () => {
                 onChange={(e) => setName(e.target.value)}
                 className="w-full p-2 border border-zinc-300 rounded-md focus:outline-none focus:ring-2 focus:ring-yellow-500"
               />
-            </div>
-            <div>
+            </motion.div>
+
+            <motion.div
+              initial={{ opacity: 0 }}
+              whileInView={{ opacity: 1 }}
+              transition={{ duration: 0.5, delay: 0.4 }}
+            >
               <label htmlFor="email" className="sr-only">
                 Email
               </label>
@@ -80,8 +99,13 @@ const Contact = () => {
                 placeholder="contacts@company.com"
                 className="w-full p-2 border border-zinc-300 rounded-md focus:outline-none focus:ring-2 focus:ring-yellow-500"
               />
-            </div>
-            <div>
+            </motion.div>
+
+            <motion.div
+              initial={{ opacity: 0 }}
+              whileInView={{ opacity: 1 }}
+              transition={{ duration: 0.5, delay: 0.6 }}
+            >
               <label htmlFor="message" className="sr-only">
                 Message
               </label>
@@ -94,19 +118,29 @@ const Contact = () => {
                 placeholder="Write your message here"
                 className="w-full p-2 border border-zinc-300 rounded-md focus:outline-none focus:ring-2 focus:ring-yellow-500"
               ></textarea>
-            </div>
-            <button
+            </motion.div>
+
+            <motion.button
               type="submit"
               className="w-full bg-yellow-500 text-white py-2 rounded-md hover:bg-yellow-600 focus:outline-none focus:ring-2 focus:ring-yellow-500"
+              whileHover={{ scale: 1.05 }}
+              transition={{ duration: 0.2 }}
             >
               {loading ? "SENDING....." : "SEND MESSAGE"}
-            </button>
+            </motion.button>
           </form>
-        </div>
-        <div className="w-full md:w-1/2 p-4">
+        </motion.div>
+
+        {/* Sliding and fading contact info */}
+        <motion.div
+          className="w-full md:w-1/2 p-4"
+          initial={{ x: 100, opacity: 0 }}
+          whileInView={{ x: 0, opacity: 1 }}
+          transition={{ duration: 0.7 }}
+          viewport={{ once: true }}
+        >
           <h2 className="text-2xl font-semibold mb-4">Contact Information</h2>
           <div className="bg-zinc-100 p-4 rounded-md">
-            {/* <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d29754.34105181647!2d77.32801415189131!3d21.220241486001942!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3bd6fa96fadb1903%3A0x5690a371909f73dc!2sPathrot%2C%20Maharashtra%20444808%2C%20India!5e0!3m2!1sen!2sus!4v1718096205938!5m2!1sen!2sus" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe> */}
             <p className="mt-4">
               At post Pathrot Tq Achalpur Dist Amravati 444808
             </p>
@@ -121,7 +155,7 @@ const Contact = () => {
               </a>
             </p>
           </div>
-        </div>
+        </motion.div>
       </div>
     </>
   );

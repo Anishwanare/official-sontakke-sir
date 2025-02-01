@@ -1,116 +1,69 @@
 import React from "react";
-
-import Dropdown from "./Dropdown";
-import { motion } from "motion/react"
+import { motion } from "framer-motion";
 
 const Hero = () => {
   return (
     <>
       <main className="container mx-auto px-4 py-12 text-center flex bg-zinc-100 md:flex-row flex-col-reverse">
-
+        {/* Animated Image Section */}
         <motion.div
-          initial={{ opacity: 0.3, y: 100 }}
-          transition={{ duration: 1 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{once:true}}
-          className="flex justify-center mb-8 flex-col flex-1 rounded-xl">
+          initial={{ opacity: 0, scale: 0.9 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 1, ease: "easeInOut" }}
+          whileHover={{ scale: 1.05 }}
+          className="flex justify-center mb-8 flex-col flex-1 rounded-xl"
+        >
           <img
             src="/logo.jpeg"
             alt="Illustration"
             className="h-96 object-contain bg-transparent rounded-xl"
           />
         </motion.div>
+
+        {/* Animated Text Section */}
         <motion.div
-        initial={{ opacity: 0.3, y: 100 }}
-        transition={{ duration: 1 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{once:true}}
-        className="flex flex-col flex-1 backdrop align-middle justify-center gap-5">
-          <h2 className="text-zinc-700 dark:text-zinc-600 text-lg">
+          initial={{ opacity: 0, y: 50 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 1, ease: "easeOut", delay: 0.3 }}
+          className="flex flex-col flex-1 backdrop align-middle justify-center gap-5"
+        >
+          <motion.h2
+            initial={{ opacity: 0, x: -20 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ delay: 0.6 }}
+            className="text-zinc-700 dark:text-zinc-600 text-lg"
+          >
             {/* Govt. Authorised */}
-          </h2>
-          <h1 className="text-orange-600 dark:text-orange-400 text-4xl font-bold mb-4">
-            Chasing Our Vision for a Brighter Future !
-          </h1>
-          <p className="text-zinc-700 dark:text-zinc-600 text-lg mb-2">
+          </motion.h2>
+
+          <motion.h1
+            initial={{ opacity: 0, scale: 0.8 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ delay: 0.4, type: "spring", stiffness: 100 }}
+            className="text-orange-600 dark:text-orange-400 text-4xl font-bold mb-4"
+          >
+            Chasing Our Vision for a Brighter Future!
+          </motion.h1>
+
+          <motion.p
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.5, ease: "easeOut" }}
+            className="text-zinc-700 dark:text-zinc-600 text-lg mb-2"
+          >
             Std 1st to 7th
-          </p>
-          <p className="text-zinc-500 dark:text-zinc-600">
-            (Marathi, English, SemiEnglish)
-          </p>
+          </motion.p>
+
+          <motion.p
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.7, ease: "easeOut" }}
+            className="text-zinc-500 dark:text-zinc-600"
+          >
+            (Marathi, English, Semi-English)
+          </motion.p>
         </motion.div>
       </main>
-      {/* <section className="bg-zinc-100 py-20 md:px-[100px] px-0">
-        <div className="container mx-auto px-4 text-center space-y-4">
-          <div className="space-x-4">
-            <a
-              href="#"
-              className="text-blue-600 dark:text-blue-600 font-bold hover:underline"
-            >
-              केंद्रस्तरीय गुणवत्तासाधक यादी – 2024
-            </a>
-            <a
-              href="#"
-              className="text-blue-600 dark:text-blue-600 font-bold hover:underline"
-            >
-              राज्यस्तरीय गुणवत्तासाधक यादी – 2024
-            </a>
-            <a
-              href="#"
-              className="text-blue-600 dark:text-blue-600 font-bold hover:underline"
-            >
-              जिल्हा / विभागस्तरीय गुणवत्तासाधक यादी – 2024
-            </a>
-            <a
-              href="#"
-              className="text-blue-600 dark:text-blue-600 font-bold hover:underline"
-            >
-              Interim Result – 2024
-            </a>
-            <a
-              href="#"
-              className="text-blue-600 dark:text-blue-600 font-bold hover:underline"
-            >
-              Answer Key – 2024
-            </a>
-            <a
-              href="#"
-              className="text-blue-600 dark:text-blue-600 font-bold hover:underline"
-            >
-              #Announcement
-            </a>
-            <a
-              href="#"
-              className="text-blue-600 dark:text-blue-600 font-bold hover:underline"
-            >
-              अभिप्राय (Feedback Form)
-            </a>
-          </div>
-          <div className="space-x-4">
-            <a
-              href="#"
-              className="text-blue-600 dark:text-blue-600 font-bold hover:underline"
-            >
-              Login
-            </a>
-            <a
-              href="#"
-              className="text-blue-600 dark:text-blue-600 font-bold hover:underline"
-            >
-              Downloads
-            </a>
-            <a
-              href="#"
-              className="text-blue-600 dark:text-blue-600 font-bold hover:underline"
-            >
-              #How To
-            </a>
-          </div>
-          <p className="text-blue-600 dark:text-blue-600 font-bold hover:underline">
-            #Images मंथन पारितोषिक वितरण समारंभ – २०१९
-          </p>
-        </div>
-      </section> */}
     </>
   );
 };
