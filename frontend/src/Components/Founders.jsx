@@ -7,7 +7,7 @@ const foundersData = [
         name: "Sir Dnyaneshwar Sontakke",
         qualifications: "B.A.Ed.",
         description:
-            "With 25 years of experience in education (2004-2024), I have helped over 3,000 students secure scholarships, facilitated scholarships worth 75 lakh, and connected with over 5,000 schools. I have authored 10 educational books and conducted online test series for scholarship exams. Additionally, we offer online classes for grades one to eight to provide quality education and scholarship preparation.",
+            "With 25 years of experience, I’ve helped over 3,000 students secure scholarships worth 75 lakh, connected with 5,000+ schools, and authored 10 educational books. I also conduct online test series for scholarship exams and offer quality online classes for grades 1-8.",
         image: "/founder1.jpeg",
     },
     {
@@ -20,7 +20,7 @@ const foundersData = [
     },
     {
         id: 3,
-        name: "Reshma A. Sangodkar",
+        name: "Mam Reshma A. Sangodkar",
         qualifications: "B.Com, PG Diploma in Technical Writing",
         description:
             "Academic writer for Dyanankur Prakashan, Amravati. Specialized in English content for grades one to seven. Published author and article contributor in multiple newspapers.",
@@ -28,7 +28,7 @@ const foundersData = [
     },
     {
         id: 4,
-        name: "Ravi Anantrao Bhisekar",
+        name: "Sir Ravi Anantrao Bhisekar",
         qualifications: "M. Com, B.Ed.",
         description:
             "Five years of experience, CTET passed. Since 2019, has been providing scholarship exam classes to rural students, helping many secure scholarships and top district rankings.",
@@ -66,7 +66,7 @@ const Founders = () => {
                             <motion.img
                                 src={founder.image}
                                 alt={founder.name}
-                                className="w-28 h-28 object-cover rounded-full border-4 border-yellow-500 mb-4"
+                                className="w-40 h-40 object-cover rounded-xl border-4 border-yellow-500 mb-4"
                                 whileHover={{ scale: 1.1, transition: { duration: 0.3 } }}
                             />
                             <motion.h3
@@ -83,7 +83,7 @@ const Founders = () => {
                             </p>
                         </div>
                         <motion.div
-                            className="absolute top-0 right-0 px-4 py-2 bg-yellow-500 text-white text-xs font-bold rounded-bl-2xl"
+                            className={`absolute top-0 right-0 px-4 py-2 bg-yellow-500 ${founder.id === 3 || founder.id === 4 ? 'hidden':'block'} text-white text-xs font-bold rounded-bl-2xl`}
                             initial={{ opacity: 0, x: 20 }}
                             whileInView={{ opacity: 1, x: 0 }}
                             transition={{ duration: 0.6, delay: index * 0.2 }}
