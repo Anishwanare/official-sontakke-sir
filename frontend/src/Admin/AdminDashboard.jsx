@@ -50,6 +50,8 @@ const AdminDashboard = () => {
       }
     };
 
+    console.log(admin)
+
     fetchAdminInfo();
   }, []);
 
@@ -182,7 +184,7 @@ const AdminDashboard = () => {
             <span
               className="text-gray-800 font-semibold hover:underline cursor-pointer transition-colors duration-300"
             >
-              {isLoading ? "Loading..." : admin?.name || "Admin"}
+              {isLoading ? "Loading..." : (admin?.username).toUpperCase() || "Admin"}
             </span>
           </div>
 
