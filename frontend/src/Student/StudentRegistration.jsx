@@ -55,6 +55,7 @@ const StudentRegistration = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
+    console.log(formData); // Check the form data before submitting
     try {
       const response = await axios.post(
         `${import.meta.env.VITE_APP_API_BASE_URL}/api/v3/student/register`,
@@ -81,12 +82,11 @@ const StudentRegistration = () => {
         toast.error(response.data.message);
       }
     } catch (err) {
+      console.error("Error submitting form: ", err); // Log the error to the console
       toast.error(err.response?.data?.message || "Something went wrong!");
     } finally {
       setLoading(false);
     }
-    console.log(formData.coordinator);
-    // console.log(formData.school);
   };
 
   useEffect(() => {
@@ -122,7 +122,7 @@ const StudentRegistration = () => {
   }, []);
 
   return (
-    <div className="flex items-center justify-center min-h-screen bg-gray-100 ">
+    <div className="flex items-center justify-center min-h-screen bg-gray-100">
       <div className="w-full max-w-4xl p-8 bg-white rounded-lg shadow-md my-5">
         <div className="text-center p-2 text-2xl font-bold text-gray-700">
           Student Registration
@@ -234,9 +234,9 @@ const StudentRegistration = () => {
               <option value="" disabled>
                 Select your class
               </option>
-              {classes.map((coordinator, index) => (
-                <option key={index} value={coordinator}>
-                  {coordinator}
+              {classes.map((className, index) => (
+                <option key={index} value={className}>
+                  {className}
                 </option>
               ))}
             </select>
@@ -280,7 +280,7 @@ const StudentRegistration = () => {
           </div>
           <div className="mb-4">
             <label htmlFor="talukka" className="block text-gray-700">
-              talukka
+              Talukka
             </label>
             <input
               type="text"
@@ -288,7 +288,7 @@ const StudentRegistration = () => {
               name="talukka"
               value={formData.talukka}
               onChange={handleChange}
-              placeholder="talukka"
+              placeholder="Talukka"
               className="px-2 block w-full mt-1 py-2 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 border border-gray-300 text-gray-700"
               required
             />
@@ -348,7 +348,6 @@ const StudentRegistration = () => {
               required
             />
           </div>
-        </form>
           <div className="mb-6">
             <button
               type="submit"
@@ -358,6 +357,7 @@ const StudentRegistration = () => {
               {loading ? "Registering..." : "Register Student"}
             </button>
           </div>
+        </form>
       </div>
     </div>
   );
