@@ -22,6 +22,8 @@ const AdminDashboard = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
+  // console.log("admin",admin)
+
   const handleLogoutAdmin = () => {
     localStorage.removeItem("AdminToken");
     location.reload();
@@ -50,7 +52,7 @@ const AdminDashboard = () => {
       }
     };
 
-    console.log(admin)
+    // console.log(admin)
 
     fetchAdminInfo();
   }, []);
@@ -78,7 +80,7 @@ const AdminDashboard = () => {
         <Link to="/">
           <div className="flex items-center mb-8">
             <img alt="logo" src="/logo.jpeg" className="mr-2 w-10" />
-            <span className="text-lg font-semibold">Dnyaneshwar Sontakke</span>
+            <span className="text-lg font-seadminmibold">{}</span>
           </div>
         </Link>
 
@@ -184,7 +186,7 @@ const AdminDashboard = () => {
             <span
               className="text-gray-800 font-semibold hover:underline cursor-pointer transition-colors duration-300"
             >
-              {isLoading ? "Loading..." : (admin?.username).toUpperCase() || "Admin"}
+              {isLoading ? "Loading..." : (admin?.name) || "Admin"}
             </span>
           </div>
 
