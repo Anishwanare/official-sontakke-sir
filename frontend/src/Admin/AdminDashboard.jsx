@@ -80,7 +80,7 @@ const AdminDashboard = () => {
         <Link to="/">
           <div className="flex items-center mb-8">
             <img alt="logo" src="/logo.jpeg" className="mr-2 w-10" />
-            <span className="text-lg font-seadminmibold">{}</span>
+            <span className="text-lg font-seadminmibold">{ admin?.name}</span>
           </div>
         </Link>
 
@@ -111,11 +111,11 @@ const AdminDashboard = () => {
       </div>
 
       {/* Mobile Hamburger Menu */}
-      <div className="lg:hidden flex justify-between items-center p-4 bg-blue-600 text-white">
+      <div className=" lg:hidden flex justify-between items-center p-4 bg-blue-600 text-white">
         <Link to="/">
           <div className="flex items-center">
             <img alt="logo" src="/logo.jpeg" className="mr-2 w-10" />
-            <span className="text-lg font-semibold">Dnyaneshwar Sontakke</span>
+            <span className="text-lg font-semibold">{admin?.name}</span>
           </div>
         </Link>
 
