@@ -36,7 +36,7 @@ const Header = () => {
         </Link>
 
         {/* Desktop Navigation */}
-        <nav className="hidden md:flex md:items-center md:gap-10 ">
+        <nav className="hidden lg:flex md:items-center md:gap-10 ">
           {[
             { name: "Home", path: "/" },
             { name: "Gallery", path: "/gallery" },
@@ -56,7 +56,7 @@ const Header = () => {
         </nav>
 
         {/* Mobile Menu Button */}
-        <div className="md:hidden text-2xl z-50" onClick={handleToggle}>
+        <div className="lg:hidden text-2xl z-50" onClick={handleToggle}>
           {show ? (
             <button className="text-gray-700 focus:outline-none">
               X
