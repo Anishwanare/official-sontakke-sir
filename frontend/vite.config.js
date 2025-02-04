@@ -8,7 +8,7 @@ export default defineConfig({
   },
   build: {
     commonjsOptions: {
-      include: [/xlsx/, /node_modules/],
+      include: [/xlsx/, /node_modules/, /react-icons/],
     },
   },
 });
