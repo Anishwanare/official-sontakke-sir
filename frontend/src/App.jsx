@@ -38,12 +38,12 @@ const App = () => {
   return (
     <Suspense fallback={<div className="flex justify-center items-center h-screen" color="#1276e2"><HashLoader /></div>}>
       {/* Show notice only on certain paths */}
-      {showNotice && (
+      {/* {showNotice && (
         <Notice
           desc="Currently, registration is working only."
           notice="Notice"
         />
-      )}
+      )} */}
 
       <Header />
       <Routes>
@@ -52,7 +52,7 @@ const App = () => {
         <Route path="/student-login" element={<Login />} />
         <Route path="/student-register" element={<StudentRegistration />} />
         <Route path="/school-register" element={<Registration />} />
-        <Route path="/coordinator" element={<CoordinatorRegistration />} />
+        <Route path="/coordinator-register" element={<CoordinatorRegistration />} />
         <Route path="/gallery" element={<Gallery />} />
 
         {/* Admin Login Route */}
@@ -77,7 +77,7 @@ const App = () => {
         {/* Catch-All Route */}
         <Route path="*" element={<NotFound />} />
       </Routes>
-      <Footer/>
+      <Footer />
 
       <ToastContainer position="top-center" />
     </Suspense>

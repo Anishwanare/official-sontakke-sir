@@ -55,7 +55,7 @@ const SchoolData = () => {
   const noDataMessage = loading ? "Loading..." : "No data available!";
 
   return (
-    <div className="p-4">
+    <div className="py-4">
       {error && <div className="text-red-500 text-center py-2">{error}</div>}
       {schoolData.length > 0 ? (
         <div className="overflow-x-auto">

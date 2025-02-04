@@ -21,8 +21,8 @@ const Gallery = () => {
   };
 
   return (
-    <div className="gallery h-screen bg-gray-50">
-      <h1 className="text-3xl font-bold text-center  text-gray-800">Gallery</h1>
+    <div className="gallery h-screen bg-gray-200 pt-5">
+      <h1 className="text-3xl font-bold text-center  text-yellow-500 hover:underline cursor-pointer">Gallery</h1>
 
       {/* Gallery Grid */}
       <div className="grid grid-cols-1 md:grid-cols-4 gap-4 m-5 md:m-10">
@@ -30,7 +30,7 @@ const Gallery = () => {
           <motion.div
             key={image.id}
             className="image-container cursor-pointer"
-            whileHover={{ scale: 1.05 }} // Slightly scale image on hover
+            whileHover={{ scale: 1.01 }} // Slightly scale image on hover
             transition={{ duration: 0.3 }}
           >
             <img

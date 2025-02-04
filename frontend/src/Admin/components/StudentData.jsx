@@ -117,7 +117,7 @@ const StudentData = () => {
   };
 
   return (
-    <div className="px-4">
+    <div className="py-4">
       <p className="text-center my-2">Total Students: {filteredData.length}</p>
 
       <div className="p-4 bg-gray-100 rounded-lg shadow-lg">
