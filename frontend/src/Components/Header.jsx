@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import { GiHamburgerMenu } from "react-icons/gi";
 import { motion, AnimatePresence } from "framer-motion";
 
 const Header = () => {
@@ -64,7 +63,7 @@ const Header = () => {
             </button>
           ) : (
             <button className="text-gray-700 focus:outline-none font-bold">
-              <GiHamburgerMenu />
+              |||
             </button>
           )}
         </div>
