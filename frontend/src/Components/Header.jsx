@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import { MdClose } from "react-icons/md";
 import { GiHamburgerMenu } from "react-icons/gi";
 import { motion, AnimatePresence } from "framer-motion";
 
@@ -61,7 +60,7 @@ const Header = () => {
         <div className="md:hidden text-2xl z-50" onClick={handleToggle}>
           {show ? (
             <button className="text-gray-700 focus:outline-none">
-              <MdClose />
+              X
             </button>
           ) : (
             <button className="text-gray-700 focus:outline-none font-bold">
