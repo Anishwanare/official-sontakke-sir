@@ -44,7 +44,7 @@ const App = () => {
         />
       )} */}
 
-      <Header />
+      {/* <Header /> */}
       <Routes>
         {/* Public Routes */}
         <Route path="/" element={<Home />} />
@@ -76,9 +76,9 @@ const App = () => {
         {/* Catch-All Route */}
         <Route path="*" element={<NotFound />} />
       </Routes>
-      <Footer />
+      {/* <Footer /> */}
 
-      <ToastContainer position="top-center" />
+      <ToastContainer position="top-right" />
     </Suspense>
   );
 };

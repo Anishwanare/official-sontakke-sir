@@ -1,21 +1,20 @@
 import React, { useEffect, useState, Suspense, useMemo } from "react";
 import axios from "axios";
 import { Link, useNavigate } from "react-router-dom";
-import { HashLoader } from "react-spinners"; // Import the loader
-import { motion } from "framer-motion"; // Import motion for animation
-
-const sections = [
-  { name: "Schools", icon: "/school.png" },
-  { name: "Students", icon: "/student.png" },
-  { name: "Messages", icon: "/message.png" },
-  { name: "Coordinator", icon: "/coordinator.png" },
-];
-
-// Dynamically import components with React.lazy
+import { HashLoader } from "react-spinners";
+import { motion } from "framer-motion";
 const SchoolData = React.lazy(() => import("./components/SchoolData"));
 const StudentData = React.lazy(() => import("./components/StudentData"));
 const MessagesData = React.lazy(() => import("./components/MessagesData"));
 const CoordinateData = React.lazy(() => import("./components/CoordinateData"));
+
+const sections = [
+  { name: "Schools", icon: "/school.png" },
+  { name: "Students", icon: "/student.png" },
+  { name: "Coordinator", icon: "/coordinator.png" },
+  { name: "Messages", icon: "/message.png" },
+];
+
 
 const AdminDashboard = () => {
   const [activeSection, setActiveSection] = useState("Schools");
@@ -61,10 +60,10 @@ const AdminDashboard = () => {
         return <SchoolData />;
       case "Students":
         return <StudentData />;
-      case "Messages":
-        return <MessagesData />;
       case "Coordinator":
         return <CoordinateData />;
+      case "Messages":
+        return <MessagesData />;
       default:
         return null;
     }
@@ -81,12 +80,10 @@ const AdminDashboard = () => {
 
   return (
     <div className="flex flex-col lg:flex-row h-screen max-h-full">
-      {/* Sidebar for large screens */}
       <aside className={`bg-gray-100 text-black w-full lg:w-80 p-6 flex flex-col justify-between lg:block hidden shadow-md border ${activeSection ? '' : 'border-yellow-600'} `}>
-        <Link to="/" className="flex items-center mb-10">
-          {/* Logo and Admin Name */}
+        <Link to="/" className="flex items-center gap-2 underline text-yellow-400 mb-10">
           <img alt="logo" src="/logo.jpeg" className="mr-2 w-12 rounded-full" />
-          <span className="text-lg font-semibold text-gray-800">{admin?.name || "Dnyaneshwar Sontakke"}</span>
+          <span className="text-lg font-semibold text-gray-800">Dnyanankur Prakashan</span>
         </Link>
 
         {/* Navigation Section */}
@@ -160,7 +157,7 @@ const AdminDashboard = () => {
         <header className="flex flex-col sm:flex-row items-center justify-between p-4">
           <div className="flex items-center space-x-4 mb-4 sm:mb-0">
             <span className="text-gray-600 font-medium">Welcome:</span>
-            <span className="text-gray-800 font-semibold">{isLoading ? "Loading..." : admin?.name || "Dnyaneshwar Sontakke"}</span>
+            <span className="text-gray-800 font-semibold hover:underline cursor-pointer">{isLoading ? "Loading..." : admin?.name || "Dnyaneshwar Sontakke"}</span>
           </div>
 
           {/* Logout Button */}

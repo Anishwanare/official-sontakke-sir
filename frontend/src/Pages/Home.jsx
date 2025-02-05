@@ -8,6 +8,7 @@ import Features from "../Components/Features";
 import Contact from "../Components/Contact";
 import Footer from "../Components/Footer";
 import Founders from "../Components/Founders";
+import AppLayout from "../AppLayout/AppLayout";
 
 const Home = () => {
   return (
@@ -22,4 +23,4 @@ const Home = () => {
     </div>
   );
 };
-export default Home;
+export default AppLayout(Home);
