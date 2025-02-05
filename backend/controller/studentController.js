@@ -144,7 +144,7 @@ export const loginStudent = async (req, res, next) => {
 
 
 export const getStudents = async (req, res) => {
-  const getStudent = await Student.find();
+  const getStudent = await Student.find().sort({ 'className': 1 });
   if (!getStudent) {
     return res.status(400).json({
       status: false,
