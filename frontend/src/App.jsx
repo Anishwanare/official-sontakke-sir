@@ -6,7 +6,6 @@ import {
   Routes,
   Route,
   useLocation,
-  useNavigate,
   Navigate,
 } from "react-router-dom";
 import { HashLoader } from "react-spinners"

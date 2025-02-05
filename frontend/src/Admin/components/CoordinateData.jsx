@@ -26,7 +26,7 @@ const CoordinateData = () => {
     fetchCoordinators();
   }, []);
 
-  const tableStyles = "py-2 px-4 border-b";
+  const tableStyles = "py-2 px-4 border";
 
   return (
     <div className="p-4">

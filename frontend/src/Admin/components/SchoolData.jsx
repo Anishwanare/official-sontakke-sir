@@ -51,7 +51,7 @@ const SchoolData = () => {
     }
   };
 
-  const tableStyles = "py-2 px-4 border-b";
+  const tableStyles = "py-2 px-2 border";
   const noDataMessage = loading ? "Loading..." : "No data available!";
 
   return (
@@ -62,7 +62,7 @@ const SchoolData = () => {
           <table className="min-w-full border ">
             <thead>
               <tr>
-                <th className={tableStyles}>Sr No.</th>
+                <th className={tableStyles}>S.N.</th>
                 <th className={tableStyles}>Name</th>
                 <th className={tableStyles}>District</th>
                 <th className={tableStyles}>Village</th>
@@ -88,13 +88,13 @@ const SchoolData = () => {
                   <td className={tableStyles}>{school.password}</td>
                   <td className={tableStyles}>{school.headMasterName}</td>
                   <td className={tableStyles}>{school.headMasterMobile}</td>
-                  <td className={`${tableStyles} flex space-x-2`}>
-                    <Link to={`/admin/update-school/${school._id}`} className="text-blue-500">
+                  <td className={`${tableStyles} flex flex-col items-center justify-between gap-5`}>
+                    <Link to={`/admin/update-school/${school._id}`} className="text-blue-500 hover:underline">
                       Update
                     </Link>
                     <button
                       onClick={() => handleDeleteSchool(school._id)}
-                      className="text-red-500"
+                      className="text-red-500 hover:underline"
                     >
                       Delete
                     </button>

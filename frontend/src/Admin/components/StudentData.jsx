@@ -3,6 +3,7 @@ import axios from "axios";
 import { Link } from "react-router-dom";
 import * as XLSX from "xlsx";
 import { toast } from "react-toastify";
+import { HashLoader } from "react-spinners";
 
 const TOTAL_ITEM = 30;
 
@@ -15,25 +16,28 @@ const StudentData = () => {
   const [selectedClass, setSelectedClass] = useState("");
   const [selectedCoordinator, setSelectedCoordinator] = useState("");
   const [searchTerm, setSearchTerm] = useState("");
-  const [currentPage, setCurrentPage] = useState(1);
+  const [currentPage, setCurrentPage] = useState(1)
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     const fetchStudents = async () => {
+      setLoading(true)
       try {
         const { data } = await axios.get(
           `${import.meta.env.VITE_APP_API_BASE_URL}/api/v3/student/get-students`,
-          { headers: { "Content-Type": "application/json" } }
+          { withCredentials: true, headers: { "Content-Type": "application/json" } }
         );
 
+        setLoading(false)
         const students = data?.getStudent || [];
         setStudentData(students);
-
         setSchools([...new Set(students.map((s) => s.school))]);
         setClasses([...new Set(students.map((s) => s.className))]);
         setCoordinators([...new Set(students.map((s) => s.coordinator))]);
       } catch (error) {
         console.error("Error fetching student data:", error);
         toast.error("Failed to fetch student data.");
+        setLoading(false)
       }
     };
 
@@ -116,9 +120,12 @@ const StudentData = () => {
     }
   };
 
+  console.log("loading value", loading)
+  const tableStyle = 'py-2 px-4 border'
+
   return (
     <div className="py-4">
-      <p className="text-center my-2">Total Students: {filteredData.length}</p>
+      <p className="text-center my-2">{loading ? "Loading..." : `Total Students : ${filteredData.length}`}</p>
 
       <div className="p-4 bg-gray-100 rounded-lg shadow-lg">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
@@ -172,7 +179,7 @@ const StudentData = () => {
         ))}
       </div>
 
-      <div className="mt-4 overflow-auto">
+      {!loading ? <div className="overflow-x-auto mt-4">
         <table className="min-w-full border">
           <thead>
             <tr>{["Sr No.", "Full Name", "District", "Talukka", "Phone", "School", "Coordinator", "Class", "Actions"].map((header, index) => (
@@ -182,15 +189,15 @@ const StudentData = () => {
           <tbody>
             {paginatedData.map((student, index) => (
               <tr key={student._id} className="hover:bg-gray-100">
-                <td className="py-2 px-4 border">{index + 1}</td>
-                <td className="py-2 px-4 border">{student.firstName} {student.middleName} {student.lastName}</td>
-                <td className="py-2 px-4 border">{student.district}</td>
-                <td className="py-2 px-4 border">{student.talukka}</td>
-                <td className="py-2 px-4 border">{student.phone}</td>
-                <td className="py-2 px-4 border">{student.school}</td>
-                <td className="py-2 px-4 border">{student.coordinator}</td>
-                <td className="py-2 px-4 border">{student.className}</td>
-                <td className="py-2 px-4 border">
+                <td className={tableStyle}>{index + 1}</td>
+                <td className={tableStyle}>{student.firstName} {student.middleName} {student.lastName}</td>
+                <td className={tableStyle}>{student.district}</td>
+                <td className={tableStyle}>{student.talukka}</td>
+                <td className={tableStyle}>{student.phone}</td>
+                <td className={tableStyle}>{student.school}</td>
+                <td className={tableStyle}>{student.coordinator}</td>
+                <td className={tableStyle}>{student.className}</td>
+                <td className={tableStyle}>
                   <Link to={`/admin/update-student/${student._id}`} className="text-blue-500 mr-2">Update</Link>
                   <button onClick={() => handleDelete(student._id)} className="text-red-500">Delete</button>
                 </td>
@@ -198,7 +205,7 @@ const StudentData = () => {
             ))}
           </tbody>
         </table>
-      </div>
+      </div> : <div className="flex justify-center items-center h-screen" color="#1276e2"><HashLoader /></div>}
     </div>
   );
 };

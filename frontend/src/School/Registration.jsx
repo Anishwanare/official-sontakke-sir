@@ -249,14 +249,14 @@ const Registration = () => {
               required
             />
           </div>
-          <button
-            type="submit"
-            className="w-full bg-yellow-500 text-white py-2 rounded-md shadow-md hover:bg-yellow-600 focus:ring focus:ring-yellow-300 disabled:opacity-50"
-            disabled={loading}
-          >
-            {loading ? "Loading..." : "Register School"}
-          </button>
         </form>
+        <button
+          type="submit"
+          className="w-full bg-yellow-500 text-white py-2 rounded-md shadow-md hover:bg-yellow-600 focus:ring focus:ring-yellow-300 disabled:opacity-50"
+          disabled={loading}
+        >
+          {loading ? "Loading..." : "Register School"}
+        </button>
       </div>
     </div>
   );
