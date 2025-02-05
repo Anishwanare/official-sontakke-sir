@@ -101,7 +101,7 @@ const Header = () => {
                 <Link
                   key={index}
                   to={item.path}
-                  className={`px-4 py-3 text-lg font-medium text-gray-800  rounded-lg ${item.name === "Admin" ? 'bg-blue-500 text-white' : 'bg-yellow-300'} hover:bg-yellow-500 hover:text-white transition-all duration-300 shadow-md`}
+                  className={`px-4 py-3 text-lg font-medium text-gray-800  rounded-lg  ${item.name === "Admin Login" ? 'bg-blue-500 text-white hover:bg-blue-600' : ' hover:text-yellow-400 hover:underline'}  hover:bg-yellow-500 hover:text-white transition-all duration-300 shadow-md`}
                   onClick={handleToggle}
                 >
                   {item.name}
