@@ -94,7 +94,7 @@ const CoordinatorRegistration = () => {
   return (
     <div className="flex items-center justify-center min-h-screen bg-gray-200 flex-col">
       <div className="w-full max-w-4xl p-8 bg-white rounded-lg shadow-md my-5">
-      <div className="text-center p-2 text-2xl font-bold text-gray-700">
+        <div className="text-center p-2 text-2xl font-bold text-gray-700">
           Coordinator Registration
         </div>
         <div className="flex justify-center mb-6">
@@ -271,7 +271,6 @@ const CoordinatorRegistration = () => {
           </div>
 
           {/* Submit Button */}
-        </form>
           <button
             type="submit"
             className="w-full bg-yellow-500 text-white py-2 rounded-md shadow-md hover:bg-yellow-600 focus:ring focus:ring-yellow-300 disabled:opacity-50"
@@ -279,6 +278,7 @@ const CoordinatorRegistration = () => {
           >
             {loading ? 'Registering...' : 'Register Co-ordinator'}
           </button>
+        </form>
       </div>
     </div>
   );

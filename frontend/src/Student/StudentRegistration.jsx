@@ -53,6 +53,7 @@ const StudentRegistration = () => {
   };
 
   const handleSubmit = async (e) => {
+    console.log("submitting")
     e.preventDefault();
     setLoading(true);
     console.log(formData); // Check the form data before submitting
@@ -348,16 +349,16 @@ const StudentRegistration = () => {
               required
             />
           </div>
+          <div className="mb-6 ">
+            <button
+              type="submit"
+              className="w-full bg-yellow-500 text-white py-2 rounded-md shadow-md hover:bg-yellow-600 focus:ring focus:ring-yellow-300 disabled:opacity-50"
+              disabled={loading}
+            >
+              {loading ? "Registering..." : "Register Student"}
+            </button>
+          </div>
         </form>
-        <div className="mb-6">
-          <button
-            type="submit"
-            className="w-full bg-yellow-500 text-white py-2 rounded-md shadow-md hover:bg-yellow-600 focus:ring focus:ring-yellow-300 disabled:opacity-50"
-            disabled={loading}
-          >
-            {loading ? "Registering..." : "Register Student"}
-          </button>
-        </div>
       </div>
     </div>
   );
