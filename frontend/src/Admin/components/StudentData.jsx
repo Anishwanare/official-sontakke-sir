@@ -5,7 +5,7 @@ import * as XLSX from "xlsx";
 import { toast } from "react-toastify";
 import { HashLoader } from "react-spinners";
 
-const TOTAL_ITEM = 30;
+const TOTAL_ITEM = 150;
 
 const StudentData = () => {
   const [studentData, setStudentData] = useState([]);

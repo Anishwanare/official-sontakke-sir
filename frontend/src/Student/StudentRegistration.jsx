@@ -349,7 +349,7 @@ const StudentRegistration = () => {
               required
             />
           </div>
-          <div className="mb-6 ">
+          <div className="mb-6">
             <button
               type="submit"
               className="w-full bg-yellow-500 text-white py-2 rounded-md shadow-md hover:bg-yellow-600 focus:ring focus:ring-yellow-300 disabled:opacity-50"
