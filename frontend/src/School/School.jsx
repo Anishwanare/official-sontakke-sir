@@ -2,6 +2,7 @@ import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { logout } from "../../store/slices/userSlice";
 import { useNavigate } from "react-router-dom";
+import AppLayout from "../AppLayout/AppLayout";
 
 const School = () => {
     const { user } = useSelector((state) => state.User);
@@ -14,8 +15,8 @@ const School = () => {
     };
 
     return (
-        <div className="pt-28 px-4 md:px-8 min-h-screen bg-gray-50">
-            <div className="flex flex-col md:flex-row items-center justify-between bg-white shadow-md rounded-lg p-6 mb-6">
+        <div className="pt-5 px-4 md:px-8 min-h-screen">
+            <div className="flex flex-col md:flex-row items-center justify-between p-6 mb-6">
                 <h1 className="text-2xl md:text-4xl font-bold text-gray-800 text-center md:text-left">
                     {user?.name || "School Name"}
                 </h1>
@@ -83,4 +84,4 @@ const School = () => {
     );
 };
 
-export default School;
+export default AppLayout(School);

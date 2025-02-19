@@ -146,8 +146,8 @@ export const uploadFileToSchool = catchAsyncError(async (req, res, next) => {
       // Upload document to Cloudinary
       const cloudinaryResponse = await cloudinary.uploader.upload(document.tempFilePath, {
           folder: "sontke",
-          resource_type:'raw',
-          
+          resource_type:'auto',
+
       });
 
       if (!cloudinaryResponse || cloudinaryResponse.error) {

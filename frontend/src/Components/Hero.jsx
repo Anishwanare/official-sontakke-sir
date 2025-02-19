@@ -4,7 +4,7 @@ import { motion } from "framer-motion";
 const Hero = () => {
   return (
     <>
-      <main className="container mx-auto px-4 text-center flex md:flex-row flex-col-reverse mt-20 pt-5 md:my-14 justify-around">
+      <main className="container mx-auto px-4 text-center flex md:flex-row flex-col-reverse mt-20 pt-5 justify-around">
 
         {/* Animated Image Section */}
         <motion.div
