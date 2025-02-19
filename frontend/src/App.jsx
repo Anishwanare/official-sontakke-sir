@@ -50,7 +50,7 @@ const App = () => {
   return (
     <Suspense
       fallback={
-        <div className="flex justify-center items-center h-screen">
+        <div className="flex justify-center items-center h-screen p-2">
           <HashLoader color="#1276e2" />
         </div>
       }
