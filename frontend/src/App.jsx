@@ -18,7 +18,7 @@ const Notice = lazy(() => import("./Components/notice"));
 const NotFound = lazy(() => import("./Components/NotFound"));
 const AdminDashboard = lazy(() => import("./Admin/AdminDashboard"));
 const AdminLogin = lazy(() => import("./Admin/components/AdminLogin"));
-const Gallery = lazy(() => import("./Components/Gallery"));
+const Gallery = lazy(() => import("./Pages/Gallery"));
 const UpdateStudent = lazy(() => import("./Admin/components/UpdateContent/UpdateStudent"));
 const UpdateSchool = lazy(() => import("./Admin/components/UpdateContent/UpdateSchool"));
 const Header = lazy(() => import("./Components/Header"));

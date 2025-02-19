@@ -26,7 +26,7 @@ const Gallery = () => {
   }, []);
 
   return (
-    <div className="gallery min-h-screen pt-10">
+    <div className="gallery min-h-screen pt-28 ">
       <motion.div
         initial={{ opacity: 0, y: 60 }}
         transition={{ duration: 0.8, ease: "easeOut", delay: 0.3 }}
@@ -43,7 +43,7 @@ const Gallery = () => {
           <motion.div
             key={image.id}
             className="relative overflow-hidden rounded-lg shadow-lg cursor-pointer"
-            whileHover={{ scale: 1.02}}
+            whileHover={{ scale: 1.02 }}
             transition={{ duration: 0.3 }}
           >
             <img
@@ -54,7 +54,7 @@ const Gallery = () => {
             />
             <motion.a
               href={image.image}
-              download
+              download={"Dnyanankur prakashan " + new Date().getFullYear()}
               className="absolute bottom-2 right-2 bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-lg shadow-lg transition-all duration-300"
             >
               Download
