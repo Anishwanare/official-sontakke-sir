@@ -216,35 +216,35 @@ export const editSchool = async (req, res, next) => {
 };
 
 // Get school by ID
-// export const getSchoolById = async (req, res, next) => {
-//   try {
-//     const { id } = req.params;
-//     const getSchool = await School.findById(id);
+export const getSchoolById = async (req, res, next) => {
+  try {
+    const { id } = req.params;
+    const getSchool = await School.findById(id);
 
-//     if (!getSchool) {
-//       return res.status(404).json({ success: false, message: "No school found" });
-//     }
+    if (!getSchool) {
+      return res.status(404).json({ success: false, message: "No school found" });
+    }
 
-//     const studentsCount = await Student.aggregate([
-//       { $match: { school: getSchool.name } },
-//       { $count: "totalStudents" }
-//     ])
+    const studentsCount = await Student.aggregate([
+      { $match: { school: getSchool.name } },
+      { $count: "totalStudents" }
+    ])
 
-//     res.status(200).json({
-//       success: true,
-//       message: "School fetched successfully",
-//       school: getSchool,
-//       studentCount: studentsCount.length > 0 ? studentsCount[0].totalStudents : 0,
-//     });
+    res.status(200).json({
+      success: true,
+      message: "School fetched successfully",
+      school: getSchool,
+      studentCount: studentsCount.length > 0 ? studentsCount[0].totalStudents : 0,
+    });
 
-//   } catch (error) {
-//     res.status(500).json({
-//       success: false,
-//       message: "Failed to fetch school",
-//       error: error.message,
-//     });
-//   }
-// };
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: "Failed to fetch school",
+      error: error.message,
+    });
+  }
+};
 
 // Fetch the me school
 export const fetchSchool = catchAsyncError(async (req, res, next) => {

@@ -19,7 +19,7 @@ const sections = [
 
 const AdminDashboard = () => {
   const [activeSection, setActiveSection] = useState("Schools");
-  const { user } = useSelector((state) => state.User); // Fixed Redux selector
+  const { user } = useSelector((state) => state.User); 
   const [isLoading, setIsLoading] = useState(true);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const dispatch = useDispatch();
@@ -27,7 +27,7 @@ const AdminDashboard = () => {
 
   const handleLogoutAdmin = () => {
     dispatch(logout());
-    return navigate("/admin-login"); // Redirect to admin login after logout
+    return navigate("/admin-login"); 
   };
 
   const renderActiveSection = useMemo(() => {
@@ -50,7 +50,7 @@ const AdminDashboard = () => {
   }, [isMenuOpen]);
 
   useEffect(() => {
-    setTimeout(() => setIsLoading(false), 1000); // Simulating data load
+    setTimeout(() => setIsLoading(false), 1000); 
   }, []);
 
   return (

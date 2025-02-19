@@ -35,11 +35,11 @@ const App = () => {
 
   // console.log(user)
 
-  useEffect(()=>{
-    if(!isAuthenticated){
-      navigate('/')
-    }
-  },[isAuthenticated])
+  // useEffect(()=>{
+  //   if(!isAuthenticated){
+  //     navigate('/')
+  //   }
+  // },[isAuthenticated])
 
   useEffect(() => {
     dispatch(fetchAdminProfile());
@@ -55,7 +55,7 @@ const App = () => {
         </div>
       }
     >
-      <Header />
+      {/* <Header /> */}
 
       <div className="min-h-screen bg-gradient-to-b from-teal-50 to-orange-50">
         <Routes>

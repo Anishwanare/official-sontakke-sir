@@ -4,7 +4,7 @@ import {
   editSchool,
   fetchSchool,
   getAllSchools,
-  // getSchoolById,
+  getSchoolById,
   schoolLogin,
   schoolRegistration,
 } from "../controller/SchoolController.js";
@@ -19,7 +19,7 @@ router.get("/get-schools", isAdminAuthenticated,getAllSchools);
 router.post("/login", schoolLogin);
 router.put("/edit-school/:id", isAdminAuthenticated, editSchool); 
 router.delete("/delete-school/:id", isAdminAuthenticated, deleteSchool);
-// router.get("/get-school/:id", isSchoolAuthenticated, getSchoolById);
+router.get("/get-school/:id", isAdminAuthenticated, getSchoolById);
 
 // me
 router.get("/fetch-me", isSchoolAuthenticated, fetchSchool)

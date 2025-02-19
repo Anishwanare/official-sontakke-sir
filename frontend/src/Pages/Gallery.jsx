@@ -26,7 +26,7 @@ const Gallery = () => {
   }, []);
 
   return (
-    <div className="gallery min-h-screen pt-28 ">
+    <div className="gallery min-h-screen pt-5">
       <motion.div
         initial={{ opacity: 0, y: 60 }}
         transition={{ duration: 0.8, ease: "easeOut", delay: 0.3 }}

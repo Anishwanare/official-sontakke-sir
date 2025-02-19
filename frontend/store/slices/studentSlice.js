@@ -10,6 +10,16 @@ const studentSlice = createSlice({
         error: null
     },
     reducers: {
+        updateStudentRequest(state) {
+            state.loading = true
+        },
+        updateStudentSuccess(state) {
+            state.loading = false
+        },
+        updateStudentFailed(state, action) {
+            state.loading = false;
+            state.error = action.payload?.error
+        },
         fetchStudentsRequest(state) {
             state.loading = true
         },
@@ -34,6 +44,27 @@ const studentSlice = createSlice({
     }
 })
 
+
+export const updateStudent = (id, student) => async (dispatch) => {
+    dispatch(studentSlice.actions.updateStudentRequest());
+    try {
+        const response = await axios.put(
+            `${import.meta.env.VITE_APP_API_BASE_URL}/api/v3/student/update/student/${id}`,
+            student,
+            { withCredentials: true, headers: { "Content-Type": "application/json" } }
+        );
+
+        if (response.data.success) {
+            dispatch(studentSlice.actions.updateStudentSuccess())
+            dispatch(fetchStudent())
+            toast.success(response.data.message)
+        }
+    } catch (error) {
+        dispatch(studentSlice.actions.updateStudentFailed());
+        toast.error(error.response.data.message)
+
+    }
+}
 
 export const fetchStudent = () => async (dispatch) => {
     // console.log("Fetching students...");
