@@ -1,34 +1,31 @@
+import jwt from "jsonwebtoken";
+import { catchAsyncError } from "../middleware.js/catchAsyncError.js";
+import ErrorHandler from "../middleware.js/error.js";
 import { School } from "../Model/SchoolModel.js";
 import { Student } from "../Model/StudentModel.js";
 
 // School registration function
 export const schoolRegistration = async (req, res, next) => {
-  const {
-    name,
-    schoolId,
-    password,
-    schoolVillage,
-    talukka,
-    district,
-    coordinator,
-    headMasterName,
-    headMasterMobile
-  } = req.body;
-
   try {
+    const {
+      name,
+      schoolId,
+      password,
+      schoolVillage,
+      talukka,
+      district,
+      coordinator,
+      headMasterName,
+      headMasterMobile
+    } = req.body;
+
     if (
-      !name ||
-      !password ||
-      !schoolId ||
-      !schoolVillage ||
-      !talukka ||
-      !district ||
-      !coordinator ||
-      !headMasterName ||
-      !headMasterMobile
+      !name || !password || !schoolId || !schoolVillage ||
+      !talukka || !district || !coordinator ||
+      !headMasterName || !headMasterMobile
     ) {
       return res.status(400).json({
-        status: false,
+        success: false,
         message: "Please fill all fields",
       });
     }
@@ -36,7 +33,7 @@ export const schoolRegistration = async (req, res, next) => {
     const existingSchool = await School.findOne({ schoolId });
     if (existingSchool) {
       return res.status(400).json({
-        status: false,
+        success: false,
         message: "School ID already exists",
       });
     }
@@ -54,33 +51,71 @@ export const schoolRegistration = async (req, res, next) => {
     });
 
     return res.status(201).json({
-      status: true,
+      success: true,
       message: "School registered successfully",
       school: newSchool,
     });
   } catch (error) {
-    return res.status(500).json({
-      status: false,
+    res.status(500).json({
+      success: false,
       message: "Failed to register school",
       error: error.message,
     });
   }
 };
 
+// School login function
+export const schoolLogin = catchAsyncError(async (req, res, next) => {
+  try {
+    const { schoolId } = req.body;
+
+    if (!schoolId) {
+      return res.status(400).json({ success: false, message: "SchoolId is required" });
+    }
+
+    const schoolID = schoolId.toUpperCase();
+    const fetchSchool = await School.findOne({ schoolId: schoolID });
+
+    if (!fetchSchool) {
+      return res.status(401).json({ success: false, message: "Unauthorized login" });
+    }
+
+    const token = jwt.sign({ id: fetchSchool._id }, process.env.JWT_SECRET_KEY, {
+      expiresIn: process.env.JWT_EXPIRES,
+    });
+
+    res.status(200).cookie('School_Token', token, {
+      expires: new Date(Date.now() + process.env.COOKIE_EXPIRES * 24 * 60 * 60 * 1000),
+      httpOnly: true
+    }).json({
+      success: true,
+      message: "School login successful",
+      user: fetchSchool
+    });
+
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: "Failed to login",
+      error: error.message,
+    });
+  }
+});
+
 // Get all schools function
 export const getAllSchools = async (req, res, next) => {
   try {
-    const allSchools = await School.find();
+    const allSchools = await School.find({});
 
     return res.status(200).json({
-      status: true,
+      success: true,
       message: "All schools fetched successfully",
       schools: allSchools,
     });
   } catch (error) {
-    return res.status(500).json({
-      status: false,
-      message: "Failed to fetch all schools",
+    res.status(500).json({
+      success: false,
+      message: "Failed to fetch schools",
       error: error.message,
     });
   }
@@ -88,96 +123,67 @@ export const getAllSchools = async (req, res, next) => {
 
 // Delete school function
 export const deleteSchool = async (req, res, next) => {
-  const { id } = req.params; // School ID to be deleted
-
   try {
+    const { id } = req.params;
+
     if (!id) {
-      return res.status(404).json({
-        status: false,
-        message: "School ID not provided",
-      });
+      return res.status(400).json({ success: false, message: "School ID not provided" });
     }
 
-    // Find the school by its ID
     const schoolToDelete = await School.findById(id);
-
     if (!schoolToDelete) {
-      return res.status(404).json({
-        status: false,
-        message: "School not found",
-      });
+      return res.status(404).json({ success: false, message: "School not found" });
     }
 
-    // Check if any students are assigned to this school name
-    const studentsAssigned = await Student.find({ school: schoolToDelete.name }); // Use the school name for comparison
-
+    const studentsAssigned = await Student.find({ school: schoolToDelete.name });
     if (studentsAssigned.length > 0) {
       return res.status(400).json({
-        status: false,
-        message: "School is assigned to students. Please delete all student records before deleting the school.",
+        success: false,
+        message: "School has assigned students. Delete student records first.",
       });
     }
 
-    // Proceed to delete the school
     await School.findByIdAndDelete(id);
 
     return res.status(200).json({
-      status: true,
+      success: true,
       message: "School deleted successfully",
     });
-  } catch (error) {
-    // Handle validation errors
-    if (error.name === "ValidationError") {
-      const errorMessage = Object.values(error.errors)
-        .map((err) => err.message || "Validation Error")
-        .join(" ");
-      return res.status(400).json({ status: false, message: errorMessage });
-    }
 
-    // Handle general errors
-    return res.status(500).json({
-      status: false,
-      message: "Internal server error",
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: "Failed to delete school",
       error: error.message,
     });
   }
 };
 
-
-
 // Edit school function
 export const editSchool = async (req, res, next) => {
-  const { id } = req.params;
-  const {
-    name,
-    schoolId,
-    password,
-    schoolVillage,
-    talukka,
-    district,
-    coordinator,
-    headMasterName,
-    headMasterMobile,
-  } = req.body;
-
   try {
+    const { id } = req.params;
+    const {
+      name,
+      schoolId,
+      password,
+      schoolVillage,
+      talukka,
+      district,
+      coordinator,
+      headMasterName,
+      headMasterMobile,
+    } = req.body;
+
     if (!id) {
-      return res.status(404).json({
-        status: false,
-        message: "School ID not found",
-      });
+      return res.status(400).json({ success: false, message: "School ID not found" });
     }
 
-    // Check if the school exists
     const existingSchool = await School.findById(id);
     if (!existingSchool) {
-      return res.status(404).json({
-        status: false,
-        message: "School not found",
-      });
+      return res.status(404).json({ success: false, message: "School not found" });
     }
 
-    // Update school details
     const updatedSchool = await School.findByIdAndUpdate(
       id,
       {
@@ -195,40 +201,72 @@ export const editSchool = async (req, res, next) => {
     );
 
     return res.status(200).json({
-      status: true,
+      success: true,
       message: "School updated successfully",
       school: updatedSchool,
     });
+
   } catch (error) {
-    if (error.name === "ValidationError") {
-      const errorMessage = Object.values(error.errors)
-        .map((err) => err.message || "Validation Error")
-        .join(" ");
-      return res.status(400).json({ status: false, message: errorMessage });
-    }
-    return res.status(500).json({
-      status: false,
+    res.status(500).json({
+      success: false,
       message: "Failed to update school",
       error: error.message,
     });
   }
 };
 
+// Get school by ID
+// export const getSchoolById = async (req, res, next) => {
+//   try {
+//     const { id } = req.params;
+//     const getSchool = await School.findById(id);
 
-export const getSchoolById = async (req, res, next) => {
-  const { id } = req.params
-  const getSchool = await School.findById(id)
-  if (!getSchool) {
-    return res.status(400).json({
-      status: false,
-      message: "No student found",
-      getSchool
-    })
+//     if (!getSchool) {
+//       return res.status(404).json({ success: false, message: "No school found" });
+//     }
+
+//     const studentsCount = await Student.aggregate([
+//       { $match: { school: getSchool.name } },
+//       { $count: "totalStudents" }
+//     ])
+
+//     res.status(200).json({
+//       success: true,
+//       message: "School fetched successfully",
+//       school: getSchool,
+//       studentCount: studentsCount.length > 0 ? studentsCount[0].totalStudents : 0,
+//     });
+
+//   } catch (error) {
+//     res.status(500).json({
+//       success: false,
+//       message: "Failed to fetch school",
+//       error: error.message,
+//     });
+//   }
+// };
+
+// Fetch the me school
+export const fetchSchool = catchAsyncError(async (req, res, next) => {
+  try {
+    const schoolProfile = await School.findById(req.user?._id);
+
+    if (!schoolProfile) {
+      return res.status(404).json({ success: false, message: "User not found" });
+    }
+
+    res.status(200).json({
+      success: true,
+      message: `Welcome ${req.user?.name}`,
+      user: schoolProfile,
+    });
+
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: "Internal Server Error",
+      error: error.message,
+    });
   }
-  res.status(200).json({
-    status: true,
-    message: "Student fetched successfully",
-    getSchool
-  })
-}
+});
 

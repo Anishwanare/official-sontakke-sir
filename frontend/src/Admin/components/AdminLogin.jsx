@@ -1,46 +1,44 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { Link, useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
+import { useDispatch, useSelector } from "react-redux"
+import { login } from "../../../store/slices/userSlice";
 
 const AdminLogin = () => {
   // console.log("anish")
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
-  const [success, setSuccess] = useState("");
   const navigateTo = useNavigate();
-  const [loading, setLoading] = useState(false);
+  const dispatch = useDispatch()
+  const { loading } = useSelector((state) => state.User)
+  const navigate = useNavigate()
+  const { isAuthenticated,user } = useSelector((state) => state.User)
 
   const handleLogin = async (e) => {
-    setLoading(true);
     e.preventDefault();
+
+    const formData = new FormData();
+    formData.append('email', email)
+    formData.append('password', password)
+
     try {
-      const response = await axios.post(
-        `${import.meta.env.VITE_APP_API_BASE_URL}/api/v5/admin/login`,
-        {
-          email,
-          password,
-        }, { withCredentials: true, headers: { "Content-Type": "application/json" } }
-      );
-      if (response?.data?.token) {
-        console.log(response?.data?.token);
-        localStorage.setItem("AdminToken", JSON.stringify(response?.data?.token));
-        setSuccess(response?.data?.message);
-        setError("");
-        navigateTo("/admin-dashboard");
-        // Redirect to the admin dashboard or handle login success
-      } else {
-        setError(response?.data?.message);
-        setSuccess("");
-      }
+      dispatch(login(formData, 'admin'))
     } catch (error) {
-      setError(error.response?.data?.message);
-      setSuccess("");
-      navigateTo("/admin-login");
+      toast.error(error)
     } finally {
-      setLoading(false);
+      setEmail('');
+      setPassword('')
     }
   };
+
+  useEffect(()=>{
+    if(isAuthenticated && user?.role === "Admin"){
+      navigate("/admin-dashboard")
+    }
+  })
+
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-100 relative">
@@ -48,7 +46,6 @@ const AdminLogin = () => {
       <div className="bg-white p-8 rounded shadow-md w-full max-w-md">
         <h2 className="text-2xl font-bold mb-6 text-center">Admin Login</h2>
         {error && <p className="text-red-500 mb-4">{error}</p>}
-        {success && <p className="text-green-500 mb-4">{success}</p>}
         <form onSubmit={handleLogin}>
           <div className="mb-4">
             <label className="block text-gray-700 mb-2" htmlFor="email">
@@ -76,12 +73,22 @@ const AdminLogin = () => {
               required
             />
           </div>
-          <button
-            type="submit"
-            className="w-full bg-blue-500 text-white py-2 rounded hover:bg-blue-600"
-          >
-            {loading ? 'loading....' : 'Login'}
-          </button>
+          <div className="flex gap-5 flex-col">
+
+            <button
+              type="submit"
+              className="w-full bg-blue-500 text-white py-2 rounded hover:bg-blue-600"
+            >
+              {loading ? 'loading....' : 'Login'}
+            </button>
+            <Link to={"/"}>
+              <button
+                className="w-full bg-blue-500 text-white py-2 rounded hover:bg-blue-600"
+              >
+                Home
+              </button>
+            </Link>
+          </div>
         </form>
       </div>
     </div>

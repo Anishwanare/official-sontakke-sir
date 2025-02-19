@@ -19,14 +19,14 @@ const featuresData = [
 
 const Features = () => {
   return (
-    <>
+    <div 
+    className="py-16">
       {/* Features Section with Motion */}
       <motion.div
         initial={{ opacity: 0, y: -30 }}
         whileInView={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.8, ease: "easeOut" }}
         viewport={{ once: true }}
-        className="bg-white pt-16"
       >
         <div className="max-w-4xl mx-auto text-center">
           <h2 className="text-3xl font-bold text-zinc-800">Features</h2>
@@ -61,7 +61,7 @@ const Features = () => {
           <Dropdown title={feature.title} desc={feature.desc} />
         </motion.div>
       ))}
-    </>
+    </div>
   );
 };
 

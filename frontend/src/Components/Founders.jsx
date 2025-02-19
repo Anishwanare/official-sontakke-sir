@@ -38,17 +38,28 @@ const foundersData = [
 
 const Founders = () => {
     return (
-        <div className="container mx-auto px-6 py-16 bg-zinc-100">
+        <div className="container mx-auto px-6 py-16 ">
             {/* Title with motion effect */}
             <motion.h2
-                initial={{ opacity: 0 }}
-                whileInView={{ opacity: 1 }}
+                initial={{ opacity: 0, y: -20 }}
+                whileInView={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.8, ease: "easeOut" }}
                 viewport={{ once: true }}
-                className="text-3xl font-bold text-center my-5"
+                className="text-4xl font-bold text-center text-gray-00 mt-8"
             >
                 Meet Our Founders
             </motion.h2>
+
+            <motion.p
+                initial={{ opacity: 0 }}
+                whileInView={{ opacity: 1 }}
+                transition={{ duration: 1, delay: 0.3 }}
+                viewport={{ once: true }}
+                className="text-lg text-gray-700 text-center max-w-2xl mx-auto my-4"
+            >
+                Our founders are passionate visionaries with a strong grasp of <span className="text-yellow-600 font-bold">technology</span> and <span className="text-yellow-600 font-bold">business</span>. Their dedication to <span className="text-yellow-600 font-bold">innovation</span>, <span className="text-yellow-600 font-bold">quality</span>, and <span className="text-yellow-600 font-bold">customer satisfaction</span> drives us to create exceptional solutions.
+            </motion.p>
+
 
             {/* Cards Grid */}
             <div className="grid sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
@@ -57,7 +68,7 @@ const Founders = () => {
                         key={founder.id}
                         initial={{ opacity: 0, scale: 0.95 }}
                         whileInView={{ opacity: 1, scale: 1 }}
-                        transition={{ duration: 0.6, delay: index * 0.2, ease: "easeOut" }}
+                        transition={{ duration: 0.6, delay: index * 0.5, ease: "easeOut" }}
                         viewport={{ once: true }}
                         whileHover={{ scale: 1.05, boxShadow: "0 10px 20px rgba(0, 0, 0, 0.15)" }}
                         className="relative flex flex-col bg-white rounded-2xl shadow-lg overflow-hidden transition-all duration-300"
@@ -83,7 +94,7 @@ const Founders = () => {
                             </p>
                         </div>
                         <motion.div
-                            className={`absolute top-0 right-0 px-4 py-2 bg-yellow-500 ${founder.id === 3 || founder.id === 4 ? 'hidden':'block'} text-white text-xs font-bold rounded-bl-2xl`}
+                            className={`absolute top-0 right-0 px-4 py-2 bg-yellow-500 ${founder.id === 3 || founder.id === 4 ? 'hidden' : 'block'} text-white text-xs font-bold rounded-bl-2xl`}
                             initial={{ opacity: 0, x: 20 }}
                             whileInView={{ opacity: 1, x: 0 }}
                             transition={{ duration: 0.6, delay: index * 0.2 }}

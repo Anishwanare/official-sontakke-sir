@@ -2,10 +2,13 @@ import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { HashLoader } from 'react-spinners';
+import { updateSchool } from '../../../../store/slices/schoolSlice';
+import { useDispatch } from 'react-redux';
 
 const UpdateSchool = () => {
     const { id } = useParams(); // Retrieve the school ID from the URL
     const navigate = useNavigate();
+    const dispatch = useDispatch();
 
     // State to store form data
     const [formData, setFormData] = useState({
@@ -13,7 +16,7 @@ const UpdateSchool = () => {
         schoolId: '',
         password: '',
         schoolVillage: '',
-        talukka: '',
+        talukka: '', // Corrected the typo here
         district: '',
         coordinator: '',
         headMasterName: '',
@@ -24,14 +27,13 @@ const UpdateSchool = () => {
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
 
-
     useEffect(() => {
         const fetchSchoolDetails = async () => {
             try {
                 setLoading(true);
                 const response = await axios.get(`${import.meta.env.VITE_APP_API_BASE_URL}/api/v2/school/get-school/${id}`);
-                setFormData(response.data.getSchool);
-                console.log(response.data.getSchool)
+                setFormData(response.data?.school);
+                console.log(response.data?.school)
                 setLoading(false);
             } catch (err) {
                 setLoading(false);
@@ -53,16 +55,8 @@ const UpdateSchool = () => {
     // Handle form submission
     const handleSubmit = async (e) => {
         e.preventDefault();
-        setError(null);
-        try {
-            setLoading(true);
-            await axios.put(`${import.meta.env.VITE_APP_API_BASE_URL}/api/v2/school/edit-school/${id}`, formData, { withCredentials: true, new: true });
-            setLoading(false);
-            navigate('/admin-dashboard');
-        } catch (err) {
-            setLoading(false);
-            setError(err.response?.data?.message || 'Failed to update school');
-        }
+        dispatch(updateSchool(id, formData)); // Dispatch the update action
+        navigate("/admin-dashboard")
     };
 
     return (
@@ -72,14 +66,14 @@ const UpdateSchool = () => {
             {loading ? (
                 <div className="flex justify-center items-center h-screen" color="#1276e2"><HashLoader /></div>
             ) : (
-                <form onSubmit={handleSubmit}>
+                <form onSubmit={handleSubmit} className='grid grid-cols-2 gap-4'>
                     <div className="mb-4">
                         <label htmlFor="name" className="block font-medium">School Name</label>
                         <input
                             type="text"
                             id="name"
                             name="name"
-                            value={formData.name}
+                            value={formData?.name}
                             onChange={handleChange}
                             className="w-full p-2 border border-gray-300 rounded"
                             required
@@ -91,7 +85,7 @@ const UpdateSchool = () => {
                             type="text"
                             id="schoolId"
                             name="schoolId"
-                            value={formData.schoolId}
+                            value={formData?.schoolId}
                             onChange={handleChange}
                             className="w-full p-2 border border-gray-300 rounded"
                             required
@@ -103,7 +97,7 @@ const UpdateSchool = () => {
                             type="password"
                             id="password"
                             name="password"
-                            value={formData.password}
+                            value={formData?.password}
                             onChange={handleChange}
                             className="w-full p-2 border border-gray-300 rounded"
                             required
@@ -115,7 +109,7 @@ const UpdateSchool = () => {
                             type="text"
                             id="schoolVillage"
                             name="schoolVillage"
-                            value={formData.schoolVillage}
+                            value={formData?.schoolVillage}
                             onChange={handleChange}
                             className="w-full p-2 border border-gray-300 rounded"
                             required
@@ -126,8 +120,8 @@ const UpdateSchool = () => {
                         <input
                             type="text"
                             id="talukka"
-                            name="talukka"
-                            value={formData.talukka}
+                            name="talukka"  // Corrected the input's name
+                            value={formData?.talukka}  // Corrected the value
                             onChange={handleChange}
                             className="w-full p-2 border border-gray-300 rounded"
                             required
@@ -139,7 +133,7 @@ const UpdateSchool = () => {
                             type="text"
                             id="district"
                             name="district"
-                            value={formData.district}
+                            value={formData?.district}
                             onChange={handleChange}
                             className="w-full p-2 border border-gray-300 rounded"
                             required
@@ -151,7 +145,7 @@ const UpdateSchool = () => {
                             type="text"
                             id="coordinator"
                             name="coordinator"
-                            value={formData.coordinator}
+                            value={formData?.coordinator}
                             onChange={handleChange}
                             className="w-full p-2 border border-gray-300 rounded"
                             required
@@ -163,7 +157,7 @@ const UpdateSchool = () => {
                             type="text"
                             id="headMasterName"
                             name="headMasterName"
-                            value={formData.headMasterName}
+                            value={formData?.headMasterName}
                             onChange={handleChange}
                             className="w-full p-2 border border-gray-300 rounded"
                             required
@@ -175,7 +169,7 @@ const UpdateSchool = () => {
                             type="text"
                             id="headMasterMobile"
                             name="headMasterMobile"
-                            value={formData.headMasterMobile}
+                            value={formData?.headMasterMobile}
                             onChange={handleChange}
                             className="w-full p-2 border border-gray-300 rounded"
                             required

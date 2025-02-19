@@ -8,14 +8,21 @@ import CoordinatorRouter from "./Router/CoordinatorRouter.js";
 import AdminRouter from "./Router/AdminRouter.js";
 import { dbConnection } from "./DataBase/dbConnection.js";
 import { errorMiddleWare } from "./middleware.js/error.js";
+import fileUpload from "express-fileupload";
+import cookieParser from "cookie-parser";
 
 export const app = express();
 
 config({ path: ".env" });
 
 //middleware
-app.use(express.json()); 
+app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+app.use(fileUpload({
+  useTempFiles: true,
+  tempFileDir: '/tmp/'
+}))
+app.use(cookieParser())
 app.use(
   cors({
     origin: [process.env.FRONTEND_URL], // Allow your frontend domain
