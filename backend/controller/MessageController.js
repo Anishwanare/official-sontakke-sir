@@ -6,7 +6,7 @@ export const sendMessage = catchAsyncError(async (req, res, next) => {
   try {
     const newMessage = await Message.create({ name, email, message });
     return res.status(200).json({
-      status: true,
+      success: true,
       message: "Message sent successfully",
       newMessage,
     });
@@ -16,13 +16,13 @@ export const sendMessage = catchAsyncError(async (req, res, next) => {
         (err) => err.message
       );
       return res.status(400).json({
-        status: false,
+        success: false,
         message: validationErrors,
         errors: validationErrors,
       });
     }
     return res.status(500).json({
-      status: false,
+      success: false,
       message: "Something went wrong, please try again!",
       error: error.message,
     });
@@ -31,15 +31,15 @@ export const sendMessage = catchAsyncError(async (req, res, next) => {
 
 export const getAllMessages = async (req, res, next) => {
   try {
-    const getAllMessagesResponse = await Message.find();
+    const getAllMessagesResponse = await Message.find({});
     return res.status(200).json({
-      status: true,
-      message: "Retrieved all messages",
+      success: true,
+      message: "Messages fetch successfully",
       getAllMessagesResponse,
     });
   } catch (error) {
     return res.status(500).json({
-      status: false,
+      success: false,
       message: "Something went wrong while retrieving messages",
       error: error.message,
     });
@@ -55,17 +55,17 @@ export const deleteMessage = async (req, res, next) => {
     const deleteMessage = await Message.findByIdAndDelete(id);
     if (!deleteMessage) {
       return res.status(404).json({
-        status: false,
+        success: false,
         message: "Message not found",
       });
     }
     return res.status(200).json({
-      status: true,
+      success: true,
       message: "Message deleted successfully",
     });
   } catch (error) {
     return res.status(500).json({
-      status: false,
+      success: false,
       message: "Something went wrong while deleting the message",
       error: error.message,
     });

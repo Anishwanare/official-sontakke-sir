@@ -35,7 +35,7 @@ export const studentRegister = async (req, res, next) => {
       !school
     ) {
       return res.status(400).json({
-        status: false,
+        success: false,
         message: "Please fill all fields",
       });
     }
@@ -44,7 +44,7 @@ export const studentRegister = async (req, res, next) => {
     const existingStudent = await Student.findOne({ phone });
     if (existingStudent) {
       return res.status(400).json({
-        status: false,
+        success: false,
         message: "Student already registered",
       });
     }
@@ -81,13 +81,13 @@ export const studentRegister = async (req, res, next) => {
         httpOnly: true,
       })
       .json({
-        status: true,
+        success: true,
         message: "Student registered successfully",
         newStudent,
       });
   } catch (error) {
     return res.status(500).json({
-      status: false,
+      success: false,
       message: "Something went wrong",
       error: error.message,
     });
@@ -124,7 +124,7 @@ export const loginStudent = async (req, res, next) => {
     })
 
     return res.status(200).cookies("Student_Token", token, { expires: new Date(Date.now() + process.env.COOKIE_EXPIRES * 24 * 60 * 60 * 1000), httpOnly: true }).json({
-      status: true,
+      success: true,
       message: "Student Login successfully",
       student,
       token
@@ -147,19 +147,19 @@ export const getStudents = async (req, res) => {
   const getStudent = await Student.find().sort({ 'className': 1 });
   if (!getStudent) {
     return res.status(400).json({
-      status: false,
+      success: false,
       message: "No student found",
     });
   }
   try {
     return res.status(200).json({
-      status: true,
+      success: true,
       message: "Student list fetched Successfully! ",
       getStudent,
     });
   } catch (error) {
     return res.status(500).json({
-      status: false,
+      success: false,
       message: "Something went wrong",
       error: error.message,
     });
@@ -173,14 +173,14 @@ export const editStudentData = async (req, res, next) => {
   try {
     if (!id) {
       return res.status(400).json({
-        status: false,
+        success: false,
         message: "No id provided"
       })
     }
     const student = await Student.findById(id)
     if (!student) {
       return res.status(400).json({
-        status: false,
+        success: false,
         message: "No student found"
       })
     }
@@ -202,13 +202,13 @@ export const editStudentData = async (req, res, next) => {
     await student.save({ validateBeforeSave: true, runValidators: true, new: true })
 
     res.status(200).json({
-      status: true,
+      success: true,
       message: "Student data updated successfully",
       student
     })
   } catch (error) {
     res.status(500).json({
-      status: false,
+      success: false,
       message: "Something went wrong",
       error: error.message
     })
@@ -220,12 +220,12 @@ export const deleteStudent = async (req, res, next) => {
   const deleteStudent = await Student.findByIdAndDelete(id)
   if (!deleteStudent) {
     return res.status(400).json({
-      status: false,
+      success: false,
       message: "No student found"
     })
   }
   res.status(200).json({
-    status: true,
+    success: true,
     message: "Student deleted successfully",
     deleteStudent
   })
@@ -242,7 +242,7 @@ export const getStudentById = async (req, res, next) => {
     })
   }
   res.status(200).json({
-    status: true,
+    success: true,
     message: "Student fetched successfully",
     getStudent
   })
@@ -256,9 +256,10 @@ export const fetchStudent = catchAsyncError(async (req, res, next) => {
     if (!fetchMe) {
       return next(new ErrorHandler('Unauthorized Student', 501))
     }
-
     res.status(200).json({
+      success:true,
       message: "fetched successfully",
+      user: fetchMe
     })
   } catch (error) {
     console.error("student fetch me error", error)

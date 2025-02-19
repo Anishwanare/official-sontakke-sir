@@ -1,30 +1,17 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
+import { useDispatch, useSelector } from "react-redux";
+import { fetchCoordinators } from "../../../store/slices/coordinatorSlice";
 
 const CoordinateData = () => {
-  const [coordinators, setCoordinators] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
+  const dispatch = useDispatch()
+  const { coordinators } = useSelector((state) => state.Coordinator)
 
   useEffect(() => {
-    const fetchCoordinators = async () => {
-      setLoading(true);
-      setError("");
-      try {
-        const response = await axios.get(
-          `${import.meta.env.VITE_APP_API_BASE_URL}/api/v4/coordinator/fetch`
-        );
-        setCoordinators(response?.data?.coordinators || []);
-      } catch (err) {
-        console.error("Error fetching Coordinator data:", err);
-        setError("Failed to fetch coordinators. Please try again later.");
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchCoordinators();
-  }, []);
+    dispatch(fetchCoordinators())
+  }, [dispatch]);
 
   const tableStyles = "py-2 px-4 border";
 
@@ -38,7 +25,7 @@ const CoordinateData = () => {
         <div className="overflow-x-auto">
           <table className="min-w-full  border ">
             <thead>
-              <tr>
+              <tr className="bg-gray-100">
                 <th className={tableStyles}>Sr. no</th>
                 <th className={tableStyles}>Name</th>
                 <th className={tableStyles}>Email</th>

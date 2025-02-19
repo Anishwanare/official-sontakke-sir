@@ -1,45 +1,141 @@
-// import { createSlice } from "@reduxjs/toolkit";
-// import axios from "axios";
-// import { toast } from "react-toastify";
+import { createSlice } from "@reduxjs/toolkit";
+import axios from "axios";
+import { toast } from "react-toastify";
 
-// const userSlice = createSlice({
-//     name: "User",
-//     initialState: {
-//         user: {},
-//         loading: false,
-//         authenticated: false,
-//         error: null,
-//     },
-//     reducers: {
-//         fetchUserResponse(state) {
-//             state.loading = true;
-//             state.authenticated = false
-//         },
-//         fetchUserSuccess(state, action) {
-//             state.loading = false;
-//             state.authenticated = true;
-//             state.action = action.payload;
-//         },
-//         fetchUserReject(state, action) {
-//             state.loading = false;
-//             state.authenticated = false;
-//         },
-//     }
-// })
+const userSlice = createSlice({
+    name: "User",
+    initialState: {
+        user: {},
+        messages: [],
+        loading: false,
+        isAuthenticated: false,
+        error: null,
+    },
+    reducers: {
+
+        fetchMessagesRequest(state) {
+            state.loading = true;
+        },
+        fetchMessagesSuccess(state, action) {
+            state.loading = false;
+            state.messages = action.payload || []; // Ensure messages is always an array
+        },
+        fetchMessagesFailed(state, action) {
+            state.loading = false;
+            state.error = action.payload?.error;
+        },
+        fetchUserRequest(state) {
+            state.loading = true;
+            state.isAuthenticated = false;
+            state.error = null;
+        },
+        fetchUserSuccess(state, action) {
+            state.loading = false;
+            state.isAuthenticated = true;
+            state.user = action.payload?.user || {};
+        },
+        fetchUserFailed(state, action) {
+            state.loading = false;
+            state.isAuthenticated = false;
+            state.error = action.payload?.error || "Authentication failed";
+        },
+        logoutRequest(state) {
+            state.loading = true;
+        },
+        logoutSuccess(state) {
+            state.loading = false;
+            state.isAuthenticated = false;
+            state.user = {};
+        },
+        logoutFailed(state, action) {
+            state.loading = false;
+            state.error = action.payload?.error || "Logout failed";
+        },
+    },
+});
+
+export const fetchMessages = () => async (dispatch) => {
+    dispatch(userSlice.actions.fetchMessagesRequest());
+    try {
+        const response = await axios.get(`${import.meta.env.VITE_APP_API_BASE_URL}/api/v1/message/get`, { withCredentials: true, headers: { 'Content-Type': 'application/json' } });
+        if (response.data.success) {
+            dispatch(userSlice.actions.fetchMessagesSuccess(response.data?.getAllMessagesResponse));
+            toast.success(response.data.message);
+        } else {
+            throw new Error("Failed to fetch messages");
+        }
+    } catch (error) {
+        dispatch(userSlice.actions.fetchMessagesFailed({ error: error.response?.data?.message }));
+        toast.error(error.response?.data?.message || "An error occurred");
+    }
+};
 
 
-// export const login = (data) => async (dispatch) => {
-//     dispatch(userSlice.actions.fetchUserResponse())
-//     try {
-//         const response = await axios.post(
-//             `${import.meta.env.VITE_APP_API_BASE_URL}/api/v5/admin/login`, data, { withCredentials: true, headers: { "Content-Type": "application/json" } }
-//         );
-//         dispatch(userSlice.actions.fetchUserSuccess(response?.data?.admin))
-//         toast.success(response.data?.message)
-//     } catch (error) {
-//         dispatch((userSlice.actions.fetchUserReject()))
-//         toast.error(error.response.data.message)
-//     }
-// }
 
-// export default userSlice.reducer
+export const login = (data, role) => async (dispatch) => {
+    dispatch(userSlice.actions.fetchUserRequest());
+    const url = role === "admin"
+        ? `${import.meta.env.VITE_APP_API_BASE_URL}/api/v5/admin/login`
+        : `${import.meta.env.VITE_APP_API_BASE_URL}/api/v2/school/login`;
+
+    try {
+        const response = await axios.post(url, data, {
+            withCredentials: true,
+            headers: { "Content-Type": "application/json" },
+        });
+        dispatch(userSlice.actions.fetchUserSuccess(response?.data));
+        toast.success(response.data?.message);
+    } catch (error) {
+        dispatch(userSlice.actions.fetchUserFailed({ error: error.response?.data?.message || "Something went wrong!" }));
+        toast.error(error.response?.data?.message || "An error occurred");
+    }
+};
+
+export const fetchSchoolProfile = () => async (dispatch) => {
+    dispatch(userSlice.actions.fetchUserRequest());
+    try {
+        const response = await axios.get(`${import.meta.env.VITE_APP_API_BASE_URL}/api/v2/school/fetch-me`, {
+            withCredentials: true,
+            headers: { "Content-Type": "application/json" },
+        });
+
+        dispatch(userSlice.actions.fetchUserSuccess(response?.data));
+    } catch (error) {
+        dispatch(userSlice.actions.fetchUserFailed({ error: error.response?.data?.message || "Failed to fetch profile" }));
+    }
+};
+
+
+export const fetchAdminProfile = () => async (dispatch) => {
+    dispatch(userSlice.actions.fetchUserRequest());
+    try {
+        const response = await axios.get(`${import.meta.env.VITE_APP_API_BASE_URL}/api/v5/admin/fetch/me`, {
+            withCredentials: true,
+            headers: { "Content-Type": "application/json" },
+        });
+        dispatch(userSlice.actions.fetchUserSuccess(response?.data));
+    } catch (error) {
+        dispatch(userSlice.actions.fetchUserFailed({ error: error.response?.data?.message || "Failed to fetch admin profile" }));
+    }
+};
+
+export const logout = () => async (dispatch) => {
+    dispatch(userSlice.actions.logoutRequest());
+    try {
+        const response = await axios.get(`${import.meta.env.VITE_APP_API_BASE_URL}/api/v5/admin/logout`, {
+            withCredentials: true,
+            headers: { "Content-Type": "application/json" },
+        });
+        if (response.data.success) {
+            dispatch(userSlice.actions.logoutSuccess());
+            toast.success(response.data.message);
+        } else {
+            throw new Error("Logout failed");
+        }
+    } catch (error) {
+        dispatch(userSlice.actions.logoutFailed({ error: error.response?.data?.message }));
+        toast.error(error.response?.data?.message || "An error occurred");
+    }
+};
+
+export default userSlice.reducer;
