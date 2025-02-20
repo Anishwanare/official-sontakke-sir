@@ -2,6 +2,8 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { useDispatch, useSelector } from "react-redux";
+import { fetchSchools } from "../../store/slices/schoolSlice";
 
 const StudentRegistration = () => {
   const classes = [
@@ -22,7 +24,6 @@ const StudentRegistration = () => {
   };
 
   const [coordinators, setCoordinators] = useState([]);
-  const [schoolData, setSchoolData] = useState([]);
   const [formData, setFormData] = useState({
     firstName: "",
     middleName: "",
@@ -90,29 +91,17 @@ const StudentRegistration = () => {
     }
   };
 
+  const dispatch = useDispatch()
+  const { schools } = useSelector((state) => state.School)
   useEffect(() => {
-    const getSchools = async () => {
-      try {
-        const response = await axios.get(
-          `${import.meta.env.VITE_APP_API_BASE_URL}/api/v2/school/get-schools`
-        );
-        if (response?.data?.status) {
-          setSchoolData(response?.data?.schools);
-        }
-      } catch (err) {
-        toast.error(
-          err.response?.data?.message || "Error in fetching schools!"
-        );
-      }
-    };
-    getSchools();
-  }, []);
+    dispatch(fetchSchools())
+  }, [dispatch]);
 
   useEffect(() => {
     const fetchCoordinators = async () => {
       try {
         const response = await axios.get(
-          `${import.meta.env.VITE_APP_API_BASE_URL}/api/v4/coordinator/fetch`
+          `${import.meta.env.VITE_APP_API_BASE_URL}/api/v4/coordinator/fetch`, { withCredentials: true, headers: { 'Content-Type': 'application/json' } }
         );
         setCoordinators(response?.data?.coordinators || []);
       } catch (error) {
@@ -207,8 +196,8 @@ const StudentRegistration = () => {
               <option value="" disabled>
                 Select your school
               </option>
-              {schoolData.length > 0 ? (
-                schoolData.map((school) => (
+              {schools?.length > 0 ? (
+                schools.map((school) => (
                   <option key={school._id} value={school.id}>
                     {capitalizeFirstLetter(
                       `${school.name}, ${school.schoolVillage}`

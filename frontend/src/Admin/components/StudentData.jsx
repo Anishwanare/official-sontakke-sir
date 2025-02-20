@@ -5,12 +5,12 @@ import { toast } from "react-toastify";
 import { HashLoader } from "react-spinners";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchStudent, deleteStudent } from "../../../store/slices/studentSlice";
-
 const TOTAL_ITEM = 150;
 
 const StudentData = () => {
   const dispatch = useDispatch();
   const { loading, students } = useSelector((state) => state.Student);
+
 
   const [selectedSchool, setSelectedSchool] = useState("");
   const [selectedClass, setSelectedClass] = useState("");
