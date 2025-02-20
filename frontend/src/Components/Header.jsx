@@ -14,6 +14,14 @@ const Header = () => {
   const location = useLocation();
   const { isAuthenticated, user, loading } = useSelector((state) => state.User);
 
+  useEffect(() => {
+    const handleKeyDown = (e) => {
+      if (e.key === "Escape") setShow(false);
+    };
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, []);
+
   // Prevent scrolling when mobile menu is open
   useEffect(() => {
     if (show) {

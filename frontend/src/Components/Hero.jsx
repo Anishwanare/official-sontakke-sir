@@ -4,9 +4,7 @@ import { motion } from "framer-motion";
 const Hero = () => {
   return (
     <>
-      <main className="container mx-auto px-4 text-center flex md:flex-row flex-col-reverse mt-20 pt-5 justify-around">
-
-        {/* Animated Image Section */}
+      <main className="container mx-auto px-4 text-center flex md:flex-row flex-col-reverse py-7 justify-around">
         <motion.div
           initial={{ opacity: 0, scale: 0.9 }}
           animate={{ opacity: 1, scale: 1 }}
@@ -17,11 +15,10 @@ const Hero = () => {
           <img
             src="/logo.jpeg"
             alt="Illustration"
+            loading="lazy"
             className="h-96 object-contain bg-transparent rounded-xl"
           />
         </motion.div>
-
-        {/* Animated Text Section */}
         <motion.div
           initial={{ opacity: 0, y: 50 }}
           animate={{ opacity: 1, y: 0 }}
@@ -36,7 +33,6 @@ const Hero = () => {
           >
             Empowering Young Minds, Shaping Future Leaders!
           </motion.h2>
-
           <motion.h1
             initial={{ opacity: 0, scale: 0.8 }}
             animate={{ opacity: 1, scale: 1 }}
@@ -45,7 +41,6 @@ const Hero = () => {
           >
             Excellence in Education, <br /> Nurturing Bright Futures!
           </motion.h1>
-
           <motion.p
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -54,7 +49,6 @@ const Hero = () => {
           >
             Scholarship-Based Examination for Students of Std 1st to 7th
           </motion.p>
-
           <motion.p
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -63,7 +57,6 @@ const Hero = () => {
           >
             Open for students across <span className="text-blue-500 font-semibold">Marathi, English, and Semi-English Mediums.</span>
           </motion.p>
-
           <motion.p
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}

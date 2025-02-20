@@ -5,32 +5,28 @@ import { motion } from "framer-motion";
 
 const Gallery = () => {
   const [selectedImage, setSelectedImage] = useState(null);
-  const [isModalOpen, setIsModalOpen] = useState(false);
 
-  const handleImageClick = (image) => {
-    setSelectedImage(image);
-    setIsModalOpen(true);
-  };
-
-  const closeModal = () => {
-    setIsModalOpen(false);
-    setSelectedImage(null);
-  };
+  const handleImageClick = (image) => setSelectedImage(image);
+  const closeModal = () => setSelectedImage(null);
 
   useEffect(() => {
-    const handleKeyDown = (e) => {
-      if (e.key === "Escape") closeModal();
-    };
+    document.body.style.overflow = selectedImage ? "hidden" : "auto";
+    return () => (document.body.style.overflow = "auto");
+  }, [selectedImage]);
+
+  useEffect(() => {
+    const handleKeyDown = (e) => e.key === "Escape" && closeModal();
     window.addEventListener("keydown", handleKeyDown);
     return () => window.removeEventListener("keydown", handleKeyDown);
   }, []);
 
   return (
     <div className="gallery min-h-screen pt-5">
+      {/* Title Section */}
       <motion.div
         initial={{ opacity: 0, y: 60 }}
-        transition={{ duration: 0.8, ease: "easeOut", delay: 0.3 }}
         whileInView={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.8, ease: "easeOut", delay: 0.3 }}
         viewport={{ once: true }}
         className="text-center mb-12"
       >
@@ -38,6 +34,7 @@ const Gallery = () => {
         <h2 className="text-lg text-gray-600">Explore Dnyanankur Prakashan</h2>
       </motion.div>
 
+      {/* Gallery Grid */}
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 p-5">
         {galleryData.map((image) => (
           <motion.div
@@ -52,18 +49,18 @@ const Gallery = () => {
               alt={image.alt || `Image ${image.id}`}
               onClick={() => handleImageClick(image)}
             />
-            <motion.a
-              href={image.image}
-              download={"Dnyanankur prakashan " + new Date().getFullYear()}
+            <button
+              onClick={() => window.open(image.image, "_blank")}
               className="absolute bottom-2 right-2 bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-lg shadow-lg transition-all duration-300"
             >
               Download
-            </motion.a>
+            </button>
           </motion.div>
         ))}
       </div>
 
-      {isModalOpen && (
+      {/* Modal Section */}
+      {selectedImage && (
         <motion.div
           className="fixed inset-0 flex items-center justify-center z-50 bg-gray-900 bg-opacity-80"
           initial={{ opacity: 0 }}
@@ -87,13 +84,12 @@ const Gallery = () => {
             >
               &times;
             </button>
-            <motion.a
-              href={selectedImage.image}
-              download
+            <button
+              onClick={() => window.open(selectedImage.image, "_blank")}
               className="absolute top-3 left-3 bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-lg shadow-lg transition-all duration-300"
             >
               Download
-            </motion.a>
+            </button>
             <img
               className="max-w-full h-auto rounded-lg"
               src={selectedImage.image}
@@ -107,3 +103,4 @@ const Gallery = () => {
 };
 
 export default AppLayout(Gallery);
+  

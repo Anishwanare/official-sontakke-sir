@@ -201,7 +201,7 @@ const SchoolData = () => {
             {/* File Upload Input */}
             <div className="mt-4">
               <label className="block mb-1 font-medium">Upload File:</label>
-              <input type="file" accept=".pdf,.docx,.xlsx,.xls" onChange={handleFileChange} />
+              <input type="file" accept=".pdf,.docx,.xlsx,.xls,.jpeg,.png" onChange={handleFileChange} />
             </div>
 
             <div className="mt-4 flex justify-between">

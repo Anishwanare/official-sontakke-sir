@@ -25,11 +25,12 @@ app.use(fileUpload({
 app.use(cookieParser())
 app.use(
   cors({
-    origin: [process.env.FRONTEND_URL || "http://localhost:5173" ],
-    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'], // Allow these methods
-    allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With'], // Add any custom headers
-    credentials: true,  // Allow credentials (cookies, etc.)
-    optionsSuccessStatus: 200, // Use 200 for successful OPTIONS response
+    // origin: [process.env.FRONTEND_URL || "http://localhost:5173" ],
+    origin: ["http://localhost:5173" ],
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+    allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With'], 
+    credentials: true,
+    optionsSuccessStatus: 200, 
   })
 );
 

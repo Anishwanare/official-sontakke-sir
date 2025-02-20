@@ -55,6 +55,25 @@ const School = () => {
                                 const uploadDate = new Date(user?.updatedAt);
                                 const currentDate = new Date();
                                 const isNew = (currentDate - uploadDate) / (1000 * 60 * 60 * 24) <= 10;
+                                const handleDownload = async (url, fileName) => {
+                                    try {
+                                        const response = await fetch(url);
+                                        const blob = await response.blob(); // Convert to Blob
+                                        const fileURL = window.URL.createObjectURL(blob);
+
+                                        // Trigger download without using `<a>`
+                                        const link = new File([blob], fileName, { type: blob.type });
+                                        const data = [link];
+                                        const fileHandle = await window.showSaveFilePicker({
+                                            suggestedName: fileName,
+                                        });
+                                        const writable = await fileHandle.createWritable();
+                                        await writable.write(blob);
+                                        await writable.close();
+                                    } catch (error) {
+                                        console.error("Download failed", error);
+                                    }
+                                };
 
                                 return (
                                     <div key={d._id} className="p-4 rounded-lg shadow-md border border-gray-200 hover:shadow-lg transition relative flex flex-col">
@@ -71,6 +90,7 @@ const School = () => {
                                         >
                                             📥 Download Document
                                         </a>
+
                                     </div>
                                 );
                             })}

@@ -114,66 +114,79 @@ export const uploadFileToSchool = catchAsyncError(async (req, res, next) => {
 
   // Validate input
   if (!documentName || documentName.trim() === "") {
-      return next(new ErrorHandler("Document name is required", 400));
+    return next(new ErrorHandler("Document name is required", 400));
   }
 
   if (!req.files || !req.files.document) {
-      return next(new ErrorHandler("No file uploaded", 400));
+    return next(new ErrorHandler("No file uploaded", 400));
   }
 
-  const document = req.files.document; // Extract uploaded file
+  const document = req.files.document;
 
   // Allowed file types
-  const allowedMimeTypes = [
-      "application/pdf",
-      "application/msword", // .doc
-      "application/vnd.openxmlformats-officedocument.wordprocessingml.document", // .docx
-      "application/vnd.ms-excel", // .xls
-      "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" // .xlsx
-  ];
+  const allowedMimeTypes = {
+    "application/pdf": "pdf",
+    "application/msword": "doc",
+    "application/vnd.openxmlformats-officedocument.wordprocessingml.document": "docx",
+    "application/vnd.ms-excel": "xls",
+    "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet": "xlsx",
+    "image/jpeg": "jpg", // Ensure file extension is present
+    "image/png": "png",  // Add PNG support if needed
+  };
 
-  if (!allowedMimeTypes.includes(document.mimetype)) {
-      return next(new ErrorHandler("Invalid document type. Only PDF, DOC, DOCX, XLS, and XLSX are allowed.", 400));
+
+  if (!allowedMimeTypes[document.mimetype]) {
+    return next(new ErrorHandler("Invalid document type. Only PDF, DOC, DOCX, XLS, and XLSX are allowed.", 400));
   }
 
   // Fetch school details
   const school = await School.findById(schoolId);
   if (!school) {
-      return next(new ErrorHandler("School not found", 404));
+    return next(new ErrorHandler("School not found", 404));
   }
 
   try {
-      // Upload document to Cloudinary
-      const cloudinaryResponse = await cloudinary.uploader.upload(document.tempFilePath, {
-          folder: "sontke",
-          resource_type:'auto',
+    // Get file extension from MIME type
+    const fileExtension = allowedMimeTypes[document.mimetype];
+    const finalFileName = `${documentName}.${fileExtension}`;
 
-      });
+    // Determine resource type (image vs. raw document)
+    const resourceType = document.mimetype.startsWith("image/") ? "image" : "raw";
 
-      if (!cloudinaryResponse || cloudinaryResponse.error) {
-          return next(new ErrorHandler("Failed to upload document to Cloudinary", 500));
-      }
+    const cloudinaryResponse = await cloudinary.uploader.upload(document.tempFilePath, {
+      folder: "sontke",
+      resource_type: resourceType, // Image → "image", Docs → "raw"
+      format: fileExtension, // Ensure correct file extension
+      public_id: finalFileName,
+      use_filename: true,
+      unique_filename: false,
+    });
 
-      // Store uploaded document details in the school object
-      school.documents.push({
-          documentName, // Taken from req.body
-          publicId: cloudinaryResponse.public_id,
-          url: cloudinaryResponse.secure_url,
-      });
+    if (!cloudinaryResponse || cloudinaryResponse.error) {
+      return next(new ErrorHandler("Failed to upload document to Cloudinary", 500));
+    }
 
-      await school.save();
+    // Store uploaded document details in the school object
+    school.documents.push({
+      documentName, // Taken from req.body
+      publicId: cloudinaryResponse.public_id,
+      url: cloudinaryResponse.secure_url,
+    });
 
-      res.status(200).json({
-          success: true,
-          message: "Document uploaded successfully",
-          documents: school.documents,
-      });
+    await school.save();
+
+    res.status(200).json({
+      success: true,
+      message: "Document uploaded successfully",
+      documents: school.documents,
+    });
 
   } catch (error) {
-      console.error("Cloudinary error:", error);
-      return next(new ErrorHandler("Failed to upload document", 500));
+    console.error("Cloudinary error:", error);
+    return next(new ErrorHandler("Failed to upload document", 500));
   }
 });
+
 
 
 

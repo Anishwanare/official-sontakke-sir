@@ -77,6 +77,7 @@ const Founders = () => {
                             <motion.img
                                 src={founder.image}
                                 alt={founder.name}
+                                loading="lazy"
                                 className="w-40 h-40 object-cover rounded-xl border-4 border-yellow-500 mb-4"
                                 whileHover={{ scale: 1.1, transition: { duration: 0.3 } }}
                             />
