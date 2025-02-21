@@ -3,11 +3,11 @@ import {
   coordinatorRegister,
   getCoordinators,
 } from "../controller/CoordinatorController.js"; // Ensure this is correctly imported
-import { isAdminAuthenticated, isAuthorized, isSchoolAuthenticated } from "../middleware.js/auth.js";
+import { isAdminAuthenticated, isAuthorized } from "../middleware.js/auth.js";
 
 const router = express.Router();
 
-router.post("/register", isAdminAuthenticated, coordinatorRegister);
-router.get("/fetch", isAdminAuthenticated, getCoordinators);
+router.post("/register", isAdminAuthenticated, isAuthorized("Admin"), coordinatorRegister);
+router.get("/fetch", isAdminAuthenticated, isAuthorized("Admin"), getCoordinators);
 
 export default router;

@@ -1,10 +1,10 @@
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchMessages } from "../../../store/slices/userSlice";
+import { fetchMessages } from "../../../store/slices/messageSlice";
 
 const MessagesData = () => {
   const dispatch = useDispatch();
-  const { messages = [], loading } = useSelector((state) => state.User); // Ensure `messages` is always an array
+  const { messages, error, loading } = useSelector((state) => state.Message);
 
   useEffect(() => {
     dispatch(fetchMessages());
@@ -19,35 +19,40 @@ const MessagesData = () => {
       </div>
     );
   }
+}
 
-  return (
-    <div className="p-4">
-      {messages.length > 0 ? (
-        <div className="overflow-x-auto">
-          <table className="min-w-full bg-white border border-gray-200">
-            <thead className="border border-gray-200">
-              <tr className="bg-gray-100 ">
-                <th className={tableStyles}>Name</th>
-                <th className={tableStyles}>Email</th>
-                <th className={tableStyles}>Message</th>
+if (error) {
+  return (<div className="text-center text-red-500 py-4">{error}</div>
+  )
+}
+return (
+  <div className="p-4">
+    {messages.length > 0 ? (
+      <div className="overflow-x-auto">
+        <table className="min-w-full bg-white border border-gray-200">
+          <thead className="border border-gray-200">
+            <tr className="bg-gray-100 ">
+              <th className={tableStyles}>Name</th>
+              <th className={tableStyles}>Email</th>
+              <th className={tableStyles}>Message</th>
+            </tr>
+          </thead>
+          <tbody>
+            {messages.map((message, index) => (
+              <tr key={message._id || message.id || index} className="hover:bg-gray-100 border border-gray-200">
+                <td className={tableStyles}>{message.name || "N/A"}</td>
+                <td className={tableStyles}>{message.email || "N/A"}</td>
+                <td className={tableStyles}>{message.message || "No message"}</td>
               </tr>
-            </thead>
-            <tbody>
-              {messages.map((message, index) => (
-                <tr key={message._id || message.id || index} className="hover:bg-gray-100 border border-gray-200">
-                  <td className={tableStyles}>{message.name || "N/A"}</td>
-                  <td className={tableStyles}>{message.email || "N/A"}</td>
-                  <td className={tableStyles}>{message.message || "No message"}</td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-      ) : (
-        <div className="text-center py-4 text-gray-600">No messages found!</div>
-      )}
-    </div>
-  );
+            ))}
+          </tbody>
+        </table>
+      </div>
+    ) : (
+      <div className="text-center py-4 text-gray-600">No messages found!</div>
+    )}
+  </div>
+);
 };
 
 export default MessagesData;

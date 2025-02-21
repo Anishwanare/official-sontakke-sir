@@ -72,9 +72,11 @@ export const fetchStudent = () => async (dispatch) => {
     try {
         const response = await axios.get(
             `${import.meta.env.VITE_APP_API_BASE_URL}/api/v3/student/get-students`,
-            { withCredentials: true, headers: { "Content-Type": "application/json" } }
+            {
+                withCredentials: true,
+                headers: { "Content-Type": "application/json" }
+            }
         );
-        // console.log("API Response:", response.data); // Check what is actually being received
         if (response.data.success) {
             dispatch(studentSlice.actions.fetchStudentsSuccess(response.data.getStudent));
             toast.success(response.data.message || "Students fetched successfully!");

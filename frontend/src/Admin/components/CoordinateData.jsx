@@ -4,10 +4,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { fetchCoordinators } from "../../../store/slices/coordinatorSlice";
 
 const CoordinateData = () => {
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState("");
   const dispatch = useDispatch()
-  const { coordinators } = useSelector((state) => state.Coordinator)
+  const { coordinators, error, loading } = useSelector((state) => state.Coordinator)
 
   useEffect(() => {
     dispatch(fetchCoordinators())

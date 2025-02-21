@@ -11,8 +11,9 @@ const SchoolData = () => {
   const [selectedFile, setSelectedFile] = useState(null);
   const [documentName, setDocumentName] = useState(""); // Added state for document name
   const dispatch = useDispatch();
-  const { schools, loading } = useSelector((state) => state.School);
+  const { schools, loading, error } = useSelector((state) => state.School);
   const [uploadingFile, setUploadingFile] = useState(false)
+
 
   useEffect(() => {
     dispatch(fetchSchools());
@@ -30,6 +31,11 @@ const SchoolData = () => {
       document.body.style.overflow = 'auto'
     }
   })
+
+  if (error) {
+    return (<div className="text-center text-red-500 py-4">{error}</div>
+    )
+  }
 
   const handleDeleteSchool = async (id) => {
     if (window.confirm("Are you sure you want to delete this school?")) {

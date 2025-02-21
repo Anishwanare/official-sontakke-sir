@@ -43,7 +43,7 @@ const App = () => {
 
   useEffect(() => {
     dispatch(fetchAdminProfile());
-    dispatch(fetchSchoolProfile());
+    // dispatch(fetchSchoolProfile());
 
   }, [dispatch]);
 

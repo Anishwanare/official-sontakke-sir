@@ -9,15 +9,20 @@ const TOTAL_ITEM = 150;
 
 const StudentData = () => {
   const dispatch = useDispatch();
-  const { loading, students } = useSelector((state) => state.Student);
-
-
+  const { loading, students, error } = useSelector((state) => state.Student);
   const [selectedSchool, setSelectedSchool] = useState("");
   const [selectedClass, setSelectedClass] = useState("");
   const [selectedCoordinator, setSelectedCoordinator] = useState("");
   const [searchTerm, setSearchTerm] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
   const [showScrollToTop, setShowScrollToTop] = useState(false);
+
+
+  if (error) {
+    console.log("my error", error)
+    return (<div className="text-center text-red-500 py-4">{error}</div>
+    )
+  }
 
   useEffect(() => {
     dispatch(fetchStudent());
@@ -79,6 +84,8 @@ const StudentData = () => {
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
+
+
 
   return (
     <div className="py-4">

@@ -3,6 +3,7 @@ import userReducer from "./slices/userSlice"
 import schoolReducer from "./slices/schoolSlice"
 import studentReducer from "./slices/studentSlice"
 import coordinatorReducer from "./slices/coordinatorSlice"
+import messageReducer from "./slices/messageSlice"
 
 
 export const store = configureStore({
@@ -11,5 +12,6 @@ export const store = configureStore({
         School: schoolReducer,
         Student: studentReducer,
         Coordinator: coordinatorReducer,
+        Message:messageReducer
     }   
 })

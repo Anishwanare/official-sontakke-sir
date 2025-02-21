@@ -35,7 +35,7 @@ export const getAllMessages = async (req, res, next) => {
     return res.status(200).json({
       success: true,
       message: "Messages fetch successfully",
-      getAllMessagesResponse,
+      messages:getAllMessagesResponse,
     });
   } catch (error) {
     return res.status(500).json({

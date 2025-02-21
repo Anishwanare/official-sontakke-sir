@@ -44,7 +44,7 @@ export const isAdminAuthenticated = catchAsyncError(async (req, res, next) => {
     try {
         const decoded = jwt.verify(token, process.env.JWT_SECRET_KEY)
         req.user = await Admin.findById(decoded.id)
-        // console.log(req.user)
+        console.log(req.user)
         next()
     } catch (error) {
         return next(new ErrorHandler("Token Invalid or expires", 401))

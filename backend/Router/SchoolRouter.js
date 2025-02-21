@@ -8,20 +8,20 @@ import {
   schoolLogin,
   schoolRegistration,
 } from "../controller/SchoolController.js";
-import { isAdminAuthenticated, isSchoolAuthenticated } from "../middleware.js/auth.js";
+import { isAdminAuthenticated, isAuthorized, isSchoolAuthenticated } from "../middleware.js/auth.js";
 
 const router = express.Router();
 
 // crud in school
 
-router.post("/register", isAdminAuthenticated, schoolRegistration);
-router.get("/get-schools", isAdminAuthenticated,getAllSchools);
+router.post("/register", isAdminAuthenticated, isAuthorized("Admin"), schoolRegistration);
+router.get("/get-schools", isAdminAuthenticated, isAuthorized("Admin"), getAllSchools);
 router.post("/login", schoolLogin);
-router.put("/edit-school/:id", isAdminAuthenticated, editSchool); 
-router.delete("/delete-school/:id", isAdminAuthenticated, deleteSchool);
+router.put("/edit-school/:id", isAdminAuthenticated, isAuthorized("Admin"), editSchool);
+router.delete("/delete-school/:id", isAdminAuthenticated, isAuthorized("Admin"), deleteSchool);
 router.get("/get-school/:id", isAdminAuthenticated, getSchoolById);
 
 // me
-router.get("/fetch-me", isSchoolAuthenticated, fetchSchool)
+router.get("/fetch-me", isSchoolAuthenticated, isAuthorized("School"), fetchSchool)
 
 export default router;
