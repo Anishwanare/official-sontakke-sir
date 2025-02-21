@@ -19,38 +19,42 @@ const MessagesData = () => {
       </div>
     );
   }
-}
 
-if (error) {
-  return (<div className="text-center text-red-500 py-4">{error}</div>
-  )
-}
-return (
-  <div className="p-4">
-    {messages.length > 0 ? (
-      <div className="overflow-x-auto">
-        <table className="min-w-full bg-white border border-gray-200">
-          <thead className="border border-gray-200">
-            <tr className="bg-gray-100 ">
-              <th className={tableStyles}>Name</th>
-              <th className={tableStyles}>Email</th>
-              <th className={tableStyles}>Message</th>
-            </tr>
-          </thead>
-          <tbody>
-            {messages.map((message, index) => (
-              <tr key={message._id || message.id || index} className="hover:bg-gray-100 border border-gray-200">
-                <td className={tableStyles}>{message.name || "N/A"}</td>
-                <td className={tableStyles}>{message.email || "N/A"}</td>
-                <td className={tableStyles}>{message.message || "No message"}</td>
+  if (error) {
+    return <div className="text-center text-red-500 py-4">{error}</div>;
+  }
+
+  return (
+    <div className="p-4">
+      {messages.length > 0 ? (
+        <div className="overflow-x-auto">
+          <table className="min-w-full bg-white border border-gray-200">
+            <thead className="border border-gray-200">
+              <tr className="bg-gray-100 ">
+                <th className={tableStyles}>Name</th>
+                <th className={tableStyles}>Email</th>
+                <th className={tableStyles}>Message</th>
               </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
-    ) : (
-      <div className="text-center py-4 text-gray-600">No messages found!</div>
-    )}
-  </div>
-);
+            </thead>
+            <tbody>
+              {messages.map((message, index) => (
+                <tr
+                  key={message._id || message.id || index}
+                  className="hover:bg-gray-100 border border-gray-200"
+                >
+                  <td className={tableStyles}>{message.name || "N/A"}</td>
+                  <td className={tableStyles}>{message.email || "N/A"}</td>
+                  <td className={tableStyles}>{message.message || "No message"}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      ) : (
+        <div className="text-center py-4 text-gray-600">No messages found!</div>
+      )}
+    </div>
+  );
+};
+
 export default MessagesData;
