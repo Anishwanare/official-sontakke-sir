@@ -53,6 +53,4 @@ return (
     )}
   </div>
 );
-};
-
 export default MessagesData;
