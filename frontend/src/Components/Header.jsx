@@ -123,7 +123,7 @@ const Header = () => {
               </Link>
               <Link
                 to="/admin-login"
-                className="text-lg font-medium bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 transition"
+                className="text-lg font-medium bg-yellow-500 text-white px-4 py-2 rounded-lg hover:bg-yellow-600 transition"
               >
                 Admin Login
               </Link>
@@ -249,7 +249,7 @@ const Header = () => {
                     </Link>
                     <Link
                       to="/admin-login"
-                      className="py-3 text-lg font-medium bg-blue-500 text-white text-center rounded-lg px-6 hover:bg-blue-600 transition"
+                      className="py-3 text-lg font-medium bg-yellow-500 text-white text-center rounded-lg px-6 hover:bg-yellow-600 transition"
                       onClick={handleToggle}
                     >
                       Admin Login
