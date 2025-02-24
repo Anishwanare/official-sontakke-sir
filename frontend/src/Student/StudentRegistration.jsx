@@ -4,10 +4,16 @@ import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchSchools } from "../../store/slices/schoolSlice";
+import { fetchCoordinators } from "../../store/slices/coordinatorSlice";
 
 const StudentRegistration = () => {
 
     const { coordinators } = useSelector((state) => state.Coordinator)
+    // console.log(coordinators)
+
+    useEffect(()=>{
+      dispatch(fetchCoordinators())
+    },[dispatch])
   
   const classes = [
     "Class - 1",

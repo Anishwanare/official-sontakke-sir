@@ -2,7 +2,8 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { fetchCoordinators } from "../../store/slices/coordinatorSlice";
 
 const Registration = () => {
   const [name, setName] = useState("");
@@ -17,10 +18,15 @@ const Registration = () => {
   const [headMasterName, setHeadMasterName] = useState("");
   const [headMasterMobile, setHeadMasterMobile] = useState("");
   const [show, setShow] = useState(false);
+  const dispatch = useDispatch()
 
   const { coordinators } = useSelector((state) => state.Coordinator)
-
   console.log(coordinators)
+
+  useEffect(() => {
+    dispatch(fetchCoordinators())
+  }, [dispatch])
+  // console.log(coordinators)
 
 
   const handleShowPassword = () => {
