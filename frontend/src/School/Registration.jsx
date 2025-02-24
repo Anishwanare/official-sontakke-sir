@@ -100,19 +100,6 @@ const Registration = () => {
     }
   };
 
-  useEffect(() => {
-    const fetchCoordinators = async () => {
-      try {
-        const response = await axios.get(
-          `${import.meta.env.VITE_APP_API_BASE_URL}/api/v4/coordinator/fetch`
-        );
-        setCoordinators(response?.data?.coordinators || []);
-      } catch (error) {
-        console.error("Error fetching Coordinator data:", error);
-      }
-    };
-    fetchCoordinators();
-  }, []);
 
   return (
     <div className="flex items-center justify-center min-h-screen bg-gray-200 flex-col">
