@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { useSelector } from "react-redux";
 
 const Registration = () => {
   const [name, setName] = useState("");
@@ -11,12 +12,15 @@ const Registration = () => {
   const [schoolVillage, setSchoolVillage] = useState("");
   const [talukka, setTalukka] = useState("");
   const [district, setDistrict] = useState("");
-  const [coordinators, setCoordinators] = useState([]);
+  // const [coordinators, setCoordinators] = useState([]);
   const [selectedCoordinator, setSelectedCoordinator] = useState("");
   const [headMasterName, setHeadMasterName] = useState("");
   const [headMasterMobile, setHeadMasterMobile] = useState("");
   const [show, setShow] = useState(false);
 
+  const { coordinators } = useSelector((state) => state.Coordinator)
+
+  console.log(coordinators)
 
 
   const handleShowPassword = () => {
@@ -36,19 +40,6 @@ const Registration = () => {
   ];
 
 
-  useEffect(() => {
-    const fetchCoordinators = async () => {
-      try {
-        const response = await axios.get(
-          `${import.meta.env.VITE_APP_API_BASE_URL}/api/v4/coordinator/fetch`, { withCredentials: true, headers: { 'Content-Type': 'application/json' } }
-        );
-        setCoordinators(response?.data?.coordinators || []);
-      } catch (error) {
-        toast.error("Error fetching Coordinator data!");
-      }
-    };
-    fetchCoordinators();
-  }, []);
 
   const handleSubmit = async (e) => {
     e.preventDefault(); // Prevent the default form submission

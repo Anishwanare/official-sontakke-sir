@@ -6,6 +6,9 @@ import { useDispatch, useSelector } from "react-redux";
 import { fetchSchools } from "../../store/slices/schoolSlice";
 
 const StudentRegistration = () => {
+
+    const { coordinators } = useSelector((state) => state.Coordinator)
+  
   const classes = [
     "Class - 1",
     "Class - 2",
@@ -23,7 +26,7 @@ const StudentRegistration = () => {
     return str.replace(/\b\w/g, (char) => char.toUpperCase());
   };
 
-  const [coordinators, setCoordinators] = useState([]);
+  // const [coordinators, setCoordinators] = useState([]);
   const [formData, setFormData] = useState({
     firstName: "",
     middleName: "",
@@ -97,19 +100,6 @@ const StudentRegistration = () => {
     dispatch(fetchSchools())
   }, [dispatch]);
 
-  useEffect(() => {
-    const fetchCoordinators = async () => {
-      try {
-        const response = await axios.get(
-          `${import.meta.env.VITE_APP_API_BASE_URL}/api/v4/coordinator/fetch`, { withCredentials: true, headers: { 'Content-Type': 'application/json' } }
-        );
-        setCoordinators(response?.data?.coordinators || []);
-      } catch (error) {
-        toast.error("Error fetching Coordinator data!");
-      }
-    };
-    fetchCoordinators();
-  }, []);
 
   return (
     <div className="flex items-center justify-center min-h-screen bg-gray-100">
