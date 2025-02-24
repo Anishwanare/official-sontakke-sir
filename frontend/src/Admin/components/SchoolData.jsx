@@ -14,6 +14,7 @@ const SchoolData = () => {
   const { schools, loading, error } = useSelector((state) => state.School);
   const [uploadingFile, setUploadingFile] = useState(false)
 
+  // console.log(user)
 
   useEffect(() => {
     dispatch(fetchSchools());

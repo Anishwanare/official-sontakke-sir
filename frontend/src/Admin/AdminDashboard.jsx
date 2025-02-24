@@ -11,8 +11,6 @@ const MessagesData = React.lazy(() => import("./components/MessagesData"));
 const CoordinateData = React.lazy(() => import("./components/CoordinateData"));
 
 
-
-
 const sections = [
   { name: "Schools", icon: "/school.png" },
   { name: "Students", icon: "/student.png" },
@@ -27,10 +25,6 @@ const AdminDashboard = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const dispatch = useDispatch();
   const navigate = useNavigate();
-
-  
-  
-  
 
   const handleLogoutAdmin = () => {
     dispatch(logout());

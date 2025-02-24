@@ -17,6 +17,8 @@ const Registration = () => {
   const [headMasterMobile, setHeadMasterMobile] = useState("");
   const [show, setShow] = useState(false);
 
+
+
   const handleShowPassword = () => {
     setShow((prev) => !prev);
   };
@@ -32,6 +34,21 @@ const Registration = () => {
     "EK79MH2155", "ES99KD0206", "E01MH24S57", "E1M3HP0145", "E09H2MC174",
     "E8C65H0175", "E2H3KT0143", "E01MH24S4", "E1M2HP013", "EG23OP2156",
   ];
+
+
+  useEffect(() => {
+    const fetchCoordinators = async () => {
+      try {
+        const response = await axios.get(
+          `${import.meta.env.VITE_APP_API_BASE_URL}/api/v4/coordinator/fetch`, { withCredentials: true, headers: { 'Content-Type': 'application/json' } }
+        );
+        setCoordinators(response?.data?.coordinators || []);
+      } catch (error) {
+        toast.error("Error fetching Coordinator data!");
+      }
+    };
+    fetchCoordinators();
+  }, []);
 
   const handleSubmit = async (e) => {
     e.preventDefault(); // Prevent the default form submission

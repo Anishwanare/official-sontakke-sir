@@ -3,7 +3,9 @@ import { Admin } from "../Model/AdminModel.js";
 import jwt from "jsonwebtoken";
 import ErrorHandler from "../middleware.js/error.js";
 import { School } from "../Model/SchoolModel.js";
+import { Student } from "../Model/StudentModel.js"
 import { v2 as cloudinary } from "cloudinary";
+import mongoose from "mongoose";
 
 export const AdminRegister = async (req, res, next) => {
   const { name, email, password } = req.body;
@@ -187,6 +189,24 @@ export const uploadFileToSchool = catchAsyncError(async (req, res, next) => {
   }
 });
 
+
+// generate certificate for student
+
+// export const generateCertificate = catchAsyncError(async (req, res, next) => {
+//   try {
+//     // get that student by id
+//     const { id } = req.params
+
+//     if (!id || !mongoose.Types.ObjectId.isValid(id)) {
+//       return next(new ErrorHandler("Invalid student id", 400))
+//     }
+//     const student = await Student.findById(id);
+
+//     if(!student)
+//   } catch (error) {
+
+//   }
+// })
 
 
 

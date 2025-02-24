@@ -232,7 +232,12 @@ export const deleteStudent = async (req, res, next) => {
 }
 
 export const getStudentById = async (req, res, next) => {
-  const { id } = req.params
+  const { id } = req.params;
+
+  if (!id || !mongoose.Types.ObjectId.isValid(id)) {
+    return next(new ErrorHandler("Invalid student id", 400))
+  }
+
   const getStudent = await Student.findById(id)
   if (!getStudent) {
     return res.status(400).json({
@@ -241,6 +246,7 @@ export const getStudentById = async (req, res, next) => {
       getStudent
     })
   }
+
   res.status(200).json({
     success: true,
     message: "Student fetched successfully",
@@ -248,7 +254,7 @@ export const getStudentById = async (req, res, next) => {
   })
 }
 
-// fetch me
+// fetch me when login will fetch me
 export const fetchStudent = catchAsyncError(async (req, res, next) => {
   try {
     const fetchMe = await Student.findById(req.student._id)
@@ -257,7 +263,7 @@ export const fetchStudent = catchAsyncError(async (req, res, next) => {
       return next(new ErrorHandler('Unauthorized Student', 501))
     }
     res.status(200).json({
-      success:true,
+      success: true,
       message: "fetched successfully",
       user: fetchMe
     })

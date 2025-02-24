@@ -13,7 +13,7 @@ const userSlice = createSlice({
     },
     reducers: {
 
-       
+
         fetchUserRequest(state) {
             state.loading = true;
             state.isAuthenticated = false;
