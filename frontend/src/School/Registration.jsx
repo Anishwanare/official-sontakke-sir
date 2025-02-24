@@ -64,7 +64,7 @@ const Registration = () => {
           coordinator: selectedCoordinator,
           headMasterName,
           headMasterMobile,
-        }
+        }, { withCredentials: true, headers: { "Content-Type": "application/json" } }
       );
 
       if (response.data?.status) {

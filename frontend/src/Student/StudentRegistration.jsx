@@ -66,7 +66,7 @@ const StudentRegistration = () => {
     try {
       const response = await axios.post(
         `${import.meta.env.VITE_APP_API_BASE_URL}/api/v3/student/register`,
-        formData
+        formData, { withCredentials: true, headers: { "Content-Type": "application/json" } }
       );
 
       if (response?.data?.status) {
