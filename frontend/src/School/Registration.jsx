@@ -20,13 +20,6 @@ const Registration = () => {
   const [show, setShow] = useState(false);
   const dispatch = useDispatch()
 
-  const { coordinators } = useSelector((state) => state.Coordinator)
-  console.log(coordinators)
-
-  useEffect(() => {
-    dispatch(fetchCoordinators())
-  }, [dispatch])
-  // console.log(coordinators)
 
 
   const handleShowPassword = () => {
@@ -96,6 +89,13 @@ const Registration = () => {
       setLoading(false);
     }
   };
+
+  const { coordinators } = useSelector((state) => state.Coordinator)
+
+  useEffect(() => {
+    dispatch(fetchCoordinators())
+  }, [dispatch])
+
 
 
   return (

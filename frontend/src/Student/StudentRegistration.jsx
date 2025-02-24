@@ -8,13 +8,9 @@ import { fetchCoordinators } from "../../store/slices/coordinatorSlice";
 
 const StudentRegistration = () => {
 
-    const { coordinators } = useSelector((state) => state.Coordinator)
-    // console.log(coordinators)
 
-    useEffect(()=>{
-      dispatch(fetchCoordinators())
-    },[dispatch])
-  
+
+
   const classes = [
     "Class - 1",
     "Class - 2",
@@ -105,6 +101,13 @@ const StudentRegistration = () => {
   useEffect(() => {
     dispatch(fetchSchools())
   }, [dispatch]);
+
+  const { coordinators } = useSelector((state) => state.Coordinator)
+  // console.log(coordinators)
+  useEffect(() => {
+    dispatch(fetchCoordinators())
+  }, [dispatch])
+
 
 
   return (
