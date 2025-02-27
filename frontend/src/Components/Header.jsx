@@ -52,11 +52,11 @@ const Header = () => {
   const handleToggle = () => setShow((prev) => !prev);
   const handleDropdownToggle = () => setDropdownOpen((prev) => !prev);
 
-  // Hide header on restricted pages
   const restrictedPaths = [
     "/admin-dashboard",
     "/update-school/",
     "/school-login",
+    "/student-login",
     "/update-student/"
   ];
 
@@ -118,6 +118,9 @@ const Header = () => {
 
           {!isAuthenticated ? (
             <>
+              <Link to="/student-login" className="text-lg font-medium text-gray-800 hover:text-yellow-500 transition">
+                Student Login
+              </Link>
               <Link to="/school-login" className="text-lg font-medium text-gray-800 hover:text-yellow-500 transition">
                 School Login
               </Link>
@@ -131,8 +134,17 @@ const Header = () => {
           ) : (
             <>
               {user?.role === "School" && (
-                <Link to="/school-home" className="text-lg font-medium text-gray-800">
+                <Link to="/school-dashboard" className="text-lg font-medium text-gray-800">
                   {user?.name}
+                </Link>
+              )}
+              {user?.role === "Student" && (
+                <Link
+                  to="/student-dashboard"
+                  className="py-3 px-1 text-lg font-medium text-gray-800 text-center rounded-lg "
+
+                >
+                  {user?.firstName + " " + user?.lastName}
                 </Link>
               )}
               {user?.role === "Admin" && (
@@ -241,6 +253,13 @@ const Header = () => {
                 {!isAuthenticated ? (
                   <>
                     <Link
+                      to="/student-login"
+                      className="border border-yellow-200 py-3 text-lg font-medium text-gray-800 text-center hover:bg-yellow-500 hover:text-white rounded-lg transition"
+                      onClick={handleToggle}
+                    >
+                      Student Login
+                    </Link>
+                    <Link
                       to="/school-login"
                       className="border border-yellow-200 py-3 text-lg font-medium text-gray-800 text-center hover:bg-yellow-500 hover:text-white rounded-lg transition"
                       onClick={handleToggle}
@@ -259,11 +278,20 @@ const Header = () => {
                   <>
                     {user?.role === "School" && (
                       <Link
-                        to="/school-home"
+                        to="/school-dashboard"
                         className="py-3 text-lg font-medium text-gray-800 text-center rounded-lg hover:bg-yellow-500 hover:text-white transition"
                         onClick={handleToggle}
                       >
                         {user?.name}
+                      </Link>
+                    )}
+                    {user?.role === "Student" && (
+                      <Link
+                        to="/student-dashboard"
+                        className="py-3 text-lg font-medium text-gray-800 text-center rounded-lg hover:bg-yellow-500 hover:text-white transition"
+                        onClick={handleToggle}
+                      >
+                        {user?.firstName + " " + user?.lastName}
                       </Link>
                     )}
                     {user?.role === "Admin" && (

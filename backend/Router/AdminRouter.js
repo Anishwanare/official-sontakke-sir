@@ -1,6 +1,6 @@
 import express from 'express';
-import { AdminLogin, AdminRegister, fetchAdmin, Logout, uploadFileToSchool } from '../controller/AdminController.js';
-import { isAdminAuthenticated, isAuthorized, isSchoolAuthenticated } from '../middleware.js/auth.js';
+import { AdminLogin, AdminRegister, fetchAdmin, Logout, uploadFileToSchool, uploadFileToStudent } from '../controller/AdminController.js';
+import { isAdminAuthenticated, isAuthorized } from '../middleware.js/auth.js';
 
 
 const router = express.Router();
@@ -8,7 +8,8 @@ const router = express.Router();
 router.post("/register", AdminRegister)
 router.post("/login", AdminLogin)
 router.get('/fetch/me', isAdminAuthenticated, isAuthorized("Admin"), fetchAdmin)
-router.post('/upload-file-to-school/:schoolId', isAdminAuthenticated, isAuthorized("Admin"), uploadFileToSchool)
+router.post('/upload-file-to-school/:id', isAdminAuthenticated, isAuthorized("Admin"), uploadFileToSchool)
+router.post('/upload-file-to-student/:id', isAdminAuthenticated, isAuthorized("Admin"), uploadFileToStudent)
 
 
 // this router is for all admin and school coordinator

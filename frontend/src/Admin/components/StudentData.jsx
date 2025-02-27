@@ -1,10 +1,11 @@
-import React, { useEffect, useState, useMemo } from "react";
+import React, { useEffect, useState, useMemo, memo } from "react";
 import { Link } from "react-router-dom";
 import * as XLSX from "xlsx";
 import { toast } from "react-toastify";
 import { HashLoader } from "react-spinners";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchStudent, deleteStudent } from "../../../store/slices/studentSlice";
+import axios from "axios";
 const TOTAL_ITEM = 150;
 
 const StudentData = () => {
@@ -16,6 +17,11 @@ const StudentData = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
   const [showScrollToTop, setShowScrollToTop] = useState(false);
+  const [showModel, setShowModel] = useState(false)
+  const [showSelectedStudent, setShowSelectedStudent] = useState(null)
+  const [documentName, setDocumentName] = useState("");
+  const [selectedFile, setSelectedFile] = useState(null);
+  const [uploadingFile, setUploadingFile] = useState(false)
 
 
   if (error) {
@@ -23,6 +29,63 @@ const StudentData = () => {
     return (<div className="text-center text-red-500 py-4">{error}</div>
     )
   }
+
+
+  const handleOpenModel = (student) => {
+    setShowSelectedStudent(student)
+    setShowModel(true)
+  }
+
+  const handleCloseModal = () => {
+    setShowModel(false)
+    setShowSelectedStudent(null)
+    setSelectedFile(null)
+    setDocumentName('')
+  }
+
+  const handleFileUpload = async () => {
+
+    if (!documentName.trim()) {
+      toast.error("Please enter a document name.");
+      return;
+    }
+    if (!selectedFile) {
+      toast.error("Please select a file first.");
+      return;
+    }
+
+    const formdata = new FormData()
+    formdata.append('documentName', documentName)
+    formdata.append('document', selectedFile)
+
+    try {
+      const response = await axios.post(
+        `${import.meta.env.VITE_APP_API_BASE_URL}/api/v5/admin/upload-file-to-student/${showSelectedStudent?._id}`,
+        formdata,
+        {
+          withCredentials: true,
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        }
+      );
+      if (response.data?.success) {
+        toast.success("File uploaded successfully!");
+        setUploadingFile(false)
+        setDocumentName("")
+        setSelectedFile(null)
+        handleCloseModal();
+      }
+    } catch (error) {
+      console.error("Error uploading file:", error);
+      toast.error("Failed to upload file.");
+      setUploadingFile(false)
+    }
+  }
+
+  const handleFileChange = (event) => {
+    setSelectedFile(event.target.files[0]);
+  };
 
   useEffect(() => {
     dispatch(fetchStudent());
@@ -136,14 +199,14 @@ const StudentData = () => {
           <table className="min-w-full border">
             <thead>
               <tr className="bg-gray-100">
-                {["Sr No.", "Full Name", "District", "Talukka", "Phone", "School", "Coordinator", "Class", "Actions"].map((header, index) => (
+                {["Sr No.", "Full Name", "District", "Talukka", "Phone", "School", "Coordinator", "Class", "Password", "Actions"].map((header, index) => (
                   <th key={index} className="py-2 px-4 border">{header}</th>
                 ))}
               </tr>
             </thead>
             <tbody>
               {paginatedData.map((student, index) => (
-                <tr key={student._id} className="hover:bg-gray-100">
+                <tr key={student._id} className="hover:bg-gray-100" onClick={() => handleOpenModel(student)}>
                   <td className="py-2 px-4 border">{index + 1}</td>
                   <td className="py-2 px-4 border">{student.firstName} {student.middleName} {student.lastName}</td>
                   <td className="py-2 px-4 border">{student.district}</td>
@@ -152,6 +215,7 @@ const StudentData = () => {
                   <td className="py-2 px-4 border">{student.school}</td>
                   <td className="py-2 px-4 border">{student.coordinator}</td>
                   <td className="py-2 px-4 border">{student.className}</td>
+                  <td className="py-2 px-4 border">{student.password}</td>
                   <td className="py-2 px-4 border">
                     <Link to={`/admin/update-student/${student._id}`} className="text-blue-500 mr-2">Update</Link>
                     <button onClick={() => handleDelete(student._id)} className="text-red-500">Delete</button>
@@ -162,8 +226,55 @@ const StudentData = () => {
           </table>
         </div>
       ) : <HashLoader color="#1276e2" />}
+
+      {showModel && showSelectedStudent && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
+          <div className="bg-white p-6 rounded-lg w-3/4 md:w-1/2">
+            <h2 className="text-xl font-bold mb-4 text-center">{showSelectedStudent?.firstName} {showSelectedStudent?.lastName}</h2>
+            <div className="grid grid-cols-2 gap-4">
+              {[
+                { label: "District", value: showSelectedStudent?.district },
+                { label: "Village", value: showSelectedStudent?.villageName },
+                { label: "Talukka", value: showSelectedStudent?.talukka },
+                { label: "School Name", value: showSelectedStudent?.school },
+                { label: "Mobile number", value: showSelectedStudent?.phone },
+              ].map((item, index) => (
+                <p key={index}>
+                  <strong>{item.label}:</strong> {item.value || "N/A"}
+                </p>
+              ))}
+            </div>
+
+            {/* document name input */}
+            <div className="mt-4">
+              <label className="block mb-1 font-medium">Document Name:</label>
+              <input
+                type="text"
+                value={documentName}
+                onChange={(e) => setDocumentName(e.target.value)}
+                placeholder="Enter document name"
+                className="w-full border px-3 py-2 rounded-lg"
+              />
+            </div>
+
+            <div className="mt-4">
+              <label className="block mb-1 font-medium">Upload File:</label>
+              <input type="file" accept=".pdf,.docx,.xlsx,.xls,.jpeg,.png" onChange={handleFileChange} />
+            </div>
+
+            <div className="mt-4 flex justify-between">
+              <button onClick={handleFileUpload} className="bg-green-500 text-white px-4 py-2 rounded-lg hover:bg-green-700">
+                {uploadingFile ? "Uploading.." : "Upload"}
+              </button>
+              <button onClick={handleCloseModal} className="bg-red-500 text-white px-4 py-2 rounded-lg hover:bg-red-700">
+                Close
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
 
-export default StudentData;
+export default memo(StudentData);

@@ -12,8 +12,6 @@ const userSlice = createSlice({
         error: null,
     },
     reducers: {
-
-
         fetchUserRequest(state) {
             state.loading = true;
             state.isAuthenticated = false;
@@ -45,14 +43,14 @@ const userSlice = createSlice({
 });
 
 
-
-
-
 export const login = (data, role) => async (dispatch) => {
     dispatch(userSlice.actions.fetchUserRequest());
-    const url = role === "admin"
-        ? `${import.meta.env.VITE_APP_API_BASE_URL}/api/v5/admin/login`
-        : `${import.meta.env.VITE_APP_API_BASE_URL}/api/v2/school/login`;
+    console.log(role)
+    let url;
+
+    if (role === "admin") url = `${import.meta.env.VITE_APP_API_BASE_URL}/api/v5/admin/login`
+    if (role === 'school') url = `${import.meta.env.VITE_APP_API_BASE_URL}/api/v2/school/login`;
+    if (role === 'student') url = `${import.meta.env.VITE_APP_API_BASE_URL}/api/v3/student/login`;
 
     try {
         const response = await axios.post(url, data, {
@@ -71,6 +69,20 @@ export const fetchSchoolProfile = () => async (dispatch) => {
     dispatch(userSlice.actions.fetchUserRequest());
     try {
         const response = await axios.get(`${import.meta.env.VITE_APP_API_BASE_URL}/api/v2/school/fetch-me`, {
+            withCredentials: true,
+            headers: { "Content-Type": "application/json" },
+        });
+
+        dispatch(userSlice.actions.fetchUserSuccess(response?.data));
+    } catch (error) {
+        dispatch(userSlice.actions.fetchUserFailed({ error: error.response?.data?.message || "Failed to fetch profile" }));
+    }
+};
+
+export const fetchStudentProfile = () => async (dispatch) => {
+    dispatch(userSlice.actions.fetchUserRequest());
+    try {
+        const response = await axios.get(`${import.meta.env.VITE_APP_API_BASE_URL}/api/v3/student/fetch-me`, {
             withCredentials: true,
             headers: { "Content-Type": "application/json" },
         });

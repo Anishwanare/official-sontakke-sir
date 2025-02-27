@@ -252,7 +252,7 @@ export const fetchSchool = catchAsyncError(async (req, res, next) => {
     const schoolProfile = await School.findById(req.user?._id);
 
     if (!schoolProfile) {
-      return res.status(404).json({ success: false, message: "User not found" });
+      return res.status(404).json({ success: false, message: "Unauthorized school login" });
     }
 
     res.status(200).json({

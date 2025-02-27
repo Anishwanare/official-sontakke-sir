@@ -54,6 +54,13 @@ const studentSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
+    documents: [
+      {
+        documentName: String,
+        publicId: String,
+        url: String
+      },
+    ],
     role: {
       type: String,
       required: false,

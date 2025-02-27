@@ -82,7 +82,7 @@ export const AdminLogin = async (req, res, next) => {
 
     // Generate JWT token
     const token = jwt.sign({ id: admin._id }, process.env.JWT_SECRET_KEY, {
-      expiresIn: process.env.JWT_EXPIRES, // Token valid for 1 day
+      expiresIn: process.env.JWT_EXPIRES,
     });
 
     return res
@@ -111,7 +111,7 @@ export const AdminLogin = async (req, res, next) => {
 
 // import pdf or imp file to school on the basis of school id 
 export const uploadFileToSchool = catchAsyncError(async (req, res, next) => {
-  const { schoolId } = req.params;
+  const { id } = req.params;
   const { documentName } = req.body;
 
   // Validate input
@@ -132,8 +132,8 @@ export const uploadFileToSchool = catchAsyncError(async (req, res, next) => {
     "application/vnd.openxmlformats-officedocument.wordprocessingml.document": "docx",
     "application/vnd.ms-excel": "xls",
     "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet": "xlsx",
-    "image/jpeg": "jpg", // Ensure file extension is present
-    "image/png": "png",  // Add PNG support if needed
+    "image/jpeg": "jpg",
+    "image/png": "png",
   };
 
 
@@ -142,7 +142,7 @@ export const uploadFileToSchool = catchAsyncError(async (req, res, next) => {
   }
 
   // Fetch school details
-  const school = await School.findById(schoolId);
+  const school = await School.findById(id);
   if (!school) {
     return next(new ErrorHandler("School not found", 404));
   }
@@ -157,8 +157,8 @@ export const uploadFileToSchool = catchAsyncError(async (req, res, next) => {
 
     const cloudinaryResponse = await cloudinary.uploader.upload(document.tempFilePath, {
       folder: "sontke",
-      resource_type: resourceType, // Image → "image", Docs → "raw"
-      format: fileExtension, // Ensure correct file extension
+      resource_type: resourceType,
+      format: fileExtension,
       public_id: finalFileName,
       use_filename: true,
       unique_filename: false,
@@ -168,9 +168,8 @@ export const uploadFileToSchool = catchAsyncError(async (req, res, next) => {
       return next(new ErrorHandler("Failed to upload document to Cloudinary", 500));
     }
 
-    // Store uploaded document details in the school object
     school.documents.push({
-      documentName, // Taken from req.body
+      documentName,
       publicId: cloudinaryResponse.public_id,
       url: cloudinaryResponse.secure_url,
     });
@@ -181,6 +180,86 @@ export const uploadFileToSchool = catchAsyncError(async (req, res, next) => {
       success: true,
       message: "Document uploaded successfully",
       documents: school.documents,
+    });
+
+  } catch (error) {
+    console.error("Cloudinary error:", error);
+    return next(new ErrorHandler("Failed to upload document", 500));
+  }
+});
+
+
+// upload file to student
+export const uploadFileToStudent = catchAsyncError(async (req, res, next) => {
+  const { id } = req.params;
+  const { documentName } = req.body;
+
+  // Validate input
+  if (!documentName || documentName.trim() === "") {
+    return next(new ErrorHandler("Document name is required", 400));
+  }
+
+  if (!req.files || !req.files.document) {
+    return next(new ErrorHandler("No file uploaded", 400));
+  }
+
+  const document = req.files.document;
+
+  // Allowed file types
+  const allowedMimeTypes = {
+    "application/pdf": "pdf",
+    "application/msword": "doc",
+    "application/vnd.openxmlformats-officedocument.wordprocessingml.document": "docx",
+    "application/vnd.ms-excel": "xls",
+    "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet": "xlsx",
+    "image/jpeg": "jpg",
+    "image/png": "png",
+  };
+
+
+  if (!allowedMimeTypes[document.mimetype]) {
+    return next(new ErrorHandler("Invalid document type. Only PDF, DOC, DOCX, XLS, and XLSX are allowed.", 400));
+  }
+
+  // Fetch school details
+  const student = await Student.findById(id);
+  if (!student) {
+    return next(new ErrorHandler("Student not found", 404));
+  }
+
+  try {
+    // Get file extension from MIME type
+    const fileExtension = allowedMimeTypes[document.mimetype];
+    const finalFileName = `${documentName}.${fileExtension}`;
+
+    // Determine resource type (image vs. raw document)
+    const resourceType = document.mimetype.startsWith("image/") ? "image" : "raw";
+
+    const cloudinaryResponse = await cloudinary.uploader.upload(document.tempFilePath, {
+      folder: "sontke",
+      resource_type: resourceType,
+      format: fileExtension,
+      public_id: finalFileName,
+      use_filename: true,
+      unique_filename: false,
+    });
+
+    if (!cloudinaryResponse || cloudinaryResponse.error) {
+      return next(new ErrorHandler("Failed to upload document to Cloudinary", 500));
+    }
+
+    student.documents.push({
+      documentName,
+      publicId: cloudinaryResponse.public_id,
+      url: cloudinaryResponse.secure_url,
+    });
+
+    await student.save();
+
+    res.status(200).json({
+      success: true,
+      message: "Document uploaded successfully",
+      documents: student.documents,
     });
 
   } catch (error) {
@@ -237,23 +316,25 @@ export const fetchAdmin = catchAsyncError(async (req, res, next) => {
 export const Logout = catchAsyncError(async (req, res, next) => {
   try {
     res.status(200).cookie('School_Token', "", {
-      expires: new Date(Date.now()),
+      expires: new Date(0),
       httpOnly: true
     }).cookie("Admin_Token", "", {
-      expires: new Date(Date.now()),
+      expires: new Date(0),
       httpOnly: true
     }).cookie("Coordinator_Token", "", {
-      expires: new Date(Date.now()),
+      expires: new Date(0),
+      httpOnly: true
+    }).cookie('Student_Token', " ", {
+      expires: new Date(0),
       httpOnly: true
     }).json({
       success: true,
-      message: "Logged out successfully"
+      message: 'Logout successfully.'
     })
   } catch (error) {
     res.status(500).json({
       success: false,
       message: error?.message || "Internal server error",
     })
-
   }
 })

@@ -40,7 +40,17 @@ const studentSlice = createSlice({
         deleteSchoolFailed(state, action) {
             state.loading = false;
             state.error = action.payload?.error
-        }
+        },
+        // registerStudentResponse(state, action) {
+        //     state.loading = true;
+        // },
+        // registerStudentSuccess(state, action) {
+        //     state.loading = false;
+        // },
+        // registerStudentFailed(state, action) {
+        //     state.loading = false;
+        //     state.error = action.payload?.error
+        // },
     }
 })
 
@@ -89,8 +99,6 @@ export const fetchStudent = () => async (dispatch) => {
         toast.error(error.response?.data?.message || "An error occurred while fetching students.");
     }
 };
-
-
 
 export const deleteStudent = (id) => async (dispatch) => {
     dispatch(studentSlice.actions.deleteStudentRequest())

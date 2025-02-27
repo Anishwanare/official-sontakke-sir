@@ -7,10 +7,6 @@ import { fetchSchools } from "../../store/slices/schoolSlice";
 import { fetchCoordinators } from "../../store/slices/coordinatorSlice";
 
 const StudentRegistration = () => {
-
-
-
-
   const classes = [
     "Class - 1",
     "Class - 2",
@@ -59,10 +55,9 @@ const StudentRegistration = () => {
   };
 
   const handleSubmit = async (e) => {
-    console.log("submitting")
+    // console.log("submitting")
     e.preventDefault();
     setLoading(true);
-    console.log(formData); // Check the form data before submitting
     try {
       const response = await axios.post(
         `${import.meta.env.VITE_APP_API_BASE_URL}/api/v3/student/register`,
@@ -82,7 +77,7 @@ const StudentRegistration = () => {
           district: "",
           role: "Student",
           school: "",
-          className: "", // Reset class field
+          className: "", 
           coordinator: "",
         });
       } else {

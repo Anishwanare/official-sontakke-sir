@@ -1,5 +1,5 @@
 import axios from "axios";
-import React, { useEffect, useState } from "react";
+import React, { memo, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import { toast } from "react-toastify";
@@ -9,12 +9,12 @@ const SchoolData = () => {
   const [showModal, setShowModal] = useState(false);
   const [selectedSchool, setSelectedSchool] = useState(null);
   const [selectedFile, setSelectedFile] = useState(null);
-  const [documentName, setDocumentName] = useState(""); // Added state for document name
+  const [documentName, setDocumentName] = useState(""); 
   const dispatch = useDispatch();
   const { schools, loading, error } = useSelector((state) => state.School);
   const [uploadingFile, setUploadingFile] = useState(false)
 
-  // console.log(user)
+
 
   useEffect(() => {
     dispatch(fetchSchools());
@@ -58,7 +58,7 @@ const SchoolData = () => {
     setShowModal(false);
     setSelectedSchool(null);
     setSelectedFile(null);
-    setDocumentName(""); // Reset document name
+    setDocumentName("");
   };
 
   const handleFileChange = (event) => {
@@ -76,9 +76,8 @@ const SchoolData = () => {
     }
 
     const formData = new FormData();
-    formData.append("documentName", documentName); // Add document name
-    formData.append("document", selectedFile);
-    console.log(selectedSchool._id)
+    formData.append("documentName", documentNdocumentame); // Add document name
+    formData.append("", selectedFile);
 
     try {
       setUploadingFile(true)
@@ -98,7 +97,6 @@ const SchoolData = () => {
         setDocumentName("")
         setSelectedFile(null)
         handleCloseModal();
-
       }
     } catch (err) {
       console.error("Error uploading file:", err);
@@ -226,4 +224,4 @@ const SchoolData = () => {
   );
 };
 
-export default SchoolData;
+export default memo(SchoolData);

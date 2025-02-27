@@ -55,18 +55,10 @@ const schoolSchema = new mongoose.Schema(
     },
     documents: [
       {
-        documentName: {
-          type: String,
-          required: true,
-        },
-        publicId: {
-          type: String,
-          required: true,
-        },
-        url: {
-          type: String,
-          required: true,
-        },
+        documentName: String,
+        publicId: String,
+        url: String,
+
       },
     ],
     role: {

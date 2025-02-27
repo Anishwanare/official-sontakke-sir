@@ -4,13 +4,14 @@ import "react-toastify/dist/ReactToastify.css";
 import { Routes, Route, useLocation, Navigate, useNavigate } from "react-router-dom";
 import { HashLoader } from "react-spinners";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchAdminProfile, fetchSchoolProfile } from "../store/slices/userSlice";
+import { fetchAdminProfile, fetchSchoolProfile, fetchStudentProfile } from "../store/slices/userSlice";
 
 // Lazy-loaded components for better performance
 const Home = lazy(() => import("./Pages/Home"));
-const Login = lazy(() => import("./Student/Login"));
+const StudentLogin = lazy(() => import("./Student/StudentLogin"));
 const SchoolLogin = lazy(() => import("./School/SchoolLogin"));
-const School = lazy(() => import("./School/School"));
+const SchoolDashboard = lazy(() => import("./School/SchoolDashboard"));
+const StudentDashboard = lazy(() => import("./Student/StudentDashboard"));
 const Registration = lazy(() => import("./School/Registration"));
 const StudentRegistration = lazy(() => import("./Student/StudentRegistration"));
 const CoordinatorRegistration = lazy(() => import("./School/CoordinatorRegistration"));
@@ -23,6 +24,7 @@ const UpdateStudent = lazy(() => import("./Admin/components/UpdateContent/Update
 const UpdateSchool = lazy(() => import("./Admin/components/UpdateContent/UpdateSchool"));
 const Header = lazy(() => import("./Components/Header"));
 
+
 const App = () => {
   const { isAuthenticated, user } = useSelector((state) => state.User);
   const location = useLocation();
@@ -33,18 +35,11 @@ const App = () => {
   const excludedPaths = ["/admin-login", "/admin-dashboard", "/school-login"];
   const showNotice = !excludedPaths.includes(location.pathname);
 
-  // console.log(user)
-
-  // useEffect(()=>{
-  //   if(!isAuthenticated){
-  //     navigate('/')
-  //   }
-  // },[isAuthenticated])
 
   useEffect(() => {
     dispatch(fetchAdminProfile());
-    // dispatch(fetchSchoolProfile());
-
+    dispatch(fetchSchoolProfile());
+    dispatch(fetchStudentProfile())
   }, [dispatch]);
 
   return (
@@ -61,7 +56,6 @@ const App = () => {
         <Routes>
           {/* Public Routes */}
           <Route path="/" element={<Home />} />
-          <Route path="/student-login" element={<Login />} />
           <Route path="/student-register" element={<StudentRegistration />} />
           <Route path="/school-register" element={<Registration />} />
           <Route path="/coordinator-register" element={<CoordinatorRegistration />} />
@@ -70,12 +64,20 @@ const App = () => {
           {/* School Routes */}
           <Route
             path="/school-login"
-            element={isAuthenticated && user?.role === "School" ? <Navigate to="/school-home" replace /> : <SchoolLogin />}
+            element={isAuthenticated && user?.role === "School" ? <Navigate to="/school-dashboard" replace /> : <SchoolLogin />}
           />
           <Route
-            path="/school-home"
-            element={isAuthenticated && user?.role === "School" ? <School /> : <Navigate to="/school-login" replace />}
+            path="/school-dashboard"
+            element={isAuthenticated && user?.role === "School" ? <SchoolDashboard /> : <Navigate to="/school-login" replace />}
           />
+
+
+          {/* Student Routes */}
+
+          <Route path="/student-login"
+            element={isAuthenticated && user?.role === "Student" ? <Navigate to="/student-dashboard" replace /> : <StudentLogin />} />
+          <Route path="/student-dashboard"
+            element={isAuthenticated && user?.role === "Student" ? <StudentDashboard /> : <Navigate to={"/student-login"} replace />} />
 
           {/* Admin Routes */}
           <Route

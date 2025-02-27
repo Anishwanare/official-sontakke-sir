@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { memo, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchMessages } from "../../../store/slices/messageSlice";
 
@@ -57,4 +57,4 @@ const MessagesData = () => {
   );
 };
 
-export default MessagesData;
+export default memo(MessagesData);
