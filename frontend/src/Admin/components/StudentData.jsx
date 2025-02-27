@@ -199,7 +199,7 @@ const StudentData = () => {
           <table className="min-w-full border">
             <thead>
               <tr className="bg-gray-100">
-                {["Sr No.", "Full Name", "District", "Talukka", "Phone", "School", "Coordinator", "Class", "Password", "Actions"].map((header, index) => (
+                {["Sr No.", "Full Name", "District", "Talukka", "Phone", "School", "Coordinator", "Class", "Actions"].map((header, index) => (
                   <th key={index} className="py-2 px-4 border">{header}</th>
                 ))}
               </tr>
@@ -215,7 +215,6 @@ const StudentData = () => {
                   <td className="py-2 px-4 border">{student.school}</td>
                   <td className="py-2 px-4 border">{student.coordinator}</td>
                   <td className="py-2 px-4 border">{student.className}</td>
-                  <td className="py-2 px-4 border">{student.password}</td>
                   <td className="py-2 px-4 border">
                     <Link to={`/admin/update-student/${student._id}`} className="text-blue-500 mr-2">Update</Link>
                     <button onClick={() => handleDelete(student._id)} className="text-red-500">Delete</button>
