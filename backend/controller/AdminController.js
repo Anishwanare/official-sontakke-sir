@@ -328,7 +328,7 @@ export const Logout = catchAsyncError(async (req, res, next) => {
       expires: new Date(0),
       httpOnly: true
     }).json({
-      success: true,
+      success: true,uhjsa
       message: 'Logout successfully.'
     })
   } catch (error) {

@@ -15,7 +15,7 @@ const SchoolDashboard = () => {
     };
 
     return (
-        <div className="min-h-screen p-6 flex flex-col gap-8 bg-white">
+        <div className="min-h-screen p-6 flex flex-col gap-8 ">
             {/* Header */}
             <div className="flex md:flex-row items-center justify-around  pb-4">
                 <h1 className="text-xl md:text-3xl font-bold">{user?.name || "School Name"}</h1>
@@ -37,14 +37,13 @@ const SchoolDashboard = () => {
                     </div>
                 </div>
 
-
                 {/* Uploaded Documents */}
-                <div className=" border p-2 rounded-md border-black  col-span-2 flex flex-col gap-4 max-h-[500px] overflow-y-auto">
-                    <h2 className="text-xl font-semibold">Uploaded Documents</h2>
+                <div className=" border p-2 rounded-md border-black col-span-2 flex flex-col gap-4 max-h-[500px] overflow-y-auto">
+                    <h2 className="text-xl font-semibold text-center border-b">Uploaded Documents</h2>
                     {user?.documents?.length > 0 ? (
-                        <div className="grid grid-cols-2 gap-4">
+                        <div className="grid grid-cols-3 gap-">
                             {user.documents.map((d) => (
-                                <div key={d._id} className="border p-4 rounded-lg flex flex-col gap-2">
+                                <div key={d._id} className="border border-black p-4 rounded-lg flex flex-col gap-2">
                                     <p className="font-semibold">{d.documentName}</p>
                                     <p className="text-sm">Date: {new Date(user?.updatedAt).toLocaleDateString()}</p>
                                     <a href={d.url} download target="_blank" rel="noopener noreferrer" className="mt-auto underline text-center">

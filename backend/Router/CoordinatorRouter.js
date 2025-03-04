@@ -7,6 +7,8 @@ import { isAdminAuthenticated, isAuthorized } from "../middleware.js/auth.js";
 
 const router = express.Router();
 
+
+
 router.post("/register", isAdminAuthenticated, isAuthorized("Admin"), coordinatorRegister);
 router.get("/fetch", isAdminAuthenticated, isAuthorized("Admin"), getCoordinators);
 
