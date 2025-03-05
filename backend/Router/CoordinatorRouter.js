@@ -10,6 +10,6 @@ const router = express.Router();
 
 
 router.post("/register", isAdminAuthenticated, isAuthorized("Admin"), coordinatorRegister);
-router.get("/fetch", isAdminAuthenticated, isAuthorized("Admin"), getCoordinators);
+router.get("/fetch",  getCoordinators);
 
 export default router;

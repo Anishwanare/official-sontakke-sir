@@ -55,7 +55,7 @@ const StudentRegistration = () => {
   };
 
   const handleSubmit = async (e) => {
-    // console.log("submitting")
+    console.log("submitting")
     e.preventDefault();
     setLoading(true);
     try {
@@ -64,8 +64,8 @@ const StudentRegistration = () => {
         formData, { withCredentials: true, headers: { "Content-Type": "application/json" } }
       );
 
-      if (response?.data?.status) {
-        toast.success("Student registered successfully!");
+      if (response?.data?.success) {
+        toast.success(response?.data?.message);
         setFormData({
           firstName: "",
           middleName: "",
@@ -77,11 +77,9 @@ const StudentRegistration = () => {
           district: "",
           role: "Student",
           school: "",
-          className: "", 
+          className: "",
           coordinator: "",
         });
-      } else {
-        toast.error(response.data.message);
       }
     } catch (err) {
       console.error("Error submitting form: ", err); // Log the error to the console

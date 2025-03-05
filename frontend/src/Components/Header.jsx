@@ -89,7 +89,7 @@ const Header = () => {
             Gallery
           </Link>
 
-          {isAuthenticated && user?.role === "Admin" && (
+          {isAuthenticated && user?.role === "Admin" || user?.role === "School" && (
             <div className="relative group">
               <button
                 onClick={handleDropdownToggle}
@@ -99,15 +99,15 @@ const Header = () => {
               </button>
               {dropdownOpen && (
                 <div className="absolute left-0 mt-2 w-48 bg-white shadow-lg rounded-lg">
-                  <Link to="/school-register" className="block px-4 py-3 hover:bg-yellow-500 hover:text-white">
+                  {user?.role === "Admin" && <Link to="/school-register" className="block px-4 py-3 hover:bg-yellow-500 hover:text-white">
                     School Registration
-                  </Link>
+                  </Link>}
                   <Link to="/student-register" className="block px-4 py-3 hover:bg-yellow-500 hover:text-white">
                     Student Registration
                   </Link>
-                  <Link to="/coordinator-register" className="block px-4 py-3 hover:bg-yellow-500 hover:text-white">
+                  {user?.role === "Admin" && <Link to="/coordinator-register" className="block px-4 py-3 hover:bg-yellow-500 hover:text-white">
                     Coordinator Registration
-                  </Link>
+                  </Link>}
                 </div>
               )}
             </div>
@@ -220,13 +220,13 @@ const Header = () => {
                           exit={{ opacity: 0, y: -5 }}
                           className="flex flex-col bg-gray-100 rounded-lg mt-2 shadow-md"
                         >
-                          <Link
+                          {user?.role === "Admin" && <Link
                             to="/school-register"
                             className="border border-yellow-200 py-3 px-4 text-gray-800 hover:bg-yellow-500 hover:text-white text-center rounded-lg"
                             onClick={handleToggle}
                           >
                             School Registration
-                          </Link>
+                          </Link>}
                           <Link
                             to="/student-register"
                             className="border border-yellow-200 py-3 px-4 text-gray-800 hover:bg-yellow-500 hover:text-white text-center rounded-lg"
@@ -234,13 +234,13 @@ const Header = () => {
                           >
                             Student Registration
                           </Link>
-                          <Link
+                          {user?.role === "Admin" && <Link
                             to="/coordinator-register"
                             className="border border-yellow-200 py-3 px-4 text-gray-800 hover:bg-yellow-500 hover:text-white text-center rounded-lg"
                             onClick={handleToggle}
                           >
                             Coordinator Registration
-                          </Link>
+                          </Link>}
                         </motion.div>
                       )}
                     </AnimatePresence>

@@ -14,12 +14,12 @@ const router = express.Router();
 
 // crud in school
 
-router.post("/register", isAdminAuthenticated, isAuthorized("Admin","School"), schoolRegistration);
-router.get("/get-schools", isAdminAuthenticated, isAuthorized("Admin"), getAllSchools);
+router.post("/register", isAdminAuthenticated, isAuthorized("Admin"), schoolRegistration);
+router.get("/get-schools", getAllSchools);
 router.post("/login", schoolLogin);
 router.put("/edit-school/:id", isAdminAuthenticated, isAuthorized("Admin"), editSchool);
 router.delete("/delete-school/:id", isAdminAuthenticated, isAuthorized("Admin"), deleteSchool);
-router.get("/get-school/:id", isAdminAuthenticated, getSchoolById);
+router.get("/get-school/:id", isAdminAuthenticated, isAuthorized("Admin"), getSchoolById);
 
 // me
 router.get("/fetch-me", isSchoolAuthenticated, isAuthorized("School"), fetchSchool)
