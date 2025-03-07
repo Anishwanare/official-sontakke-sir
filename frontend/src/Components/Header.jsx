@@ -204,7 +204,7 @@ const Header = () => {
                   Gallery
                 </Link>
 
-                {isAuthenticated && user?.role === "Admin" && (
+                {isAuthenticated && user?.role === "Admin" || user?.role === "School" && (
                   <div className="relative">
                     <button
                       onClick={handleDropdownToggle}
