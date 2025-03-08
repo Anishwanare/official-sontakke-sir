@@ -89,7 +89,7 @@ const Header = () => {
             Gallery
           </Link>
 
-          {isAuthenticated && user?.role === "Admin" || user?.role === "School" && (
+          {isAuthenticated && (user?.role === "Admin" || user?.role === "School") && (
             <div className="relative group">
               <button
                 onClick={handleDropdownToggle}
@@ -204,7 +204,7 @@ const Header = () => {
                   Gallery
                 </Link>
 
-                {isAuthenticated && user?.role === "Admin" || user?.role === "School" && (
+                {isAuthenticated && (user?.role === "Admin" || user?.role === "School") && (
                   <div className="relative">
                     <button
                       onClick={handleDropdownToggle}
