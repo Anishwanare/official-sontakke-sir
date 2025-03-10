@@ -9,7 +9,7 @@ const SchoolData = () => {
   const [showModal, setShowModal] = useState(false);
   const [selectedSchool, setSelectedSchool] = useState(null);
   const [selectedFile, setSelectedFile] = useState(null);
-  const [documentName, setDocumentName] = useState(""); 
+  const [documentName, setDocumentName] = useState("");
   const dispatch = useDispatch();
   const { schools, loading, error } = useSelector((state) => state.School);
   const [uploadingFile, setUploadingFile] = useState(false)
@@ -136,7 +136,7 @@ const SchoolData = () => {
                 <tr
                   key={school._id}
                   className="hover:bg-gray-100 cursor-pointer"
-                  onClick={() => handleOpenModal(school)}
+                  onClick={(e) => { e.stopPropagation(); handleOpenModal(school) }}
                 >
                   <td className="py-2 px-2 border">{index + 1}</td>
                   <td className="py-2 px-2 border">{school.name}</td>

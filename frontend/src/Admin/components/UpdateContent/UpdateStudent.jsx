@@ -35,7 +35,7 @@ const UpdateStudent = () => {
         if (!id) return;
 
         try {
-            const response = await axios.get(`${import.meta.env.VITE_APP_API_BASE_URL}/api/v3/student/getme/student/${id}`, { withCredentials: true, headers: { 'Content-Type': "application/json" } });
+            const response = await axios.get(`${import.meta.env.VITE_APP_API_BASE_URL}/api/v3/student/getme/${id}`, { withCredentials: true, headers: { 'Content-Type': "application/json" } });
             if (response.data.success) {
                 setStudent(response.data.getStudent);
             }

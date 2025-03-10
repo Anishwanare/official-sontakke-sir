@@ -4,13 +4,13 @@ import { isAdminAuthenticated, isAuthorized, isStudentAuthenticated } from '../m
 const router = express.Router()
 
 // crud for student
-router.post("/register",  studentRegister)
+router.post("/register", studentRegister)
 router.post("/login", studentLogin)
 
 router.get("/get-students", isAdminAuthenticated, isAuthorized("Admin"), getStudents);
 router.put("/update/student/:id", isAdminAuthenticated, isAuthorized("Admin"), editStudentData)
 router.delete("/delete/student/:id", isAdminAuthenticated, isAuthorized("Admin"), deleteStudent)
-router.get("/getme/:id", getStudentById)
+router.get("/getme/:id", isAuthorized('Admin'), getStudentById)
 
 
 // fetch me

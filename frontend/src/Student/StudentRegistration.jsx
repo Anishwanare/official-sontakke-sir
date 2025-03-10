@@ -7,6 +7,10 @@ import { fetchSchools } from "../../store/slices/schoolSlice";
 import { fetchCoordinators } from "../../store/slices/coordinatorSlice";
 
 const StudentRegistration = () => {
+  const dispatch = useDispatch()
+  const { schools } = useSelector((state) => state.School)
+  const [showSchools, setShowSchools] = useState(false)
+  const { coordinators } = useSelector((state) => state.Coordinator)
   const classes = [
     "Class - 1",
     "Class - 2",
@@ -34,14 +38,17 @@ const StudentRegistration = () => {
     villageName: "",
     talukka: "",
     district: "",
-    role: "Student", // Default role
+    role: "Student",
     school: "",
-    className: "", // Added class field
+    className: "",
     coordinator: "",
   });
 
   const [loading, setLoading] = useState(false);
   const [show, setShow] = useState(false);
+
+  // search school
+  const [searchSchool, setSearchSchool] = useState('')
 
   const handleShowPassword = () => {
     setShow((prev) => !prev);
@@ -53,6 +60,8 @@ const StudentRegistration = () => {
       [e.target.name]: e.target.value,
     });
   };
+
+
 
   const handleSubmit = async (e) => {
     console.log("submitting")
@@ -82,21 +91,18 @@ const StudentRegistration = () => {
         });
       }
     } catch (err) {
-      console.error("Error submitting form: ", err); // Log the error to the console
+      console.error("Error submitting form: ", err);
       toast.error(err.response?.data?.message || "Something went wrong!");
     } finally {
       setLoading(false);
     }
   };
 
-  const dispatch = useDispatch()
-  const { schools } = useSelector((state) => state.School)
+
   useEffect(() => {
     dispatch(fetchSchools())
   }, [dispatch]);
 
-  const { coordinators } = useSelector((state) => state.Coordinator)
-  // console.log(coordinators)
   useEffect(() => {
     dispatch(fetchCoordinators())
   }, [dispatch])
@@ -104,15 +110,15 @@ const StudentRegistration = () => {
 
 
   return (
-    <div className="flex items-center justify-center min-h-screen bg-gray-100">
+    <div className="flex items-center justify-center min-h-screen bg-gray-100 ">
       <div className="w-full max-w-4xl p-8 bg-white rounded-lg shadow-md my-5">
         <div className="text-center p-2 text-2xl font-bold text-gray-700">
           Student Registration
         </div>
-        <div className="flex justify-center mb-6">
+        {/* <div className="flex justify-center mb-6">
           <img src="/logo.jpeg" alt="Logo" className="w-24 h-24" />
-        </div>
-        <form onSubmit={handleSubmit} className="grid grid-cols-1 md:grid-cols-2 gap-2">
+        </div> */}
+        <form onSubmit={handleSubmit} className="grid grid-cols-1 md:grid-cols-2 gap-2 max-h-screen">
           <div className="mb-4">
             <label htmlFor="firstName" className="block text-gray-700">
               First Name
@@ -173,34 +179,52 @@ const StudentRegistration = () => {
               required
             />
           </div>
-          <div className="mb-4">
+          <div className="mb-4 relative">
             <label htmlFor="school" className="block text-gray-700">
-              Select School
+              Select School -  <span>{schools.length}</span>
             </label>
-            <select
-              id="school"
+            <input
+              type="text"
               name="school"
-              value={formData.school}
-              onChange={handleChange}
+              value={searchSchool}
+              onChange={(e) => setSearchSchool(e.target.value)}
+              placeholder="Search School"
               className="px-2 block w-full mt-1 py-2 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 border border-gray-300 text-gray-700"
-              required
-            >
-              <option value="" disabled>
-                Select your school
-              </option>
-              {schools?.length > 0 ? (
-                schools.map((school) => (
-                  <option key={school._id} value={school.id}>
-                    {capitalizeFirstLetter(
-                      `${school.name}, ${school.schoolVillage}`
-                    )}
-                  </option>
-                ))
-              ) : (
-                <option disabled>School data loading.......</option>
-              )}
-            </select>
+              onFocus={() => setShowSchools(true)}
+              onBlur={() => setTimeout(() => setShowSchools(false), 200)} // Delay to allow click
+            />
+            {showSchools && (
+              <div className="absolute z-40 w-full bg-white border border-gray-300 rounded-md shadow-lg max-h-40 overflow-y-auto">
+                {schools?.length > 0 ? (
+                  schools
+                    .filter((school) =>
+                      school.name.toLowerCase().includes(searchSchool.toLowerCase())
+                    )
+                    .map((school) => (
+                      <div
+                        key={school._id}
+                        className="p-2 cursor-pointer hover:bg-gray-200"
+                        onMouseDown={(e) => e.preventDefault()} // Prevents input blur
+                        onClick={() => {
+                          setSearchSchool(`${capitalizeFirstLetter(school.name)}, ${capitalizeFirstLetter(school.schoolVillage)}`);
+                          setFormData((prev) => ({
+                            ...prev,
+                            school: school.name,
+                          }));
+                          setShowSchools(false);
+                        }}
+                      >
+                        {capitalizeFirstLetter(`${school.name}, ${school.schoolVillage}`)}
+                      </div>
+                    ))
+                ) : (
+                  <div className="p-2 text-gray-500">School data loading...</div>
+                )}
+              </div>
+            )}
+
           </div>
+
           <div className="mb-4">
             <label htmlFor="className" className="block text-gray-700">
               Class
