@@ -3,19 +3,29 @@ import { Link, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { useDispatch, useSelector } from "react-redux";
 import { login } from "../../../store/slices/userSlice";
+import ReCAPTCHA from "react-google-recaptcha";
 
 const AdminLogin = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [recaptchaToken, setRecaptchaToken] = useState("");
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const { loading, isAuthenticated, user } = useSelector((state) => state.User);
 
   const handleLogin = async (e) => {
     e.preventDefault();
-    const formData = new FormData();
-    formData.append("email", email);
-    formData.append("password", password);
+    
+    if (!recaptchaToken) {
+      toast.error("Please verify you are not a robot!");
+      return;
+    }
+
+    const formData = {
+      email,
+      password,
+      recaptchaToken, // Send reCAPTCHA token to backend
+    };
 
     try {
       dispatch(login(formData, "admin"));
@@ -33,9 +43,8 @@ const AdminLogin = () => {
   }, [isAuthenticated, user, navigate]);
 
   return (
-    <div className="flex items-center justify-center min-h-screen ">
+    <div className="flex items-center justify-center min-h-screen">
       <div className="flex flex-col md:flex-row bg-white rounded-2xl shadow-lg overflow-hidden max-w-4xl w-full">
-        {/* Left Side - Welcome Section */}
         <div className="flex-1 flex flex-col justify-center items-center p-10 text-white bg-yellow-500 relative">
           <img src="/logo.jpeg" alt="Logo" width={100} className="mb-4" />
           <h1 className="text-4xl font-bold">Welcome Back!</h1>
@@ -43,7 +52,6 @@ const AdminLogin = () => {
           <div className="absolute inset-0 bg-black opacity-10"></div>
         </div>
 
-        {/* Right Side - Login Form */}
         <div className="flex-1 p-8 bg-white">
           <h2 className="text-3xl font-semibold text-gray-800 mb-6 text-center">Admin Sign In</h2>
           <form className="space-y-5" onSubmit={handleLogin}>
@@ -71,6 +79,13 @@ const AdminLogin = () => {
                 required
               />
             </div>
+            
+            {/* reCAPTCHA Component */}
+            <ReCAPTCHA
+              sitekey="6LcMSPAqAAAAAAudFyKGyWpZ1Ml0gIQr1E9Ptkmy" 
+              onChange={(token) => setRecaptchaToken(token)}
+            />
+
             <button
               type="submit"
               className="w-full bg-yellow-500 text-white py-2 rounded-lg font-semibold hover:bg-yellow-600 transition duration-300"

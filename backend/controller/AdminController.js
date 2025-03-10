@@ -52,14 +52,86 @@ export const AdminRegister = async (req, res, next) => {
   }
 };
 
+// export const AdminLogin = async (req, res, next) => {
+//   const { email, password } = req.body;
+
+//   try {
+//     if (!email || !password) {
+//       return res.status(400).json({
+//         success: false,
+//         message: "Please fill all fields",
+//       });
+//     }
+
+//     // Find admin by email
+//     const admin = await Admin.findOne({ email }).select("+password");
+//     if (!admin) {
+//       return res.status(401).json({
+//         success: false,
+//         message: "Invalid credentials",
+//       });
+//     }
+
+//     // Check password
+//     if (password !== admin.password) {
+//       return res.status(401).json({
+//         success: false,
+//         message: "Unauthorized access to admin!",
+//       });
+//     }
+
+//     // Generate JWT token
+//     const token = jwt.sign({ id: admin._id }, process.env.JWT_SECRET_KEY, {
+//       expiresIn: process.env.JWT_EXPIRES,
+//     });
+
+//     return res
+//       .status(200)
+//       .cookie("Admin_Token", token, {
+//         expires: new Date(
+//           Date.now() + process.env.COOKIE_EXPIRES * 24 * 60 * 60 * 1000
+//         ),
+//         httpOnly: true,
+//       })
+//       .json({
+//         success: true,
+//         message: "Logged in successfully",
+//         user: admin,
+//         token,
+//       });
+//   } catch (error) {
+//     console.error("Error during admin login:", error.message);
+//     return res.status(500).json({
+//       success: false,
+//       message: "Something went wrong, please try again!",
+//     });
+//   }
+// };
+
+
+// import pdf or imp file to school on the basis of school id 
+
+
 export const AdminLogin = async (req, res, next) => {
-  const { email, password } = req.body;
+  const { email, password, recaptchaToken } = req.body;
 
   try {
-    if (!email || !password) {
+    if (!email || !password || !recaptchaToken) {
       return res.status(400).json({
         success: false,
-        message: "Please fill all fields",
+        message: "Please fill all fields and complete reCAPTCHA",
+      });
+    }
+
+    // Verify reCAPTCHA with Google API
+    const verifyURL = `https://www.google.com/recaptcha/api/siteverify?secret=6Lf8PvAqAAAAAPFCVtXRE_bWdsRO_71WHv7Hi8sf&response=${recaptchaToken}`;
+
+    const { data } = await axios.post(verifyURL);
+
+    if (!data.success) {
+      return res.status(403).json({
+        success: false,
+        message: "reCAPTCHA verification failed, please try again!",
       });
     }
 
@@ -108,8 +180,6 @@ export const AdminLogin = async (req, res, next) => {
   }
 };
 
-
-// import pdf or imp file to school on the basis of school id 
 export const uploadFileToSchool = catchAsyncError(async (req, res, next) => {
   const { id } = req.params;
   const { documentName } = req.body;
