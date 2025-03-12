@@ -18,6 +18,7 @@ const studentSlice = createSlice({
         },
         updateStudentFailed(state, action) {
             state.loading = false;
+            state.error = action.payload?.error;
             state.error = action.payload?.error
         },
         fetchStudentsRequest(state) {
@@ -29,6 +30,7 @@ const studentSlice = createSlice({
         },
         fetchStudentsFailed(state, action) {
             state.loading = false;
+            state.error = action.payload?.error;
             state.error = action.payload?.error
         },
         deleteStudentRequest(state) {
@@ -94,7 +96,7 @@ export const fetchStudent = () => async (dispatch) => {
             toast.error(response.data.message || "Failed to fetch students.");
         }
     } catch (error) {
-        console.error("Fetch error:", error.response?.data || error.message);
+        console.error("Fetch error:", error.message);
         dispatch(studentSlice.actions.fetchStudentsFailed());
         toast.error(error.response?.data?.message || "An error occurred while fetching students.");
     }

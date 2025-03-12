@@ -194,7 +194,6 @@ export const uploadFileToStudent = catchAsyncError(async (req, res, next) => {
   const { id } = req.params;
   const { documentName } = req.body;
 
-  // Validate input
   if (!documentName || documentName.trim() === "") {
     return next(new ErrorHandler("Document name is required", 400));
   }

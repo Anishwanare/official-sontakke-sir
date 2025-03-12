@@ -24,12 +24,6 @@ const StudentData = () => {
   const [uploadingFile, setUploadingFile] = useState(false)
 
 
-  if (error) {
-    console.log("my error", error)
-    return (<div className="text-center text-red-500 py-4">{error}</div>
-    )
-  }
-
 
   const handleOpenModel = (student) => {
     setShowSelectedStudent(student)
@@ -148,6 +142,12 @@ const StudentData = () => {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
+
+  if (error) {
+    console.log("my error", error)
+    return (<div className="text-center text-red-500 py-4">{error}</div>
+    )
+  }
 
 
   return (

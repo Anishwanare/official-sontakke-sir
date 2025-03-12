@@ -15,7 +15,7 @@ const router = express.Router();
 // crud in school
 
 router.post("/register", isAdminAuthenticated, isAuthorized("Admin"), schoolRegistration);
-router.get("/get-schools", getAllSchools);
+router.get("/get-schools", isAdminAuthenticated, isAuthorized('Admin', 'School'), getAllSchools);
 router.post("/login", schoolLogin);
 router.put("/edit-school/:id", isAdminAuthenticated, isAuthorized("Admin"), editSchool);
 router.delete("/delete-school/:id", isAdminAuthenticated, isAuthorized("Admin"), deleteSchool);

@@ -38,6 +38,8 @@ const SchoolData = () => {
     )
   }
 
+  console.log("student data error",error)
+
   const handleDeleteSchool = async (id) => {
     if (window.confirm("Are you sure you want to delete this school?")) {
       try {
@@ -76,8 +78,8 @@ const SchoolData = () => {
     }
 
     const formData = new FormData();
-    formData.append("documentName", documentNdocumentame); // Add document name
-    formData.append("", selectedFile);
+    formData.append("documentName", documentName); // Add document name
+    formData.append("document", selectedFile);
 
     try {
       setUploadingFile(true)
