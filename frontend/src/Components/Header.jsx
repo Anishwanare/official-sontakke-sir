@@ -130,12 +130,6 @@ const Header = () => {
               >
                 Admin Login
               </Link>
-              <Link
-                to="/demo-form"
-                className="text-lg font-medium bg-yellow-500 text-white px-4 py-2 rounded-lg hover:bg-yellow-600 transition"
-              >
-                Demo form
-              </Link>
             </>
           ) : (
             <>

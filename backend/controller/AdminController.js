@@ -123,7 +123,7 @@ export const uploadFileToSchool = catchAsyncError(async (req, res, next) => {
     return next(new ErrorHandler("No file uploaded", 400));
   }
 
-  const document = req.files.document;
+  const {document} = req.files;
 
   // Allowed file types
   const allowedMimeTypes = {
