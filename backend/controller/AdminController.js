@@ -333,7 +333,8 @@ export const Logout = catchAsyncError(async (req, res, next) => {
   } catch (error) {
     res.status(500).json({
       success: false,
-      message: error?.message || "Internal server error",
-    })
+      message: "Something went wrong while retrieving messages",
+      error: error.message,
+    });
   }
 })

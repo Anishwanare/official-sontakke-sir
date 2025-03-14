@@ -68,8 +68,11 @@ export const getCoordinators = async (req, res) => {
         coordinators
       });
   } catch (error) {
-    console.error(error);
-    res.status(500).json({ message: "Server error" });
+    res.status(500).json({
+      success: false,
+      message: "Something went wrong while retrieving messages",
+      error: error.message,
+    });
   }
 };
 

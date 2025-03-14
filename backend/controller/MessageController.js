@@ -38,7 +38,7 @@ export const getAllMessages = async (req, res, next) => {
       messages:getAllMessagesResponse,
     });
   } catch (error) {
-    return res.status(500).json({
+     res.status(500).json({
       success: false,
       message: "Something went wrong while retrieving messages",
       error: error.message,

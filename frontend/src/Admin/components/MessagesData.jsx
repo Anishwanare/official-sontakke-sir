@@ -7,7 +7,7 @@ const MessagesData = () => {
   const { messages, error, loading } = useSelector((state) => state.Message);
 
   useEffect(() => {
-    dispatch(fetchMessages());
+    if (!messages || messages.length === 0)  dispatch(fetchMessages());
   }, [dispatch]);
 
   const tableStyles = "py-2 px-4 border text-left";

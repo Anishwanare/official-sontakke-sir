@@ -137,7 +137,7 @@ export const studentLogin = async (req, res, next) => {
       .json({
         success: true,
         message: `${student?.firstName} Login successfully`,
-        user:student,
+        user: student,
       });
   } catch (error) {
     return res.status(500).json({
@@ -292,6 +292,10 @@ export const fetchStudent = catchAsyncError(async (req, res, next) => {
     });
   } catch (error) {
     console.error("student fetch me error", error);
-    return next(new ErrorHandler(`Something went wrong ${error}`, 500));
+    res.status(500).json({
+      success: true,
+      message: `Something went wrong`,
+      error : error.message
+    });
   }
 });

@@ -8,9 +8,13 @@ const CoordinateData = () => {
   const { coordinators, error, loading } = useSelector((state) => state.Coordinator)
 
   useEffect(() => {
-    dispatch(fetchCoordinators())
+    if (!coordinators || coordinators.length === 0) dispatch(fetchCoordinators())
   }, [dispatch]);
 
+  if (error) {
+    return (<div className="text-center text-red-500 py-4">{error}</div>
+    )
+  }
   const tableStyles = "py-2 px-4 border";
 
   return (

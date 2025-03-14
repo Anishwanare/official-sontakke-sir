@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { Link } from "react-router-dom";
 
 const CoordinatorRegistration = () => {
   const [schoolData, setSchoolData] = useState([]);
@@ -30,7 +31,7 @@ const CoordinatorRegistration = () => {
         const response = await axios.get(
           `${import.meta.env.VITE_APP_API_BASE_URL}/api/v2/school/get-schools`
         );
-        if (response?.data?.status) {
+        if (response?.data?.success) {
           setSchoolData(response?.data?.schools);
         }
       } catch (err) {
@@ -65,7 +66,7 @@ const CoordinatorRegistration = () => {
           `${import.meta.env.VITE_APP_API_BASE_URL}/api/v4/coordinator/register`,
           formData
         );
-        if (response.data.status) {
+        if (response.data.success) {
           toast.success("Coordinator registered successfully");
           // Reset form data after successful registration
 
@@ -94,11 +95,11 @@ const CoordinatorRegistration = () => {
   return (
     <div className="flex items-center justify-center min-h-screen bg-gray-200 flex-col">
       <div className="w-full max-w-4xl p-8 bg-white rounded-lg shadow-md my-5">
-        <div className="text-center p-2 text-2xl font-bold text-gray-700">
-          Coordinator Registration
-        </div>
         <div className="flex justify-center mb-6">
           <img src="/logo.jpeg" alt="Logo" className="h-24" />
+        </div>
+        <div className="text-center p-2 text-2xl font-bold text-gray-700">
+          Coordinator Registration
         </div>
         <form onSubmit={handleSubmit} className="grid grid-cols-1 md:grid-cols-2 gap-2">
           {/* First Name */}
@@ -116,6 +117,7 @@ const CoordinatorRegistration = () => {
               value={formData.firstName}
               onChange={handleChange}
               className="w-full px-3 py-2 border rounded-md outline-none focus:border-blue-500"
+              placeholder="Fill the details"
               required
             />
           </div>
@@ -135,6 +137,7 @@ const CoordinatorRegistration = () => {
               value={formData.lastName}
               onChange={handleChange}
               className="w-full px-3 py-2 border rounded-md outline-none focus:border-blue-500"
+              placeholder="Fill the details"
               required
             />
           </div>
@@ -151,6 +154,7 @@ const CoordinatorRegistration = () => {
               value={formData.email}
               onChange={handleChange}
               className="w-full px-3 py-2 border rounded-md outline-none focus:border-blue-500"
+              placeholder="Fill the details"
               required
             />
           </div>
@@ -167,6 +171,7 @@ const CoordinatorRegistration = () => {
               value={formData.phone}
               onChange={handleChange}
               className="w-full px-3 py-2 border rounded-md outline-none focus:border-blue-500"
+              placeholder="Fill the details"
               required
             />
           </div>
@@ -214,6 +219,7 @@ const CoordinatorRegistration = () => {
               value={formData.district}
               onChange={handleChange}
               className="w-full px-3 py-2 border rounded-md outline-none focus:border-blue-500"
+              placeholder="Fill the details"
               required
             />
           </div>
@@ -230,6 +236,7 @@ const CoordinatorRegistration = () => {
               value={formData.talukka}
               onChange={handleChange}
               className="w-full px-3 py-2 border rounded-md outline-none focus:border-blue-500"
+              placeholder="Fill the details"
               required
             />
           </div>
@@ -249,6 +256,7 @@ const CoordinatorRegistration = () => {
               value={formData.password}
               onChange={handleChange}
               className="w-full px-3 py-2 border rounded-md outline-none focus:border-blue-500"
+              placeholder="Fill the details"
               required
             />
           </div>
@@ -266,6 +274,7 @@ const CoordinatorRegistration = () => {
               value={formData.coordinatorID}
               onChange={handleChange}
               className="w-full px-3 py-2 border rounded-md outline-none focus:border-blue-500"
+              placeholder="Fill the details"
               required
             />
           </div>
@@ -279,6 +288,9 @@ const CoordinatorRegistration = () => {
             {loading ? 'Registering...' : 'Register Co-ordinator'}
           </button>
         </form>
+        <p className="mt-4 text-center text-gray-600">
+          <Link to="/" className="text-yellow-600 hover:underline">← Back to Home</Link>
+        </p>
       </div>
     </div>
   );

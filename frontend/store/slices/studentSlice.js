@@ -68,7 +68,7 @@ export const updateStudent = (id, student) => async (dispatch) => {
 
         if (response.data.success) {
             dispatch(studentSlice.actions.updateStudentSuccess())
-            dispatch(fetchStudent())
+            dispatch(fetchStudents())
             toast.success(response.data.message)
         }
     } catch (error) {
@@ -78,7 +78,7 @@ export const updateStudent = (id, student) => async (dispatch) => {
     }
 }
 
-export const fetchStudent = () => async (dispatch) => {
+export const fetchStudents = () => async (dispatch) => {
     // console.log("Fetching students...");
     dispatch(studentSlice.actions.fetchStudentsRequest());
     try {
@@ -112,7 +112,7 @@ export const deleteStudent = (id) => async (dispatch) => {
         if (data?.success) {
             dispatch(studentSlice.actions.deleteStudentSuccess());
             toast.success(data?.message)
-            dispatch(fetchStudent())
+            dispatch(fetchStudents())
         }
     } catch (error) {
         dispatch(studentSlice.actions.deleteSchoolFailed());

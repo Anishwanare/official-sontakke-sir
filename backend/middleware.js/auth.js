@@ -73,6 +73,7 @@ export const isAuthorized = (...roles) => {
             if (!roles.includes(req.user?.role)) {
                 return next(new ErrorHandler("user is not Authorized ", 401))
             }
+            // console.log(req.user?.role)
             next()
         } catch (error) {
             return next(new ErrorHandler(error.message || "Internal Server Error", 500))

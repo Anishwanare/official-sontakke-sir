@@ -5,6 +5,7 @@ import "react-toastify/dist/ReactToastify.css";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchSchools } from "../../store/slices/schoolSlice";
 import { fetchCoordinators } from "../../store/slices/coordinatorSlice";
+import { Link } from "react-router-dom";
 
 const StudentRegistration = () => {
   const dispatch = useDispatch()
@@ -99,27 +100,27 @@ const StudentRegistration = () => {
   };
 
 
-  useEffect(() => {
-    dispatch(fetchSchools())
-  }, [dispatch]);
 
   useEffect(() => {
-    dispatch(fetchCoordinators())
-  }, [dispatch])
+    if (!coordinators || coordinators.length === 0) {
+      dispatch(fetchCoordinators())
+    }
+    else if (!schools || schools.length === 0) dispatch(fetchSchools())
+  }, [dispatch, coordinators, schools])
 
 
 
   return (
     <div className="flex items-center justify-center min-h-screen bg-gray-100 ">
       <div className="w-full max-w-4xl p-8 bg-white rounded-lg shadow-md my-5">
+        <div className="flex justify-center mb-6">
+          <img src="/logo.jpeg" alt="Logo" className="w-24 h-24" />
+        </div>
         <div className="text-center p-2 text-2xl font-bold text-gray-700">
           Student Registration
         </div>
-        {/* <div className="flex justify-center mb-6">
-          <img src="/logo.jpeg" alt="Logo" className="w-24 h-24" />
-        </div> */}
         <form onSubmit={handleSubmit} className="grid grid-cols-1 md:grid-cols-2 gap-2 max-h-screen">
-          <div className="mb-4">
+          <div className="mb-2">
             <label htmlFor="firstName" className="block text-gray-700">
               First Name
             </label>
@@ -134,7 +135,7 @@ const StudentRegistration = () => {
               required
             />
           </div>
-          <div className="mb-4">
+          <div className="mb-2">
             <label htmlFor="middleName" className="block text-gray-700">
               Middle Name
             </label>
@@ -149,7 +150,7 @@ const StudentRegistration = () => {
               required
             />
           </div>
-          <div className="mb-4">
+          <div className="mb-2">
             <label htmlFor="lastName" className="block text-gray-700">
               Last Name
             </label>
@@ -164,7 +165,7 @@ const StudentRegistration = () => {
               required
             />
           </div>
-          <div className="mb-4">
+          <div className="mb-2">
             <label htmlFor="phone" className="block text-gray-700">
               Phone Number
             </label>
@@ -179,9 +180,9 @@ const StudentRegistration = () => {
               required
             />
           </div>
-          <div className="mb-4 relative">
+          <div className="mb-2 relative">
             <label htmlFor="school" className="block text-gray-700">
-              Select School -  <span>{schools.length}</span>
+              Select School -  <span className="text-red-600">{schools.length}</span>
             </label>
             <input
               type="text"
@@ -191,7 +192,7 @@ const StudentRegistration = () => {
               placeholder="Search School"
               className="px-2 block w-full mt-1 py-2 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 border border-gray-300 text-gray-700"
               onFocus={() => setShowSchools(true)}
-              onBlur={() => setTimeout(() => setShowSchools(false), 200)} // Delay to allow click
+              onBlur={() => setTimeout(() => setShowSchools(false), 200)}
             />
             {showSchools && (
               <div className="absolute z-40 w-full bg-white border border-gray-300 rounded-md shadow-lg max-h-40 overflow-y-auto">
@@ -225,7 +226,7 @@ const StudentRegistration = () => {
 
           </div>
 
-          <div className="mb-4">
+          <div className="mb-2">
             <label htmlFor="className" className="block text-gray-700">
               Class
             </label>
@@ -247,7 +248,7 @@ const StudentRegistration = () => {
               ))}
             </select>
           </div>
-          <div className="mb-4">
+          <div className="mb-2">
             <label htmlFor="coordinator" className="block text-gray-700">
               Coordinator
             </label>
@@ -269,7 +270,7 @@ const StudentRegistration = () => {
               ))}
             </select>
           </div>
-          <div className="mb-4">
+          <div className="mb-2">
             <label htmlFor="villageName" className="block text-gray-700">
               Village Name
             </label>
@@ -284,7 +285,7 @@ const StudentRegistration = () => {
               required
             />
           </div>
-          <div className="mb-4">
+          <div className="mb-2">
             <label htmlFor="talukka" className="block text-gray-700">
               Talukka
             </label>
@@ -299,7 +300,7 @@ const StudentRegistration = () => {
               required
             />
           </div>
-          <div className="mb-4">
+          <div className="mb-2">
             <label htmlFor="district" className="block text-gray-700">
               District
             </label>
@@ -314,7 +315,7 @@ const StudentRegistration = () => {
               required
             />
           </div>
-          <div className="mb-4">
+          <div className="mb-2">
             <label htmlFor="password" className="block text-gray-700">
               Password
             </label>
@@ -354,16 +355,17 @@ const StudentRegistration = () => {
               required
             />
           </div>
-          <div className="mb-6">
-            <button
-              type="submit"
-              className="w-full bg-yellow-500 text-white py-2 rounded-md shadow-md hover:bg-yellow-600 focus:ring focus:ring-yellow-300 disabled:opacity-50"
-              disabled={loading}
-            >
-              {loading ? "Registering..." : "Register Student"}
-            </button>
-          </div>
+          <button
+            type="submit"
+            className="w-full bg-yellow-500 text-white py-2 rounded-md shadow-md hover:bg-yellow-600 focus:ring focus:ring-yellow-300 disabled:opacity-50"
+            disabled={loading}
+          >
+            {loading ? "Registering..." : "Register Student"}
+          </button>
         </form>
+        <p className="mt-4 text-center text-gray-600">
+          <Link to="/" className="text-yellow-600 hover:underline">← Back to Home</Link>
+        </p>
       </div>
     </div>
   );

@@ -1,6 +1,9 @@
 import { createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
 import { toast } from "react-toastify";
+import { fetchCoordinators } from "./coordinatorSlice";
+import { fetchSchools } from "./schoolSlice";
+import { fetchStudents } from "./studentSlice";
 
 const userSlice = createSlice({
     name: "User",
@@ -12,6 +15,9 @@ const userSlice = createSlice({
         error: null,
     },
     reducers: {
+        registerRequest(state) { state.loading = true; },
+        registerSuccess(state) { state.loading = false; },
+        registerFailed(state, action) { state.loading = false; state.error = action.payload?.error },
         fetchUserRequest(state) {
             state.loading = true;
             state.isAuthenticated = false;
@@ -42,6 +48,41 @@ const userSlice = createSlice({
     },
 });
 
+
+// export const register = (data, role) => async (dispatch) => {
+//     dispatch(userSlice.actions.registerRequest());
+//     let url;
+
+//     if (role === "coordinator") url = `${import.meta.env.VITE_APP_API_BASE_URL}/api/v4/coordinator/register`
+//     if (role === 'school') url = `${import.meta.env.VITE_APP_API_BASE_URL}/api/v2/school/register`;
+//     if (role === 'student') url = `${import.meta.env.VITE_APP_API_BASE_URL}/api/v3/student/register`;
+
+//     try {
+//         const response = await axios.post(url, data, {
+//             withCredentials: true,
+//             headers: { "Content-Type": "application/json" },
+//         });
+//         if (response.data?.success) {
+//             dispatch(userSlice.actions.registerSuccess());
+//             switch (role) {
+//                 case 'coordinator':
+//                     dispatch(fetchCoordinators())
+//                     break;
+//                 case 'school':
+//                     dispatch(fetchSchools())
+//                     break;
+//                 case 'student':
+//                     dispatch(fetchStudents())
+//                     break;
+
+//             }
+//             toast.success(response.data?.message);
+//         }
+//     } catch (error) {
+//         dispatch(userSlice.actions.registerFailed({ error: error.response?.data?.message || "Something went wrong!" }));
+//         toast.error(error.response?.data?.message || "An error occurred");
+//     }
+// };
 
 export const login = (data, role) => async (dispatch) => {
     dispatch(userSlice.actions.fetchUserRequest());

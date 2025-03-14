@@ -53,7 +53,7 @@ export const schoolRegistration = async (req, res, next) => {
     return res.status(201).json({
       success: true,
       message: "School registered successfully",
-      school: newSchool,
+      // school: newSchool,
     });
   } catch (error) {
     res.status(500).json({

@@ -67,7 +67,9 @@ export const fetchSchools = () => async (dispatch) => {
     dispatch(schoolSlice.actions.fetchSchoolsRequest());
     try {
         const response = await axios.get(`${import.meta.env.VITE_APP_API_BASE_URL}/api/v2/school/get-schools`, { withCredentials: true, headers: { 'Content-Type': 'application/json' } });
-        dispatch(schoolSlice.actions.fetchSchoolsSuccess(response.data?.schools));
+        if(response.data.success){
+            dispatch(schoolSlice.actions.fetchSchoolsSuccess(response.data?.schools));
+        }
     } catch (error) {
         dispatch(schoolSlice.actions.fetchSchoolsFailed({ error: error.response?.data?.message }));
         toast.error(error.response?.data?.message || "An error occurred while fetching schools");

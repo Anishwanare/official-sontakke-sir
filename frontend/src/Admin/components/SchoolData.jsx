@@ -17,7 +17,7 @@ const SchoolData = () => {
 
 
   useEffect(() => {
-    dispatch(fetchSchools());
+    if (!schools || schools.length === 0)   dispatch(fetchSchools());
   }, [dispatch]);
 
   useEffect(() => {
@@ -37,13 +37,11 @@ const SchoolData = () => {
     return (<div className="text-center text-red-500 py-4">{error}</div>
     )
   }
-
-  console.log("student data error",error)
-
+  
   const handleDeleteSchool = async (id) => {
     if (window.confirm("Are you sure you want to delete this school?")) {
       try {
-        await dispatch(deleteSchool(id)).unwrap();
+        await dispatch(deleteSchool(id))
         toast.success("School deleted successfully!");
       } catch (err) {
         toast.error(err.message || "Failed to delete school.");

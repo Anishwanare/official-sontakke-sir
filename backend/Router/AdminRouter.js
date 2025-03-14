@@ -12,7 +12,7 @@ router.post('/upload-file-to-school/:id', isAdminAuthenticated, isAuthorized("Ad
 router.post('/upload-file-to-student/:id', isAdminAuthenticated, isAuthorized("Admin"), uploadFileToStudent)
 
 
-// this router is for all admin and school coordinator
+// this router is for admin and school,students, coordinator
 router.get("/logout", Logout)
 
 export default router;

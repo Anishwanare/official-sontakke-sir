@@ -4,6 +4,8 @@ import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchCoordinators } from "../../store/slices/coordinatorSlice";
+import { Link } from "react-router-dom";
+import { fetchSchools } from "../../store/slices/schoolSlice";
 
 const Registration = () => {
   const [name, setName] = useState("");
@@ -13,13 +15,14 @@ const Registration = () => {
   const [schoolVillage, setSchoolVillage] = useState("");
   const [talukka, setTalukka] = useState("");
   const [district, setDistrict] = useState("");
-  // const [coordinators, setCoordinators] = useState([]);
   const [selectedCoordinator, setSelectedCoordinator] = useState("");
   const [headMasterName, setHeadMasterName] = useState("");
   const [headMasterMobile, setHeadMasterMobile] = useState("");
   const [show, setShow] = useState(false);
+  const [isValid, setIsValid] = useState(null)
   const dispatch = useDispatch()
-
+  const { coordinators } = useSelector((state) => state.Coordinator)
+  const { schools } = useSelector((state) => state.School)
 
 
   const handleShowPassword = () => {
@@ -40,13 +43,21 @@ const Registration = () => {
 
 
 
-  const handleSubmit = async (e) => {
-    e.preventDefault(); // Prevent the default form submission
-    console.log("submitting");
 
-    if (schoolId !== "" && !validSchoolIds.includes(schoolId)) {
-      toast.error("Incorrect School ID");
-      return;
+  // validate school id present in schools
+  const checkSchoolIdExisite = (id) => {
+    const isExistInArray = validSchoolIds.includes(id)
+    const isValid = !schools.some((school) => school.schoolId === id)
+    return isExistInArray && isValid
+  }
+
+
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    if (!validSchoolIds.includes(schoolId)) {
+      return toast.error("Incorrect School ID");
     }
 
     setLoading(true);
@@ -67,16 +78,15 @@ const Registration = () => {
         }, { withCredentials: true, headers: { "Content-Type": "application/json" } }
       );
 
-      if (response.data?.status) {
+      if (response.data?.success) {
         toast.success(response.data?.message);
       } else {
         toast.error(response.data?.message);
       }
     } catch (error) {
-      toast.error("Failed to register. Please try again later.");
-      console.error("Error:", error);
+      toast.error(error.response.data.message);
+      // console.error("Error:", error.message);
     } finally {
-      // Clear form fields after submission
       setName("");
       setSchoolId("");
       setPassword("");
@@ -90,25 +100,29 @@ const Registration = () => {
     }
   };
 
-  const { coordinators } = useSelector((state) => state.Coordinator)
+  useEffect(() => {
+    if (!schools || schools.length === 0) {
+      dispatch(fetchSchools())
+    }
+  }, [dispatch, schools])
 
   useEffect(() => {
-    dispatch(fetchCoordinators())
-  }, [dispatch])
-
-
+    if (!coordinators || coordinators.length === 0) {
+      dispatch(fetchCoordinators())
+    }
+  }, [dispatch, coordinators])
 
   return (
     <div className="flex items-center justify-center min-h-screen bg-gray-200 flex-col">
       <div className="w-full max-w-4xl p-8 bg-white rounded-lg shadow-md my-5">
-        <div className="text-center p-2 text-2xl font-bold text-gray-700">
-          School Registration
-        </div>
         <div className="flex justify-center mb-6">
           <img src="/logo.jpeg" alt="Logo" className="h-24" />
         </div>
+        <div className="text-center p-2 text-2xl font-bold text-gray-700 underline">
+          School Registration
+        </div>
         <form onSubmit={handleSubmit} className="grid grid-cols-1 md:grid-cols-2 gap-2">
-          <div className="mb-4">
+          <div className="mb-2">
             <label htmlFor="name" className="block text-black">
               School Name
             </label>
@@ -118,11 +132,11 @@ const Registration = () => {
               value={name}
               onChange={(e) => setName(e.target.value)}
               placeholder="name"
-              className="px-2 block w-full mt-1 py-2 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 border border-black dark:border-gray-600 text-black"
+              className="px-2 block w-full mt-1 py-2 rounded-md shadow-sm focus:ring-yellow-500 focus:border-yellow-500 border  dark:border-gray-600 text-black"
               required
             />
           </div>
-          <div className="mb-4">
+          <div className="mb-2">
             <label htmlFor="headmastername" className="block text-black">
               Head Master Name
             </label>
@@ -132,11 +146,11 @@ const Registration = () => {
               value={headMasterName}
               onChange={(e) => setHeadMasterName(e.target.value)}
               placeholder="Head Master Name"
-              className="px-2 block w-full mt-1 py-2 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 border border-black dark:border-gray-600 text-black"
+              className="px-2 block w-full mt-1 py-2 rounded-md shadow-sm focus:ring-yellow-500 focus:border-yellow-500 border border-black dark:border-gray-600 text-black"
               required
             />
           </div>
-          <div className="mb-4">
+          <div className="mb-2">
             <label htmlFor="headmastermobile" className="block text-black">
               Head Master Mobile
             </label>
@@ -146,11 +160,11 @@ const Registration = () => {
               value={headMasterMobile}
               onChange={(e) => setHeadMasterMobile(e.target.value)}
               placeholder="Head Master Mobile"
-              className="px-2 block w-full mt-1 py-2 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 border border-black dark:border-gray-600 text-black"
+              className="px-2 block w-full mt-1 py-2 rounded-md shadow-sm focus:ring-yellow-500 focus:border-yellow-500 border border-black dark:border-gray-600 text-black"
               required
             />
           </div>
-          <div className="mb-4">
+          <div className="mb-2">
             <label htmlFor="village" className="block text-black">
               Village
             </label>
@@ -160,11 +174,11 @@ const Registration = () => {
               value={schoolVillage}
               onChange={(e) => setSchoolVillage(e.target.value)}
               placeholder="school Village"
-              className="px-2 block w-full mt-1 py-2 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 border border-black dark:border-gray-600 text-black"
+              className="px-2 block w-full mt-1 py-2 rounded-md shadow-sm focus:ring-yellow-500 focus:border-yellow-500 border border-black dark:border-gray-600 text-black"
               required
             />
           </div>
-          <div className="mb-4">
+          <div className="mb-2">
             <label htmlFor="district" className="block text-black">
               District
             </label>
@@ -174,11 +188,11 @@ const Registration = () => {
               value={district}
               onChange={(e) => setDistrict(e.target.value)}
               placeholder="District"
-              className="px-2 block w-full mt-1 py-2 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 border border-black dark:border-gray-600 text-black"
+              className="px-2 block w-full mt-1 py-2 rounded-md shadow-sm focus:ring-yellow-500 focus:border-yellow-500 border border-black dark:border-gray-600 text-black"
               required
             />
           </div>
-          <div className="mb-4">
+          <div className="mb-2">
             <label htmlFor="talukka" className="block text-black">
               Talukka
             </label>
@@ -188,11 +202,11 @@ const Registration = () => {
               value={talukka}
               onChange={(e) => setTalukka(e.target.value)}
               placeholder="Talukka"
-              className="px-2 block w-full mt-1 py-2 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 border border-black dark:border-gray-600 text-black"
+              className="px-2 block w-full mt-1 py-2 rounded-md shadow-sm focus:ring-yellow-500 focus:border-yellow-500 border border-black dark:border-gray-600 text-black"
               required
             />
           </div>
-          <div className="mb-4">
+          <div className="mb-2">
             <label htmlFor="coordinator" className="block text-gray-700">
               Coordinator
             </label>
@@ -201,30 +215,34 @@ const Registration = () => {
               name="coordinator"
               value={selectedCoordinator}
               onChange={(e) => setSelectedCoordinator(e.target.value)}
-              className="px-2 block w-full mt-1 py-2 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 border border-gray-300 text-gray-700"
+              className="px-2 block w-full mt-1 py-2 rounded-md shadow-sm focus:ring-yellow-500 focus:border-yellow-500 border border-black text-gray-700"
               required
             >
               <option value="" disabled>
                 Select your Coordinator
               </option>
               {coordinators.map((coordinate, index) => (
-                <option key={index} value={coordinate.id}>
+                <option key={index} value={coordinate.id} className="">
                   {`${coordinate.firstName} ${coordinate.lastName}`}
                 </option>
               ))}
             </select>
           </div>
-          <div className="mb-4">
+          <div className="mb-2">
             <label htmlFor="school-id" className="block text-black">
-              School ID
+              School ID {schoolId && (isValid ? (
+                <span className="text-green-500 text-sm">Valid</span>
+              ) : (
+                <span className="text-red-500 text-sm">Invalid ID</span>
+              ))}
             </label>
             <input
               type="text"
               id="school-id"
               value={schoolId}
-              onChange={(e) => setSchoolId(e.target.value)}
+              onChange={(e) => { setSchoolId(e.target.value); setIsValid(checkSchoolIdExisite(e.target.value)) }}
               placeholder="school id"
-              className="px-2 block w-full mt-1 py-2 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 border border-black dark:border-gray-600 text-black"
+              className={`px-2 block w-full mt-1 py-2 rounded-md shadow-sm ${isValid === true ? "focus:ring-yellow-500 focus:border-yellow-500" : "focus:ring-red-500 focus:border-red-500"} focus:ring-yellow-500 focus:border-yellow-500 border border-orange-400 dark:border-gray-600 text-black`}
               required
             />
           </div>
@@ -235,7 +253,7 @@ const Registration = () => {
               </label>
               <label
                 onClick={handleShowPassword}
-                className="cursor-pointer text-blue-500"
+                className="cursor-pointer text-yellow-500"
               >
                 {show ? "Hide" : "Show"}
               </label>
@@ -246,20 +264,23 @@ const Registration = () => {
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               placeholder="password"
-              className="px-2 block w-full mt-1 py-2 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 border border-black dark:border-gray-600 text-black"
+              className="px-2 block w-full mt-1 py-2 rounded-md shadow-sm focus:ring-yellow-500 focus:border-yellow-500 border border-black dark:border-gray-600 text-black"
               required
             />
           </div>
-          <div>
+          <div className="">
             <button
               type="submit"
               className="w-full bg-yellow-500 text-white py-2 rounded-md shadow-md hover:bg-yellow-600 focus:ring focus:ring-yellow-300 disabled:opacity-50"
-              disabled={loading}
+              disabled={loading || isValid === false}
             >
               {loading ? "Loading..." : "Register School"}
             </button>
           </div>
         </form>
+        <p className="mt-4 text-center text-gray-600">
+          <Link to="/" className="text-yellow-600 hover:underline">← Back to Home</Link>
+        </p>
       </div>
     </div>
   );
