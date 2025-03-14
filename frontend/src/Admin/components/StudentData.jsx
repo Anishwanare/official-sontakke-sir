@@ -4,7 +4,7 @@ import * as XLSX from "xlsx";
 import { toast } from "react-toastify";
 import { HashLoader } from "react-spinners";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchStudent, deleteStudent } from "../../../store/slices/studentSlice";
+import { fetchStudents, deleteStudent } from "../../../store/slices/studentSlice";
 import axios from "axios";
 const TOTAL_ITEM = 150;
 

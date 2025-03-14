@@ -16,9 +16,7 @@ const SchoolData = () => {
 
 
 
-  useEffect(() => {
-    if (!schools || schools.length === 0)   dispatch(fetchSchools());
-  }, [dispatch]);
+
 
   useEffect(() => {
     if (showModal) {
@@ -37,7 +35,7 @@ const SchoolData = () => {
     return (<div className="text-center text-red-500 py-4">{error}</div>
     )
   }
-  
+
   const handleDeleteSchool = async (id) => {
     if (window.confirm("Are you sure you want to delete this school?")) {
       try {
@@ -104,6 +102,10 @@ const SchoolData = () => {
       setUploadingFile(false)
     }
   };
+
+  useEffect(() => {
+    if (!schools || schools.length === 0) dispatch(fetchSchools());
+  }, [dispatch]);
 
   return (
     <div className="py-4 ">
