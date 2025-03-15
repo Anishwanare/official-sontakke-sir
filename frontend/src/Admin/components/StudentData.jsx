@@ -82,7 +82,7 @@ const StudentData = () => {
   };
 
   useEffect(() => {
-    if (!students || students.length === 0) dispatch(fetchStudent());
+    if (!students || students.length === 0) dispatch(fetchStudents());
   }, [dispatch]);
 
   const handleDelete = (id) => {
