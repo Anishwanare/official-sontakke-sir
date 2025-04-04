@@ -64,7 +64,10 @@ export const AdminLogin = async (req, res, next) => {
     }
 
     // Find admin by email
-    const admin = await Admin.findOne({ email }).select("+password");
+    const admin = await Admin.aggregate([
+      { $match: { email } }
+    ]);
+
     if (!admin) {
       return res.status(401).json({
         success: false,
@@ -123,7 +126,7 @@ export const uploadFileToSchool = catchAsyncError(async (req, res, next) => {
     return next(new ErrorHandler("No file uploaded", 400));
   }
 
-  const {document} = req.files;
+  const { document } = req.files;
 
   // Allowed file types
   const allowedMimeTypes = {

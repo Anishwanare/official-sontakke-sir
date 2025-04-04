@@ -10,7 +10,7 @@ router.post("/login", studentLogin)
 router.get("/get-students", isAdminAuthenticated, isAuthorized("Admin"), getStudents);
 router.put("/update/student/:id", isAdminAuthenticated, isAuthorized("Admin"), editStudentData)
 router.delete("/delete/student/:id", isAdminAuthenticated, isAuthorized("Admin"), deleteStudent)
-router.get("/getme/:id", isAuthorized('Admin'), getStudentById)
+router.get("/getme/:id", isAdminAuthenticated,isAuthorized("Admin"), getStudentById)
 
 
 // fetch me

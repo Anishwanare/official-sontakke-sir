@@ -75,7 +75,7 @@ export const updateStudent = (id, student) => async (dispatch) => {
         dispatch(studentSlice.actions.updateStudentFailed());
         toast.error(error.response.data.message)
 
-    }
+    }   
 }
 
 export const fetchStudents = () => async (dispatch) => {
