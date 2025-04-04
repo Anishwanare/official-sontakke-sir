@@ -79,7 +79,7 @@ export const AdminLogin = async (req, res, next) => {
     if (password !== admin.password) {
       return res.status(401).json({
         success: false,
-        message: "Unauthorized access to admin!",
+        message: "Invalid pass",
       });
     }
 
