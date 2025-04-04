@@ -11,8 +11,27 @@ const Header = () => {
   const [visible, setVisible] = useState(true);
   const [prevScrollPos, setPrevScrollPos] = useState(window.scrollY);
   const [dropdownOpen, setDropdownOpen] = useState(false);
+  const [isUserOnline, setIsUserOnline] = useState(null)
   const location = useLocation();
   const { isAuthenticated, user, loading } = useSelector((state) => state.User);
+
+  useEffect(() => {
+    fetchOnlineStatus()
+  }, [])
+
+  const fetchOnlineStatus = () => {
+    const timer = setInterval(() => {
+      const isOnline = navigator.onLine
+      if (isOnline) {
+        setIsUserOnline(isOnline)
+      }
+      else {
+        setIsUserOnline(isOnline)
+      }
+    }, 1000)
+
+    return ()=>{clearInterval(timer)}
+  }
 
   useEffect(() => {
     const handleKeyDown = (e) => {
@@ -179,6 +198,7 @@ const Header = () => {
                   <img src="logo.jpeg" alt="Logo" className="h-12 w-12 object-cover shadow-md" />
                   <p className="text-gray-900 text-lg md:text-xl font-semibold">
                     ज्ञानांकूर प्रज्ञाशोध परीक्षा <br />
+                    {isUserOnline ? <div className="bg-green-600 rounded-full h-2 w-2"></div>:<div className="bg-red-600 rounded-full h-2 w-2"></div>}
                     {new Date().getFullYear()} - {(new Date().getFullYear() + 1).toString().slice(-2)}
                   </p>
                 </Link>

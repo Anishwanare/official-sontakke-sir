@@ -14,10 +14,6 @@ const SchoolData = () => {
   const { schools, loading, error } = useSelector((state) => state.School);
   const [uploadingFile, setUploadingFile] = useState(false)
 
-
-
-
-
   useEffect(() => {
     if (showModal) {
       document.body.style.overflow = 'hidden'
