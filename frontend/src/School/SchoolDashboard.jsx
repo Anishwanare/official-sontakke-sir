@@ -3,9 +3,11 @@ import { useDispatch, useSelector } from "react-redux";
 import { logout } from "../../store/slices/userSlice";
 import { useNavigate } from "react-router-dom";
 import AppLayout from "../AppLayout/AppLayout";
+import { useOnline } from "../utility/useOnline";
 
 const SchoolDashboard = () => {
     const { user } = useSelector((state) => state.User);
+    const isUserOnline = useOnline()
     const dispatch = useDispatch();
     const navigate = useNavigate();
 
@@ -19,6 +21,7 @@ const SchoolDashboard = () => {
 
             <div className="flex md:flex-row items-center justify-around  pb-4">
                 <h1 className="text-xl md:text-3xl font-bold">{user?.name || "School Name"}</h1>
+                {isUserOnline ? <div className="bg-green-600 rounded-full h-2 w-2"></div> : <div className="bg-red-600 rounded-full h-2 w-2"></div>}
                 <button onClick={handleLogout} className="border px-4 py-2 rounded-md hover:bg-red-500" title="Logout">Logout</button>
             </div>
 

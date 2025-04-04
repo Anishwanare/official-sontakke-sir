@@ -5,15 +5,18 @@ import { FaBars, FaTimes } from "react-icons/fa";
 import { IoIosArrowDown } from "react-icons/io";
 import { useSelector } from "react-redux";
 import { HashLoader } from "react-spinners";
+import { useOnline } from "../utility/useOnline";
 
 const Header = () => {
   const [show, setShow] = useState(false);
   const [visible, setVisible] = useState(true);
   const [prevScrollPos, setPrevScrollPos] = useState(window.scrollY);
   const [dropdownOpen, setDropdownOpen] = useState(false);
-  const [isUserOnline, setIsUserOnline] = useState(null)
   const location = useLocation();
   const { isAuthenticated, user, loading } = useSelector((state) => state.User);
+
+  const isUserOnline = useOnline()
+  // console.log(isUserOnline)
 
   // useEffect(() => {
   //   fetchOnlineStatus()
@@ -32,23 +35,7 @@ const Header = () => {
 
   //   return ()=>{clearInterval(timer)}
   // }
-  useEffect(() => {
-    const updateOnlineStatus = () => {
-      setIsUserOnline(navigator.onLine);
-    };
-  
-    // Set initial status
-    updateOnlineStatus();
-  
-    window.addEventListener("online", updateOnlineStatus);
-    window.addEventListener("offline", updateOnlineStatus);
-  
-    return () => {
-      window.removeEventListener("online", updateOnlineStatus);
-      window.removeEventListener("offline", updateOnlineStatus);
-    };
-  }, []);
-  
+
 
   useEffect(() => {
     const handleKeyDown = (e) => {
@@ -111,7 +98,7 @@ const Header = () => {
         <Link to="/" className="flex items-center gap-3">
           <img src="logo.jpeg" alt="Logo" className="h-12 w-12 object-cover shadow-md" />
           <p className="text-gray-900 text-lg md:text-xl font-semibold">
-          {isUserOnline ? <div className="bg-green-600 rounded-full h-2 w-2"></div>:<div className="bg-red-600 rounded-full h-2 w-2"></div>}
+            {isUserOnline ? <div className="bg-green-600 rounded-full h-2 w-2"></div> : <div className="bg-red-600 rounded-full h-2 w-2"></div>}
             ज्ञानांकूर प्रज्ञाशोध परीक्षा <br />
             {new Date().getFullYear()} - {(new Date().getFullYear() + 1).toString().slice(-2)}
           </p>
@@ -215,7 +202,7 @@ const Header = () => {
                   <img src="logo.jpeg" alt="Logo" className="h-12 w-12 object-cover shadow-md" />
                   <p className="text-gray-900 text-lg md:text-xl font-semibold">
                     ज्ञानांकूर प्रज्ञाशोध परीक्षा <br />
-                    {isUserOnline ? <div className="bg-green-600 rounded-full h-2 w-2"></div>:<div className="bg-red-600 rounded-full h-2 w-2"></div>}
+                    {isUserOnline ? <div className="bg-green-600 rounded-full h-2 w-2"></div> : <div className="bg-red-600 rounded-full h-2 w-2"></div>}
                     {new Date().getFullYear()} - {(new Date().getFullYear() + 1).toString().slice(-2)}
                   </p>
                 </Link>

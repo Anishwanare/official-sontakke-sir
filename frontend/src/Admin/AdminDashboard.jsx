@@ -4,6 +4,7 @@ import { HashLoader } from "react-spinners";
 import { motion } from "framer-motion";
 import { useDispatch, useSelector } from "react-redux";
 import { logout } from "../../store/slices/userSlice";
+import { useOnline } from "../utility/useOnline";
 
 const SchoolData = React.lazy(() => import("./components/SchoolData"));
 const StudentData = React.lazy(() => import("./components/StudentData"));
@@ -25,6 +26,8 @@ const AdminDashboard = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const dispatch = useDispatch();
   const navigate = useNavigate();
+
+  const isUserOnline = useOnline()
 
   const handleLogoutAdmin = () => {
     dispatch(logout());
@@ -61,6 +64,7 @@ const AdminDashboard = () => {
         <Link to="/" className="flex items-center gap-2 mb-10">
           <img alt="logo" src="/logo.jpeg" className="mr-2 w-12 rounded-full shadow-lg" />
           <span className="text-xl font-semibold text-gray-800">Dnyanankur Prakashan</span>
+          {isUserOnline ? <div className="bg-green-600 rounded-full h-2 w-2"></div> : <div className="bg-red-600 rounded-full h-2 w-2"></div>}
         </Link>
 
         {/* Navigation Section */}
