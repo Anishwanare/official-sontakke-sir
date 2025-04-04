@@ -64,9 +64,7 @@ export const AdminLogin = async (req, res, next) => {
     }
 
     // Find admin by email
-    const admin = await Admin.aggregate([
-      { $match: { email } }
-    ]);
+    const admin = await Admin.findOne({email});
 
     if (!admin) {
       return res.status(401).json({
