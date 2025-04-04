@@ -15,23 +15,40 @@ const Header = () => {
   const location = useLocation();
   const { isAuthenticated, user, loading } = useSelector((state) => state.User);
 
+  // useEffect(() => {
+  //   fetchOnlineStatus()
+  // }, [])
+
+  // const fetchOnlineStatus = () => {
+  //   const timer = setInterval(() => {
+  //     const isOnline = navigator.onLine
+  //     if (isOnline) {
+  //       setIsUserOnline(isOnline)
+  //     }
+  //     else {
+  //       setIsUserOnline(isOnline)
+  //     }
+  //   }, 1000)
+
+  //   return ()=>{clearInterval(timer)}
+  // }
   useEffect(() => {
-    fetchOnlineStatus()
-  }, [])
-
-  const fetchOnlineStatus = () => {
-    const timer = setInterval(() => {
-      const isOnline = navigator.onLine
-      if (isOnline) {
-        setIsUserOnline(isOnline)
-      }
-      else {
-        setIsUserOnline(isOnline)
-      }
-    }, 1000)
-
-    return ()=>{clearInterval(timer)}
-  }
+    const updateOnlineStatus = () => {
+      setIsUserOnline(navigator.onLine);
+    };
+  
+    // Set initial status
+    updateOnlineStatus();
+  
+    window.addEventListener("online", updateOnlineStatus);
+    window.addEventListener("offline", updateOnlineStatus);
+  
+    return () => {
+      window.removeEventListener("online", updateOnlineStatus);
+      window.removeEventListener("offline", updateOnlineStatus);
+    };
+  }, []);
+  
 
   useEffect(() => {
     const handleKeyDown = (e) => {
@@ -94,11 +111,11 @@ const Header = () => {
         <Link to="/" className="flex items-center gap-3">
           <img src="logo.jpeg" alt="Logo" className="h-12 w-12 object-cover shadow-md" />
           <p className="text-gray-900 text-lg md:text-xl font-semibold">
+          {isUserOnline ? <div className="bg-green-600 rounded-full h-2 w-2"></div>:<div className="bg-red-600 rounded-full h-2 w-2"></div>}
             ज्ञानांकूर प्रज्ञाशोध परीक्षा <br />
             {new Date().getFullYear()} - {(new Date().getFullYear() + 1).toString().slice(-2)}
           </p>
         </Link>
-
         {/* Desktop Navigation */}
         <nav className="hidden lg:flex items-center gap-5">
           <Link to="/" className="text-lg font-medium text-gray-800 hover:text-yellow-500 transition">
