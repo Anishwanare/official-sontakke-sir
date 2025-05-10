@@ -23,7 +23,7 @@ const Footer = () => {
       <div className="bg-gray-800 text-gray-400 py-4 mt-6">
         <div className="container mx-auto text-center">
           <p className="text-sm mb-2">
-            Designed and Developed by <span className="text-yellow-400">D&W Tech</span>
+            Designed and Developed by <span className="text-yellow-400">Anish Wanare</span>
           </p>
           <p className="text-sm">Contact: <a href="tel:+91767722793" className="text-yellow-400 hover:text-yellow-300">97677 22793</a></p>
         </div>
